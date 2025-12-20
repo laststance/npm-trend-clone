@@ -720,7 +720,7 @@
       "Step 2: Find package info card",
       "Step 3: Verify 'react' name displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -730,7 +730,7 @@
       "Step 2: Verify description text visible",
       "Step 3: Description matches npm registry"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -740,7 +740,7 @@
       "Step 2: Verify weekly downloads shown",
       "Step 3: Number is formatted correctly"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -750,7 +750,7 @@
       "Step 2: Verify stars count displayed",
       "Step 3: Star icon is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -760,7 +760,7 @@
       "Step 2: Verify version number shown",
       "Step 3: Format is semver (x.y.z)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -770,7 +770,7 @@
       "Step 2: Click npm link on card",
       "Step 3: Opens npmjs.com/package/name"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -780,7 +780,7 @@
       "Step 2: Click GitHub link on card",
       "Step 3: Opens repository page"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -790,7 +790,7 @@
       "Step 2: Verify last updated date shown",
       "Step 3: Date is human readable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -800,7 +800,7 @@
       "Step 2: Verify license displayed (MIT, etc.)",
       "Step 3: License badge is styled"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -810,7 +810,7 @@
       "Step 2: Verify 3 cards are shown",
       "Step 3: Cards have correct data each"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -820,7 +820,7 @@
       "Step 2: Verify cards stack vertically",
       "Step 3: Content remains readable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -830,7 +830,7 @@
       "Step 2: Verify skeleton cards during load",
       "Step 3: Skeletons replaced with real cards"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -840,7 +840,7 @@
       "Step 2: Verify error shown on that card",
       "Step 3: Other cards still work"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

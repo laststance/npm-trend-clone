@@ -9,9 +9,15 @@ import { TimeRangeSelector } from "@/components/time-range-selector";
 import { ShareButton } from "@/components/share-button";
 import { ExportButton } from "@/components/export-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  PackageInfoCard,
+  PackageInfoCardSkeleton,
+  PackageInfoCardError,
+} from "@/components/package-info-card";
 import { MAX_PACKAGES } from "@/constants/colors";
 import { useUrlState } from "@/hooks/use-url-state";
 import { useDownloads } from "@/hooks/use-downloads";
+import { usePackageInfo } from "@/hooks/use-package-info";
 
 /**
  * Inner component that uses URL state hooks.
@@ -20,6 +26,7 @@ function HomeContent() {
   const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange } = useUrlState();
   const packageNames = selectedPackages.map((p) => p.name);
   const { data: chartData, isLoading, error, invalidPackages } = useDownloads(packageNames, timeRange);
+  const { data: packageInfoData, isLoading: isLoadingInfo } = usePackageInfo(packageNames);
 
   /**
    * Shows toast notification for invalid packages.
@@ -133,6 +140,42 @@ function HomeContent() {
               isLoading={isLoading}
             />
           </section>
+
+          {/* Package Info Cards */}
+          {selectedPackages.length > 0 && (
+            <section className="space-y-4">
+              <h3 className="text-lg font-semibold">Package Details</h3>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {selectedPackages.map((pkg) => {
+                  const info = packageInfoData[pkg.name];
+
+                  if (isLoadingInfo && !info) {
+                    return <PackageInfoCardSkeleton key={pkg.name} />;
+                  }
+
+                  if (!info) {
+                    return (
+                      <PackageInfoCardError
+                        key={pkg.name}
+                        packageName={pkg.name}
+                        accentColor={pkg.color}
+                        onRemove={() => handleRemovePackage(pkg.name)}
+                      />
+                    );
+                  }
+
+                  return (
+                    <PackageInfoCard
+                      key={pkg.name}
+                      packageInfo={info}
+                      accentColor={pkg.color}
+                      onRemove={() => handleRemovePackage(pkg.name)}
+                    />
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           {/* Info */}
           {selectedPackages.length === 0 && (

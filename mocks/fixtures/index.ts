@@ -21,3 +21,9 @@ export {
   type MockDownloadPoint,
   type MockDownloadResponse,
 } from "./download-data";
+
+export {
+  packageInfoFixtures,
+  generateMockPackageInfo,
+  getMockPackageInfo,
+} from "./package-info";

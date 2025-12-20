@@ -13,6 +13,30 @@ export interface NpmPackage {
 }
 
 /**
+ * Extended package information including repository and metadata.
+ */
+export interface PackageInfo {
+  /** Package name */
+  name: string;
+  /** Package description */
+  description: string;
+  /** Latest version */
+  version: string;
+  /** License type (e.g., "MIT", "Apache-2.0") */
+  license: string;
+  /** npm package homepage URL */
+  homepage?: string;
+  /** GitHub repository URL */
+  repositoryUrl?: string;
+  /** Last publish date in ISO format */
+  lastPublished: string;
+  /** Weekly download count */
+  weeklyDownloads: number;
+  /** GitHub stars count (if available) */
+  githubStars?: number;
+}
+
+/**
  * Selected package for comparison with assigned color.
  */
 export interface SelectedPackage {

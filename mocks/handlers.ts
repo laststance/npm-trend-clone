@@ -3,6 +3,7 @@ import {
   getMockSearchResults,
   generateMockDownloadData,
   getWeeklyDownloads,
+  getMockPackageInfo,
   reactDownloads30d,
   vueDownloads30d,
 } from "./fixtures";
@@ -23,6 +24,39 @@ export const handlers = [
       timestamp: new Date().toISOString(),
       environment: "test",
     });
+  }),
+
+  /**
+   * Internal API: Package info
+   * GET /api/packages/info?packages=react,vue
+   */
+  http.get("/api/packages/info", ({ request }) => {
+    const url = new URL(request.url);
+    const packagesParam = url.searchParams.get("packages");
+
+    if (!packagesParam) {
+      return HttpResponse.json(
+        { error: "packages parameter is required" },
+        { status: 400 }
+      );
+    }
+
+    const packageNames = packagesParam.split(",").filter(Boolean);
+
+    if (packageNames.length === 0) {
+      return HttpResponse.json(
+        { error: "At least one package name is required" },
+        { status: 400 }
+      );
+    }
+
+    const result: Record<string, ReturnType<typeof getMockPackageInfo>> = {};
+
+    for (const name of packageNames) {
+      result[name] = getMockPackageInfo(name);
+    }
+
+    return HttpResponse.json(result);
   }),
 
   /**
