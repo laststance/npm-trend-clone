@@ -49,7 +49,7 @@
       "Step 2: Verify all tests pass",
       "Step 3: Check coverage meets threshold"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -59,7 +59,7 @@
       "Step 2: Wait for all Playwright tests to complete",
       "Step 3: Verify no failures"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
