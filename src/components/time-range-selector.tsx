@@ -17,7 +17,7 @@ interface TimeRangeSelectorProps {
  */
 export function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
   return (
-    <div className="flex items-center gap-1 rounded-lg bg-muted p-1" role="group" aria-label="Time range selector">
+    <div className="flex items-center gap-1 rounded-lg bg-muted p-1" role="group" aria-label="Time range selector" data-testid="time-range-selector">
       {TIME_RANGES.map((range) => (
         <button
           key={range.value}
