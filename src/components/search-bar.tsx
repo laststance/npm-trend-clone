@@ -31,6 +31,7 @@ export function SearchBar({
   const [suggestions, setSuggestions] = useState<NpmPackage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -42,6 +43,7 @@ export function SearchBar({
   const fetchSuggestions = useCallback(async (searchQuery: string) => {
     if (searchQuery.length < 2) {
       setSuggestions([]);
+      setHasSearched(false);
       return;
     }
 
@@ -59,9 +61,11 @@ export function SearchBar({
         })
       );
       setSuggestions(packages);
+      setHasSearched(true);
       setIsOpen(true);
     } catch {
       setSuggestions([]);
+      setHasSearched(true);
     } finally {
       setIsLoading(false);
     }
@@ -184,34 +188,40 @@ export function SearchBar({
         )}
       </div>
 
-      {isOpen && suggestions.length > 0 && (
+      {isOpen && (suggestions.length > 0 || (hasSearched && !isLoading)) && (
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
           role="listbox"
         >
-          <ul className="max-h-60 overflow-auto py-1">
-            {suggestions.map((pkg, index) => (
-              <li
-                key={pkg.name}
-                role="option"
-                aria-selected={index === selectedIndex}
-                className={cn(
-                  "cursor-pointer px-3 py-2 hover:bg-accent",
-                  index === selectedIndex && "bg-accent"
-                )}
-                onClick={() => handleSelect(pkg.name)}
-                onMouseEnter={() => setSelectedIndex(index)}
-              >
-                <div className="font-medium">{pkg.name}</div>
-                {pkg.description && (
-                  <div className="truncate text-sm text-muted-foreground">
-                    {pkg.description}
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
+          {suggestions.length > 0 ? (
+            <ul className="max-h-60 overflow-auto py-1">
+              {suggestions.map((pkg, index) => (
+                <li
+                  key={pkg.name}
+                  role="option"
+                  aria-selected={index === selectedIndex}
+                  className={cn(
+                    "cursor-pointer px-3 py-2 hover:bg-accent",
+                    index === selectedIndex && "bg-accent"
+                  )}
+                  onClick={() => handleSelect(pkg.name)}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                >
+                  <div className="font-medium">{pkg.name}</div>
+                  {pkg.description && (
+                    <div className="truncate text-sm text-muted-foreground">
+                      {pkg.description}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+              No packages found
+            </div>
+          )}
         </div>
       )}
     </div>

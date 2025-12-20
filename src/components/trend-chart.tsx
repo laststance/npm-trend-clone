@@ -149,8 +149,15 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
     );
   }
 
+  const packageNames = packages.map(p => p.name).join(", ");
+  const ariaLabel = `Download trends chart comparing ${packages.length} npm package${packages.length === 1 ? "" : "s"}: ${packageNames}`;
+
   return (
-    <div className="h-[400px] w-full">
+    <div
+      className="h-[400px] w-full"
+      role="img"
+      aria-label={ariaLabel}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={data}

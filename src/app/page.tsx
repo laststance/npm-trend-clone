@@ -63,7 +63,7 @@ function HomeContent() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main id="main-content" className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-5xl space-y-6">
           {/* Hero Section */}
           <section className="text-center">

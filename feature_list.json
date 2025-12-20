@@ -290,7 +290,7 @@
       "Step 2: Wait for API response",
       "Step 3: Verify 'No packages found' message"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1508,7 +1508,7 @@
       "Step 3: Press Enter",
       "Step 4: Focus moves to main content"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1568,7 +1568,7 @@
       "Step 2: Verify chart container has aria-label",
       "Step 3: Describes chart purpose/data"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2484,7 +2484,7 @@
       "Step 2: Verify smooth scroll",
       "Step 3: Not instant jump"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
