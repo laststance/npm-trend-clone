@@ -1762,7 +1762,7 @@
       "Step 2: Check memory usage",
       "Step 3: Verify stable heap size"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
