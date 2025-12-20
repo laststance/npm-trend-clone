@@ -2514,7 +2514,7 @@
       "Step 2: Verify subtle color",
       "Step 3: Not too prominent"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
