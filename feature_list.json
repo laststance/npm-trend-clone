@@ -894,7 +894,7 @@
       "Step 3: Click Login",
       "Step 4: Verify error message displayed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -970,7 +970,7 @@
       "Step 3: Submit form",
       "Step 4: Verify email taken error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1066,7 +1066,7 @@
       "Step 3: Submit form",
       "Step 4: Verify success message"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1118,7 +1118,7 @@
       "Step 2: Navigate to /settings",
       "Step 3: Verify account settings visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
