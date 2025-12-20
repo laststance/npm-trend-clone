@@ -1853,7 +1853,7 @@
       "Step 2: Verify home link present",
       "Step 3: Can navigate away"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1863,7 +1863,7 @@
       "Step 2: Verify other packages show",
       "Step 3: Error only for failed package"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
