@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { PackageTagBar } from "./package-tag-bar";
 import { CHART_COLORS } from "@/constants/colors";
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { TrendChart } from "./trend-chart";
 import { CHART_COLORS } from "@/constants/colors";
 import type { ChartDataPoint, SelectedPackage } from "@/types/package";

@@ -2,7 +2,20 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Providers } from "@/components/providers";
+import { isMSWEnabled } from "@/utils/isMSWEnabled";
 import "./globals.css";
+
+/**
+ * Server-side MSW initialization.
+ * Only runs in Node.js runtime (not Edge) when MSW is enabled.
+ *
+ * Important: Uses require() instead of import for synchronous top-level execution
+ */
+if (process.env.NEXT_RUNTIME === "nodejs" && isMSWEnabled()) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { server } = require("../../mocks/server");
+  server.listen({ onUnhandledRequest: "bypass" });
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
