@@ -1,65 +1,195 @@
-import Image from "next/image";
+"use client";
 
+import { useState, useCallback } from "react";
+import { SearchBar } from "@/components/search-bar";
+import { PackageTagBar } from "@/components/package-tag-bar";
+import { TrendChart } from "@/components/trend-chart";
+import { getChartColor, MAX_PACKAGES } from "@/constants/colors";
+import type { SelectedPackage, ChartDataPoint } from "@/types/package";
+
+/**
+ * Generates mock chart data for demonstration.
+ * @param packages - Array of package names
+ * @returns Mock chart data points
+ */
+function generateMockData(packages: string[]): ChartDataPoint[] {
+  if (packages.length === 0) return [];
+
+  const data: ChartDataPoint[] = [];
+  const today = new Date();
+
+  for (let i = 365; i >= 0; i -= 7) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split("T")[0];
+
+    const point: ChartDataPoint = { date: dateStr };
+    packages.forEach((pkg, index) => {
+      const baseDownloads = (index + 1) * 1_000_000;
+      const variation = Math.sin(i / 30) * 200_000 + Math.random() * 100_000;
+      const trend = (365 - i) * 5000;
+      point[pkg] = Math.max(0, Math.round(baseDownloads + variation + trend));
+    });
+
+    data.push(point);
+  }
+
+  return data;
+}
+
+/**
+ * Home page for npm trends comparison.
+ * Allows users to search and compare npm package download statistics.
+ */
 export default function Home() {
+  const [selectedPackages, setSelectedPackages] = useState<SelectedPackage[]>(
+    []
+  );
+  const [isLoading, setIsLoading] = useState(false);
+
+  /**
+   * Handles package selection from search.
+   */
+  const handleSelectPackage = useCallback((packageName: string) => {
+    setSelectedPackages((prev) => {
+      if (prev.length >= MAX_PACKAGES) {
+        return prev;
+      }
+      if (prev.some((p) => p.name === packageName)) {
+        return prev;
+      }
+      const color = getChartColor(prev.length);
+      return [...prev, { name: packageName, color }];
+    });
+
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 500);
+  }, []);
+
+  /**
+   * Handles package removal.
+   */
+  const handleRemovePackage = useCallback((packageName: string) => {
+    setSelectedPackages((prev) => {
+      const filtered = prev.filter((p) => p.name !== packageName);
+      return filtered.map((p, index) => ({
+        ...p,
+        color: getChartColor(index),
+      }));
+    });
+  }, []);
+
+  const chartData = generateMockData(selectedPackages.map((p) => p.name));
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b">
+        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+          <h1 className="text-xl font-bold">npm trends</h1>
+          <nav className="flex items-center gap-4">
             <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              href="https://github.com/laststance/npm-trend-clone"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              GitHub
+            </a>
+          </nav>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        <div className="mx-auto max-w-5xl space-y-6">
+          {/* Hero Section */}
+          <section className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight">
+              Compare npm package downloads
+            </h2>
+            <p className="mt-2 text-muted-foreground">
+              Search and compare download trends for npm packages
+            </p>
+          </section>
+
+          {/* Search Bar */}
+          <section className="flex justify-center">
+            <SearchBar
+              onSelectPackage={handleSelectPackage}
+              disabled={selectedPackages.length >= MAX_PACKAGES}
+              placeholder={
+                selectedPackages.length >= MAX_PACKAGES
+                  ? `Maximum ${MAX_PACKAGES} packages reached`
+                  : "Search npm packages..."
+              }
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </section>
+
+          {/* Package Tags */}
+          <section>
+            <PackageTagBar
+              packages={selectedPackages}
+              onRemovePackage={handleRemovePackage}
+            />
+          </section>
+
+          {/* Chart */}
+          <section className="rounded-lg border bg-card p-4">
+            <TrendChart
+              data={chartData}
+              packages={selectedPackages}
+              isLoading={isLoading}
+            />
+          </section>
+
+          {/* Info */}
+          {selectedPackages.length === 0 && (
+            <section className="text-center text-sm text-muted-foreground">
+              <p>
+                Try searching for popular packages like{" "}
+                <button
+                  onClick={() => handleSelectPackage("react")}
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  react
+                </button>
+                ,{" "}
+                <button
+                  onClick={() => handleSelectPackage("vue")}
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  vue
+                </button>
+                , or{" "}
+                <button
+                  onClick={() => handleSelectPackage("svelte")}
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  svelte
+                </button>
+              </p>
+            </section>
+          )}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="border-t py-6">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p>
+            Built with Next.js, shadcn/ui, and Recharts •{" "}
+            <a
+              href="https://github.com/laststance"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-foreground transition-colors"
+            >
+              Laststance.io
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

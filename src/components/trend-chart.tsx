@@ -1,0 +1,186 @@
+"use client";
+
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import type { SelectedPackage, ChartDataPoint } from "@/types/package";
+
+interface TrendChartProps {
+  /** Chart data with dates and download counts */
+  data: ChartDataPoint[];
+  /** Selected packages with colors */
+  packages: SelectedPackage[];
+  /** Whether to show loading state */
+  isLoading?: boolean;
+}
+
+/**
+ * Formats large numbers with K/M/B suffixes.
+ * @param value - Number to format
+ * @returns Formatted string (e.g., "1.5M")
+ */
+function formatNumber(value: number): string {
+  if (value >= 1_000_000_000) {
+    return `${(value / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (value >= 1_000_000) {
+    return `${(value / 1_000_000).toFixed(1)}M`;
+  }
+  if (value >= 1_000) {
+    return `${(value / 1_000).toFixed(1)}K`;
+  }
+  return value.toString();
+}
+
+/**
+ * Formats date for display.
+ * @param dateStr - ISO date string
+ * @returns Formatted date (e.g., "Jan 2024")
+ */
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+/**
+ * Custom tooltip component for the chart.
+ */
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
+  label?: string;
+}) {
+  if (!active || !payload || payload.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-lg border bg-popover p-3 shadow-lg">
+      <p className="mb-2 text-sm font-medium text-foreground">
+        {label ? new Date(label).toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }) : ""}
+      </p>
+      <div className="space-y-1">
+        {payload.map((entry) => (
+          <div key={entry.name} className="flex items-center gap-2 text-sm">
+            <div
+              className="h-3 w-3 rounded-full"
+              style={{ backgroundColor: entry.color }}
+            />
+            <span className="text-muted-foreground">{entry.name}:</span>
+            <span className="font-medium">{formatNumber(entry.value)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Time-series chart for package download trends.
+ * Uses Recharts for rendering.
+ * @param data - Array of data points with dates and downloads
+ * @param packages - Selected packages with their colors
+ * @param isLoading - Whether data is being loaded
+ */
+export function TrendChart({ data, packages, isLoading = false }: TrendChartProps) {
+  if (packages.length === 0) {
+    return (
+      <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed bg-muted/30">
+        <p className="text-muted-foreground">
+          Search and select packages to compare download trends
+        </p>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <span>Loading download data...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30">
+        <p className="text-muted-foreground">No data available</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-[400px] w-full">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+          <XAxis
+            dataKey="date"
+            tickFormatter={formatDate}
+            tick={{ fill: "currentColor", fontSize: 12 }}
+            tickLine={{ stroke: "currentColor" }}
+            axisLine={{ stroke: "currentColor" }}
+            className="text-muted-foreground"
+          />
+          <YAxis
+            tickFormatter={formatNumber}
+            tick={{ fill: "currentColor", fontSize: 12 }}
+            tickLine={{ stroke: "currentColor" }}
+            axisLine={{ stroke: "currentColor" }}
+            className="text-muted-foreground"
+            label={{
+              value: "↑ Downloads",
+              angle: -90,
+              position: "insideLeft",
+              offset: -5,
+              style: { textAnchor: "middle", fill: "currentColor" },
+            }}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend
+            wrapperStyle={{ paddingTop: 20 }}
+            formatter={(value) => (
+              <span className="text-foreground">{value}</span>
+            )}
+          />
+          {packages.map((pkg) => (
+            <Line
+              key={pkg.name}
+              type="monotone"
+              dataKey={pkg.name}
+              stroke={pkg.color}
+              strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0 }}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
