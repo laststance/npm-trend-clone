@@ -111,7 +111,7 @@ export function PackageInfoCard({
                 size="icon"
                 onClick={onRemove}
                 aria-label={`Remove ${name} from comparison`}
-                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                className="h-11 w-11 min-h-[44px] min-w-[44px] text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -159,12 +159,12 @@ export function PackageInfoCard({
         </div>
 
         {/* Links */}
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-3 sm:mt-4 flex items-center gap-2 sm:gap-3">
           <a
             href={npmUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ExternalLink className="h-3.5 w-3.5" />
             npm
@@ -174,7 +174,7 @@ export function PackageInfoCard({
               href={repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               <Github className="h-3.5 w-3.5" />
               GitHub
@@ -259,7 +259,7 @@ export function PackageInfoCardError({
                 size="icon"
                 onClick={onRemove}
                 aria-label={`Remove ${packageName} from comparison`}
-                className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                className="h-11 w-11 min-h-[44px] min-w-[44px] text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4" />
               </Button>

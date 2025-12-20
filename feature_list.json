@@ -1934,7 +1934,7 @@
       "Step 3: Verify mobile layout",
       "Step 4: No horizontal scroll"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1944,7 +1944,7 @@
       "Step 2: Navigate to home",
       "Step 3: Verify tablet layout"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1964,7 +1964,7 @@
       "Step 2: Load chart",
       "Step 3: Verify chart scrollable if wider"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1974,7 +1974,7 @@
       "Step 2: Verify search input full width",
       "Step 3: Dropdown fits screen"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1984,7 +1984,7 @@
       "Step 2: Load multiple packages",
       "Step 3: Verify cards stack vertically"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2004,7 +2004,7 @@
       "Step 2: Measure touch target size",
       "Step 3: All >= 44x44px"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2014,7 +2014,7 @@
       "Step 2: Verify no horizontal overflow",
       "Step 3: At each viewport"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2024,7 +2024,7 @@
       "Step 2: Verify readable on both",
       "Step 3: Headings scale down on mobile"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",

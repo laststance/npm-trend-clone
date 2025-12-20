@@ -26,7 +26,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      className="h-9 w-9"
+      className="h-11 w-11 min-h-[44px] min-w-[44px]"
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

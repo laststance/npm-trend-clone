@@ -17,13 +17,13 @@ interface TimeRangeSelectorProps {
  */
 export function TimeRangeSelector({ value, onChange }: TimeRangeSelectorProps) {
   return (
-    <div className="flex items-center gap-1 rounded-lg bg-muted p-1" role="group" aria-label="Time range selector" data-testid="time-range-selector">
+    <div className="flex items-center gap-0.5 sm:gap-1 rounded-lg bg-muted p-0.5 sm:p-1" role="group" aria-label="Time range selector" data-testid="time-range-selector">
       {TIME_RANGES.map((range) => (
         <button
           key={range.value}
           onClick={() => onChange(range.value)}
           className={cn(
-            "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+            "rounded-md px-2 sm:px-3 py-2 sm:py-1.5 text-xs sm:text-sm font-medium transition-colors min-h-[44px] min-w-[36px] sm:min-w-[44px]",
             value === range.value
               ? "bg-background text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"

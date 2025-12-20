@@ -26,7 +26,7 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
   return (
     <div
       data-testid="package-tag"
-      className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-white shadow-sm"
+      className="inline-flex items-center gap-0.5 rounded-lg pl-3 pr-1 py-1 min-h-[44px] text-sm font-medium text-white shadow-sm"
       style={{ backgroundColor: pkg.color }}
     >
       <span className="max-w-[150px] truncate font-mono">{pkg.name}</span>
@@ -36,10 +36,10 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-5 w-5 p-0 text-white/80 hover:text-white hover:bg-white/20"
+            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 text-white/80 hover:text-white hover:bg-white/20"
             aria-label={`Options for ${pkg.name}`}
           >
-            <MoreVertical className="h-3.5 w-3.5" />
+            <MoreVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -63,11 +63,11 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
       <Button
         variant="ghost"
         size="sm"
-        className="h-5 w-5 p-0 text-white/80 hover:text-white hover:bg-white/20"
+        className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 text-white/80 hover:text-white hover:bg-white/20"
         onClick={() => onRemove(pkg.name)}
         aria-label={`Remove ${pkg.name}`}
       >
-        <X className="h-3.5 w-3.5" />
+        <X className="h-4 w-4" />
       </Button>
     </div>
   );

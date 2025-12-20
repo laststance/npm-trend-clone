@@ -72,14 +72,14 @@ function HomeContent() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <h1 className="text-xl font-bold">npm trends</h1>
-          <nav className="flex items-center gap-2">
+        <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4">
+          <h1 className="text-lg sm:text-xl font-bold">npm trends</h1>
+          <nav className="flex items-center gap-1 sm:gap-2">
             <a
               href="https://github.com/laststance/npm-trend-clone"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               GitHub
             </a>
@@ -89,14 +89,14 @@ function HomeContent() {
       </header>
 
       {/* Main Content */}
-      <main id="main-content" className="container mx-auto px-4 py-8">
-        <div className="mx-auto max-w-5xl space-y-6">
+      <main id="main-content" className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        <div className="mx-auto max-w-5xl space-y-4 sm:space-y-6">
           {/* Hero Section */}
           <section className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
               Compare npm package downloads
             </h2>
-            <p className="mt-2 text-muted-foreground">
+            <p className="mt-1 sm:mt-2 text-sm sm:text-base text-muted-foreground">
               Search and compare download trends for npm packages
             </p>
           </section>
@@ -125,27 +125,31 @@ function HomeContent() {
 
           {/* Time Range Selector & Actions */}
           {selectedPackages.length > 0 && (
-            <section className="flex items-center justify-center gap-4">
+            <section className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
               <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
-              <ExportButton disabled={isLoading} />
-              <ShareButton />
+              <div className="flex items-center gap-2">
+                <ExportButton disabled={isLoading} />
+                <ShareButton />
+              </div>
             </section>
           )}
 
           {/* Chart */}
-          <section className="rounded-lg p-4">
-            <TrendChart
-              data={chartData}
-              packages={selectedPackages}
-              isLoading={isLoading}
-            />
+          <section className="rounded-lg p-2 sm:p-4 -mx-3 sm:mx-0 overflow-x-auto">
+            <div className="min-w-[320px]">
+              <TrendChart
+                data={chartData}
+                packages={selectedPackages}
+                isLoading={isLoading}
+              />
+            </div>
           </section>
 
           {/* Package Info Cards */}
           {selectedPackages.length > 0 && (
-            <section className="space-y-4">
-              <h3 className="text-lg font-semibold">Package Details</h3>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <section className="space-y-3 sm:space-y-4">
+              <h3 className="text-base sm:text-lg font-semibold">Package Details</h3>
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {selectedPackages.map((pkg) => {
                   const info = packageInfoData[pkg.name];
 
@@ -179,7 +183,7 @@ function HomeContent() {
 
           {/* Info */}
           {selectedPackages.length === 0 && (
-            <section className="text-center text-sm text-muted-foreground">
+            <section className="text-center text-xs sm:text-sm text-muted-foreground">
               <p>
                 Try searching for popular packages like{" "}
                 <button
@@ -209,8 +213,8 @@ function HomeContent() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t py-6">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+      <footer className="border-t py-4 sm:py-6">
+        <div className="container mx-auto px-3 sm:px-4 text-center text-xs sm:text-sm text-muted-foreground">
           <p>
             Built with Next.js, shadcn/ui, and Recharts •{" "}
             <a

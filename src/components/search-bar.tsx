@@ -318,7 +318,7 @@ export function SearchBar({
   }, []);
 
   return (
-    <div className="relative w-full max-w-xl">
+    <div className="relative w-full max-w-xl px-0 sm:px-0">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
