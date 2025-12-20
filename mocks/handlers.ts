@@ -170,11 +170,23 @@ export const handlers = [
 
   /**
    * External API: NPM Download Range (server-side calls)
-   * GET https://api.npmjs.org/downloads/range/:start::end/:package
+   * GET https://api.npmjs.org/downloads/range/startDate:endDate/packageName
+   * Note: Uses wildcard * to capture the date range with colon
    */
-  http.get("https://api.npmjs.org/downloads/range/:range/:package", ({ params }) => {
-    const rangeParam = params.range as string;
-    const packageName = decodeURIComponent(params.package as string);
+  http.get("https://api.npmjs.org/downloads/range/*", ({ request }) => {
+    const url = new URL(request.url);
+    // URL format: /downloads/range/2025-06-23:2025-12-20/react
+    const pathParts = url.pathname.split("/");
+    // pathParts = ["", "downloads", "range", "2025-06-23:2025-12-20", "react"]
+    const rangeParam = pathParts[3];
+    const packageName = decodeURIComponent(pathParts[4] || "");
+
+    if (!rangeParam || !packageName) {
+      return HttpResponse.json(
+        { error: "Invalid request format" },
+        { status: 400 }
+      );
+    }
 
     // Parse range (format: "2025-01-01:2025-12-31")
     const [startDate, endDate] = rangeParam.split(":");

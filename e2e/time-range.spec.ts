@@ -109,6 +109,7 @@ test.describe("Time Range Selection", () => {
   test("should load with time range from URL", async ({ page }) => {
     await page.goto("/?packages=react&range=6m");
     await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(1000);
 
     // Chart should load with 6 month range
     const chart = page.locator('[data-testid="trend-chart"]');
