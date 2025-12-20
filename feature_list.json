@@ -1350,7 +1350,7 @@
       "Step 2: Verify smooth transition",
       "Step 3: No flash of wrong theme"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1372,7 +1372,7 @@
       "Step 3: Check text color",
       "Step 4: All elements themed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1424,7 +1424,7 @@
       "Step 2: Toggle theme",
       "Step 3: Verify no layout changes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1434,7 +1434,7 @@
       "Step 2: Switch to dark",
       "Step 3: Verify icons visible/contrasting"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
