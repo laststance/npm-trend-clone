@@ -2164,7 +2164,7 @@
       "Step 2: Verify green color used",
       "Step 3: Matches design token"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
