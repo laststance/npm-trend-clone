@@ -226,7 +226,7 @@
       "Step 3: Verify only 1-2 API calls made",
       "Step 4: Not one call per keystroke"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -259,7 +259,7 @@
       "Step 3: Verify error message or disabled state",
       "Step 4: Verify limit is enforced"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -406,7 +406,7 @@
       "Step 3: Press browser back",
       "Step 4: Verify only 'react' selected"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -416,7 +416,7 @@
       "Step 2: Press browser forward",
       "Step 3: Verify packages restored"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1329,7 +1329,7 @@
       "Step 2: Refresh page",
       "Step 3: Verify still dark mode"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1340,7 +1340,7 @@
       "Step 3: Load page",
       "Step 4: Verify dark mode active"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2364,7 +2364,7 @@
       "Step 2: Verify rounded pill shape",
       "Step 3: Border-radius ~full"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
