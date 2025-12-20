@@ -396,6 +396,8 @@ export function SearchBar({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-autocomplete="list"
+          aria-invalid={!!validationError || !!error}
+          aria-describedby={validationError ? "search-validation-error" : error ? "search-error" : undefined}
           role="combobox"
         />
         {isLoading && (
@@ -422,6 +424,7 @@ export function SearchBar({
         >
           {validationError ? (
             <div
+              id="search-validation-error"
               className="px-3 py-6 text-center"
               role="alert"
               aria-live="polite"
@@ -433,6 +436,7 @@ export function SearchBar({
             </div>
           ) : error ? (
             <div
+              id="search-error"
               className="px-3 py-6 text-center text-sm text-destructive"
               role="alert"
               aria-live="assertive"

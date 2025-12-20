@@ -1670,7 +1670,7 @@
       "Step 2: Verify aria-describedby on input",
       "Step 3: Points to error message"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
