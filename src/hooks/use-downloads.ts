@@ -84,6 +84,15 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
+    // Track whether abort was caused by timeout
+    let isTimeout = false;
+
+    // Timeout after 30 seconds
+    const timeoutId = setTimeout(() => {
+      isTimeout = true;
+      controller.abort();
+    }, 30000);
+
     const fetchDownloads = async () => {
       setIsLoading(true);
       setError(null);
@@ -93,6 +102,8 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
           `/api/downloads?packages=${packagesKey}&range=${timeRange}`,
           { signal: controller.signal }
         );
+
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
           throw new Error("Failed to fetch download data");
@@ -135,8 +146,14 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
         setData(chartData);
         setInvalidPackages(invalidPkgs);
       } catch (err) {
-        // Ignore abort errors
+        // Handle timeout vs user abort
         if (err instanceof Error && err.name === "AbortError") {
+          if (isTimeout) {
+            // Timeout-initiated abort - show user-friendly message
+            setError("Request timed out. The server took too long to respond.");
+            setData([]);
+          }
+          // User-initiated abort (component unmount, etc.) - ignore silently
           return;
         }
         console.error("Error fetching downloads:", err);
@@ -150,6 +167,7 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     fetchDownloads();
 
     return () => {
+      clearTimeout(timeoutId);
       controller.abort();
     };
   }, [packagesKey, timeRange, refetchCount]);

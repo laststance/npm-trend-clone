@@ -1823,7 +1823,7 @@
       "Step 2: Verify timeout message",
       "Step 3: Can retry"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1883,7 +1883,7 @@
       "Step 2: Click expand button",
       "Step 3: Technical details shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1913,7 +1913,7 @@
       "Step 2: Verify error message",
       "Step 3: Error describes fix needed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

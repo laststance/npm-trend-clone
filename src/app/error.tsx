@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 /**
  * Error boundary component for route segments.
  * Catches JavaScript errors in child components and displays a fallback UI.
+ * Includes expandable error details for debugging.
  *
  * @see https://nextjs.org/docs/app/building-your-application/routing/error-handling
  */
@@ -16,6 +18,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const [showDetails, setShowDetails] = useState(false);
+
   useEffect(() => {
     // Log the error to an error reporting service
     console.error("Error boundary caught:", error);
@@ -36,6 +40,44 @@ export default function Error({
           </p>
         )}
       </div>
+
+      {/* Expandable error details */}
+      <div className="w-full max-w-md">
+        <button
+          onClick={() => setShowDetails(!showDetails)}
+          className="flex w-full items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          aria-expanded={showDetails}
+          aria-controls="error-details"
+        >
+          {showDetails ? (
+            <>
+              <ChevronUp className="h-3 w-3" aria-hidden="true" />
+              Hide details
+            </>
+          ) : (
+            <>
+              <ChevronDown className="h-3 w-3" aria-hidden="true" />
+              Show details
+            </>
+          )}
+        </button>
+        {showDetails && (
+          <div
+            id="error-details"
+            className="mt-2 rounded-md border bg-muted/50 p-3 text-left"
+          >
+            <p className="text-xs font-medium text-foreground">
+              {error.name}: {error.message}
+            </p>
+            {error.stack && (
+              <pre className="mt-2 max-h-48 overflow-auto text-xs text-muted-foreground whitespace-pre-wrap break-all">
+                {error.stack}
+              </pre>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="flex gap-2">
         <button
           onClick={reset}
