@@ -3,3 +3,4 @@ packages:
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+allowedBuildScripts: ["prisma", "@prisma/engines", "@sentry/cli", "msw", "esbuild"]

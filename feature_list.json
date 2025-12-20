@@ -1,0 +1,2529 @@
+[
+  {
+    "category": "functional",
+    "description": "Next.js dev server starts successfully",
+    "steps": [
+      "Step 1: Run pnpm dev",
+      "Step 2: Wait for server to be ready",
+      "Step 3: Navigate to http://localhost:3000",
+      "Step 4: Verify page loads without errors"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Production build completes without errors",
+    "steps": [
+      "Step 1: Run pnpm build",
+      "Step 2: Verify build completes successfully",
+      "Step 3: Check for no TypeScript errors",
+      "Step 4: Verify output in .next directory"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "TypeScript type checking passes",
+    "steps": [
+      "Step 1: Run pnpm typecheck",
+      "Step 2: Verify no type errors reported",
+      "Step 3: Check all files are type-safe"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "ESLint validation passes",
+    "steps": [
+      "Step 1: Run pnpm lint",
+      "Step 2: Verify no linting errors",
+      "Step 3: Check formatting is consistent"
+    ],
+    "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Unit tests pass",
+    "steps": [
+      "Step 1: Run pnpm test",
+      "Step 2: Verify all tests pass",
+      "Step 3: Check coverage meets threshold"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "E2E tests pass",
+    "steps": [
+      "Step 1: Run pnpm test:e2e",
+      "Step 2: Wait for all Playwright tests to complete",
+      "Step 3: Verify no failures"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Environment variables are loaded correctly",
+    "steps": [
+      "Step 1: Check .env.local exists",
+      "Step 2: Verify UPSTASH_REDIS_REST_URL is set",
+      "Step 3: Verify UPSTASH_REDIS_REST_TOKEN is set",
+      "Step 4: Verify app starts with env vars"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Redis connection is established",
+    "steps": [
+      "Step 1: Start application",
+      "Step 2: Check health endpoint /api/health",
+      "Step 3: Verify Redis status is 'up'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API routes return correct content-type",
+    "steps": [
+      "Step 1: Call /api/packages/react",
+      "Step 2: Check response headers",
+      "Step 3: Verify Content-Type is application/json"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CORS headers are set correctly",
+    "steps": [
+      "Step 1: Make cross-origin request to API",
+      "Step 2: Check Access-Control-Allow-Origin header",
+      "Step 3: Verify allowed methods"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Rate limiting works correctly",
+    "steps": [
+      "Step 1: Make 100 requests rapidly",
+      "Step 2: Verify 429 response after limit",
+      "Step 3: Check Retry-After header"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Storybook builds successfully",
+    "steps": [
+      "Step 1: Run pnpm storybook:build",
+      "Step 2: Verify build completes",
+      "Step 3: Check storybook-static directory exists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Storybook dev server starts",
+    "steps": [
+      "Step 1: Run pnpm storybook",
+      "Step 2: Navigate to http://localhost:6006",
+      "Step 3: Verify stories load correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Docker container builds successfully",
+    "steps": [
+      "Step 1: Run docker build",
+      "Step 2: Verify image is created",
+      "Step 3: Check image size is reasonable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Docker container runs correctly",
+    "steps": [
+      "Step 1: Run docker run with env vars",
+      "Step 2: Navigate to exposed port",
+      "Step 3: Verify app responds"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search input is visible on page load",
+    "steps": [
+      "Step 1: Navigate to home page",
+      "Step 2: Verify search combobox is visible",
+      "Step 3: Verify placeholder text shows"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Typing in search shows suggestions",
+    "steps": [
+      "Step 1: Click on search input",
+      "Step 2: Type 'react'",
+      "Step 3: Wait for debounce (300ms)",
+      "Step 4: Verify dropdown shows suggestions"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search suggestions contain package names",
+    "steps": [
+      "Step 1: Type 'lodash' in search",
+      "Step 2: Wait for suggestions",
+      "Step 3: Verify 'lodash' appears in list",
+      "Step 4: Verify package descriptions shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Clicking suggestion selects package",
+    "steps": [
+      "Step 1: Type 'express' in search",
+      "Step 2: Click on 'express' suggestion",
+      "Step 3: Verify package chip appears",
+      "Step 4: Verify search input clears"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Arrow keys navigate suggestions",
+    "steps": [
+      "Step 1: Type 'vue' in search",
+      "Step 2: Press ArrowDown twice",
+      "Step 3: Verify second item is highlighted",
+      "Step 4: Press Enter to select"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Escape key closes suggestions",
+    "steps": [
+      "Step 1: Type 'angular' in search",
+      "Step 2: Wait for suggestions to appear",
+      "Step 3: Press Escape key",
+      "Step 4: Verify dropdown closes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search debounces API calls",
+    "steps": [
+      "Step 1: Monitor network requests",
+      "Step 2: Type 'typescript' rapidly",
+      "Step 3: Verify only 1-2 API calls made",
+      "Step 4: Not one call per keystroke"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple packages can be selected",
+    "steps": [
+      "Step 1: Select 'react' package",
+      "Step 2: Select 'vue' package",
+      "Step 3: Select 'angular' package",
+      "Step 4: Verify all three chips visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package chip has remove button",
+    "steps": [
+      "Step 1: Select a package",
+      "Step 2: Verify chip shows X button",
+      "Step 3: Click X button",
+      "Step 4: Verify package is removed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Maximum 10 packages can be compared",
+    "steps": [
+      "Step 1: Select 10 packages",
+      "Step 2: Try to select 11th package",
+      "Step 3: Verify error message or disabled state",
+      "Step 4: Verify limit is enforced"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Empty search shows popular packages",
+    "steps": [
+      "Step 1: Focus search input",
+      "Step 2: Do not type anything",
+      "Step 3: Verify popular packages shown",
+      "Step 4: Can select from popular list"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search handles special characters",
+    "steps": [
+      "Step 1: Type '@scope/package' in search",
+      "Step 2: Verify search works correctly",
+      "Step 3: Results show scoped packages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No results message shown when empty",
+    "steps": [
+      "Step 1: Type 'zzzznotapackage12345'",
+      "Step 2: Wait for API response",
+      "Step 3: Verify 'No packages found' message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search loading indicator appears",
+    "steps": [
+      "Step 1: Type in search input",
+      "Step 2: Verify spinner/loading indicator",
+      "Step 3: Verify it disappears after results"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search results show download counts",
+    "steps": [
+      "Step 1: Type 'react' in search",
+      "Step 2: Wait for suggestions",
+      "Step 3: Verify each result shows downloads",
+      "Step 4: Numbers are formatted (e.g., 25M)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search preserves input on blur",
+    "steps": [
+      "Step 1: Type partial text in search",
+      "Step 2: Click outside to blur",
+      "Step 3: Click back on input",
+      "Step 4: Verify text is preserved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search is case insensitive",
+    "steps": [
+      "Step 1: Type 'REACT' in search",
+      "Step 2: Verify 'react' package found",
+      "Step 3: Results are correct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Already selected packages not in suggestions",
+    "steps": [
+      "Step 1: Select 'react' package",
+      "Step 2: Type 'react' in search again",
+      "Step 3: Verify 'react' not in suggestions",
+      "Step 4: Or marked as already selected"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search works on mobile viewport",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Navigate to home page",
+      "Step 3: Use search functionality",
+      "Step 4: Verify dropdown displays correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search API error shows message",
+    "steps": [
+      "Step 1: Mock API to return 500",
+      "Step 2: Type in search",
+      "Step 3: Verify error message shown",
+      "Step 4: User can retry"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "URL updates when package added",
+    "steps": [
+      "Step 1: Navigate to home page",
+      "Step 2: Select 'react' package",
+      "Step 3: Verify URL contains packages=react"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "URL updates when package removed",
+    "steps": [
+      "Step 1: Navigate to /?packages=react,vue",
+      "Step 2: Remove 'vue' package",
+      "Step 3: Verify URL only contains packages=react"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Direct URL loads packages",
+    "steps": [
+      "Step 1: Navigate to /?packages=react,vue,angular",
+      "Step 2: Verify all three packages selected",
+      "Step 3: Verify chart shows all three"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Browser back restores previous state",
+    "steps": [
+      "Step 1: Navigate to /?packages=react",
+      "Step 2: Add 'vue' package",
+      "Step 3: Press browser back",
+      "Step 4: Verify only 'react' selected"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Browser forward restores next state",
+    "steps": [
+      "Step 1: After going back",
+      "Step 2: Press browser forward",
+      "Step 3: Verify packages restored"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page refresh preserves packages",
+    "steps": [
+      "Step 1: Navigate to /?packages=react,vue",
+      "Step 2: Press F5 to refresh",
+      "Step 3: Verify packages still selected"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invalid package in URL shows error",
+    "steps": [
+      "Step 1: Navigate to /?packages=invalidpkg123",
+      "Step 2: Verify error message for invalid package",
+      "Step 3: Other valid packages still load"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Empty packages URL shows empty state",
+    "steps": [
+      "Step 1: Navigate to /?packages=",
+      "Step 2: Verify no packages selected",
+      "Step 3: Verify prompt to add packages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Share button copies URL",
+    "steps": [
+      "Step 1: Select some packages",
+      "Step 2: Click share button",
+      "Step 3: Verify URL copied to clipboard",
+      "Step 4: Toast confirms copy"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Time range updates URL",
+    "steps": [
+      "Step 1: Navigate with packages",
+      "Step 2: Change time range to 1 year",
+      "Step 3: Verify URL contains range parameter"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Time range persists on reload",
+    "steps": [
+      "Step 1: Set time range to 6 months",
+      "Step 2: Reload page",
+      "Step 3: Verify time range still 6 months"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "URL handles encoded characters",
+    "steps": [
+      "Step 1: Navigate with scoped package @types/react",
+      "Step 2: Verify URL is properly encoded",
+      "Step 3: Verify package loads correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart container renders",
+    "steps": [
+      "Step 1: Navigate to /?packages=react",
+      "Step 2: Wait for data to load",
+      "Step 3: Verify .recharts-wrapper is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart shows data lines",
+    "steps": [
+      "Step 1: Navigate to /?packages=react,vue",
+      "Step 2: Wait for chart to render",
+      "Step 3: Verify 2 .recharts-line elements"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart legend displays package names",
+    "steps": [
+      "Step 1: Load comparison with packages",
+      "Step 2: Verify legend shows package names",
+      "Step 3: Legend colors match line colors"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart X-axis shows dates",
+    "steps": [
+      "Step 1: Load chart with data",
+      "Step 2: Verify X-axis has date labels",
+      "Step 3: Dates are formatted correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart Y-axis shows download counts",
+    "steps": [
+      "Step 1: Load chart with data",
+      "Step 2: Verify Y-axis has number labels",
+      "Step 3: Numbers are formatted (K, M)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart tooltip shows on hover",
+    "steps": [
+      "Step 1: Load chart with data",
+      "Step 2: Hover over a data point",
+      "Step 3: Verify tooltip appears",
+      "Step 4: Shows date and download count"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tooltip shows all packages at date",
+    "steps": [
+      "Step 1: Load chart with 3 packages",
+      "Step 2: Hover over chart",
+      "Step 3: Tooltip shows all 3 package values"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart responds to time range change",
+    "steps": [
+      "Step 1: Load chart with default range",
+      "Step 2: Change to 1 year range",
+      "Step 3: Verify chart updates with new data",
+      "Step 4: X-axis dates change accordingly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Time range selector has options",
+    "steps": [
+      "Step 1: Find time range selector",
+      "Step 2: Verify options: 1M, 3M, 6M, 1Y, 2Y, 5Y",
+      "Step 3: All options are clickable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart shows loading state",
+    "steps": [
+      "Step 1: Navigate to comparison page",
+      "Step 2: Verify loading skeleton/spinner",
+      "Step 3: Loading disappears after data loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart handles empty data gracefully",
+    "steps": [
+      "Step 1: Navigate with no packages",
+      "Step 2: Verify empty state message",
+      "Step 3: Prompt to add packages shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart lines have different colors",
+    "steps": [
+      "Step 1: Load chart with 5 packages",
+      "Step 2: Verify each line has unique color",
+      "Step 3: Colors are distinguishable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Clicking legend toggles line visibility",
+    "steps": [
+      "Step 1: Load chart with 2 packages",
+      "Step 2: Click on one legend item",
+      "Step 3: Verify that line is hidden/shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart is responsive on mobile",
+    "steps": [
+      "Step 1: Set viewport to 375px width",
+      "Step 2: Load chart",
+      "Step 3: Verify chart fits container",
+      "Step 4: Labels don't overflow"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart maintains aspect ratio",
+    "steps": [
+      "Step 1: Load chart on desktop",
+      "Step 2: Resize window",
+      "Step 3: Verify chart resizes proportionally"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart grid lines are visible",
+    "steps": [
+      "Step 1: Load chart with data",
+      "Step 2: Verify horizontal grid lines",
+      "Step 3: Grid helps read values"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart data matches API response",
+    "steps": [
+      "Step 1: Intercept API response",
+      "Step 2: Load chart",
+      "Step 3: Verify tooltip values match API data"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart updates when package removed",
+    "steps": [
+      "Step 1: Load chart with 2 packages",
+      "Step 2: Remove one package",
+      "Step 3: Verify chart now shows 1 line"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart updates when package added",
+    "steps": [
+      "Step 1: Load chart with 1 package",
+      "Step 2: Add another package",
+      "Step 3: Verify chart now shows 2 lines"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Export chart as image",
+    "steps": [
+      "Step 1: Load chart with data",
+      "Step 2: Click export/download button",
+      "Step 3: Verify PNG file downloads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart animation can be disabled",
+    "steps": [
+      "Step 1: Enable prefers-reduced-motion",
+      "Step 2: Load chart",
+      "Step 3: Verify no animation on load"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Brush control for zoom works",
+    "steps": [
+      "Step 1: Load chart with 1 year data",
+      "Step 2: Drag brush to select range",
+      "Step 3: Verify chart zooms to selection"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows name",
+    "steps": [
+      "Step 1: Navigate to /?packages=react",
+      "Step 2: Find package info card",
+      "Step 3: Verify 'react' name displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows description",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Verify description text visible",
+      "Step 3: Description matches npm registry"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows weekly downloads",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Verify weekly downloads shown",
+      "Step 3: Number is formatted correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows GitHub stars",
+    "steps": [
+      "Step 1: Load package with GitHub repo",
+      "Step 2: Verify stars count displayed",
+      "Step 3: Star icon is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows latest version",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Verify version number shown",
+      "Step 3: Format is semver (x.y.z)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card links to npm",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Click npm link on card",
+      "Step 3: Opens npmjs.com/package/name"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card links to GitHub",
+    "steps": [
+      "Step 1: Load package with GitHub",
+      "Step 2: Click GitHub link on card",
+      "Step 3: Opens repository page"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows last publish date",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Verify last updated date shown",
+      "Step 3: Date is human readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card shows license",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Verify license displayed (MIT, etc.)",
+      "Step 3: License badge is styled"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Multiple package cards are displayed",
+    "steps": [
+      "Step 1: Load 3 packages",
+      "Step 2: Verify 3 cards are shown",
+      "Step 3: Cards have correct data each"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package cards are responsive",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Verify cards stack vertically",
+      "Step 3: Content remains readable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card loading skeleton",
+    "steps": [
+      "Step 1: Navigate to comparison page",
+      "Step 2: Verify skeleton cards during load",
+      "Step 3: Skeletons replaced with real cards"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card error state",
+    "steps": [
+      "Step 1: Mock API failure for one package",
+      "Step 2: Verify error shown on that card",
+      "Step 3: Other cards still work"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card remove button works",
+    "steps": [
+      "Step 1: Load package comparison",
+      "Step 2: Click X on package card",
+      "Step 3: Package removed from comparison"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package card color matches chart line",
+    "steps": [
+      "Step 1: Load multi-package comparison",
+      "Step 2: Verify card accent color",
+      "Step 3: Matches corresponding chart line"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Login page renders correctly",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Verify email input visible",
+      "Step 3: Verify password input visible",
+      "Step 4: Verify login button visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can login with valid credentials",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Enter valid email",
+      "Step 3: Enter valid password",
+      "Step 4: Click Login button",
+      "Step 5: Verify redirect to dashboard"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invalid credentials show error",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Enter wrong email/password",
+      "Step 3: Click Login",
+      "Step 4: Verify error message displayed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Login form validates email format",
+    "steps": [
+      "Step 1: Enter 'notanemail' in email field",
+      "Step 2: Try to submit",
+      "Step 3: Verify validation error shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Login form requires password",
+    "steps": [
+      "Step 1: Enter email only",
+      "Step 2: Leave password empty",
+      "Step 3: Submit form",
+      "Step 4: Verify password required error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password field is masked",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Type in password field",
+      "Step 3: Verify type is 'password'",
+      "Step 4: Characters are hidden"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Show/hide password toggle works",
+    "steps": [
+      "Step 1: Type password",
+      "Step 2: Click show password icon",
+      "Step 3: Verify password is visible",
+      "Step 4: Click again to hide"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Signup page renders correctly",
+    "steps": [
+      "Step 1: Navigate to /signup",
+      "Step 2: Verify name input visible",
+      "Step 3: Verify email input visible",
+      "Step 4: Verify password input visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can create account",
+    "steps": [
+      "Step 1: Navigate to /signup",
+      "Step 2: Fill in valid details",
+      "Step 3: Click Sign Up",
+      "Step 4: Verify account created message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Duplicate email shows error",
+    "steps": [
+      "Step 1: Navigate to /signup",
+      "Step 2: Enter existing email",
+      "Step 3: Submit form",
+      "Step 4: Verify email taken error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password strength indicator works",
+    "steps": [
+      "Step 1: Type weak password",
+      "Step 2: Verify weak indicator shown",
+      "Step 3: Type strong password",
+      "Step 4: Verify strong indicator"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password confirmation must match",
+    "steps": [
+      "Step 1: Enter password",
+      "Step 2: Enter different confirmation",
+      "Step 3: Submit form",
+      "Step 4: Verify mismatch error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can logout",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Click logout button",
+      "Step 3: Verify redirect to home",
+      "Step 4: Verify auth state cleared"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Logged in user sees avatar",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Verify avatar in header",
+      "Step 3: Click shows user menu"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Session persists after refresh",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Refresh page",
+      "Step 3: Verify still logged in"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "GitHub OAuth login works",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Click 'Sign in with GitHub'",
+      "Step 3: Complete OAuth flow",
+      "Step 4: Verify logged in"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Google OAuth login works",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Click 'Sign in with Google'",
+      "Step 3: Complete OAuth flow",
+      "Step 4: Verify logged in"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Forgot password link works",
+    "steps": [
+      "Step 1: Navigate to /login",
+      "Step 2: Click 'Forgot password'",
+      "Step 3: Verify reset page loads"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password reset email sent",
+    "steps": [
+      "Step 1: Navigate to /forgot-password",
+      "Step 2: Enter email",
+      "Step 3: Submit form",
+      "Step 4: Verify success message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Password reset with valid token",
+    "steps": [
+      "Step 1: Navigate to /reset-password?token=valid",
+      "Step 2: Enter new password",
+      "Step 3: Submit",
+      "Step 4: Verify password changed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invalid reset token shows error",
+    "steps": [
+      "Step 1: Navigate to /reset-password?token=invalid",
+      "Step 2: Verify error message",
+      "Step 3: Link to request new token"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Protected routes redirect to login",
+    "steps": [
+      "Step 1: Logout if logged in",
+      "Step 2: Navigate to /settings",
+      "Step 3: Verify redirect to /login"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Return URL preserved after login",
+    "steps": [
+      "Step 1: Try to access /settings",
+      "Step 2: Redirected to /login",
+      "Step 3: Login successfully",
+      "Step 4: Verify redirect to /settings"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Account settings page loads",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Navigate to /settings",
+      "Step 3: Verify account settings visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can update profile name",
+    "steps": [
+      "Step 1: Go to /settings",
+      "Step 2: Change name",
+      "Step 3: Save changes",
+      "Step 4: Verify name updated"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can change password",
+    "steps": [
+      "Step 1: Go to /settings",
+      "Step 2: Enter current password",
+      "Step 3: Enter new password",
+      "Step 4: Save and verify change works"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can delete account",
+    "steps": [
+      "Step 1: Go to /settings",
+      "Step 2: Click delete account",
+      "Step 3: Confirm deletion",
+      "Step 4: Verify account removed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can save preset",
+    "steps": [
+      "Step 1: Login as user",
+      "Step 2: Select packages for comparison",
+      "Step 3: Click Save as Preset",
+      "Step 4: Enter preset name",
+      "Step 5: Verify preset saved"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can load saved preset",
+    "steps": [
+      "Step 1: Login as user with presets",
+      "Step 2: Open preset dropdown",
+      "Step 3: Click saved preset",
+      "Step 4: Verify packages loaded"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can delete preset",
+    "steps": [
+      "Step 1: Open preset management",
+      "Step 2: Click delete on preset",
+      "Step 3: Confirm deletion",
+      "Step 4: Verify preset removed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can rename preset",
+    "steps": [
+      "Step 1: Open preset management",
+      "Step 2: Click edit on preset",
+      "Step 3: Change name",
+      "Step 4: Save and verify"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Presets sorted by creation date",
+    "steps": [
+      "Step 1: Create multiple presets",
+      "Step 2: Open preset list",
+      "Step 3: Verify newest first"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Maximum 10 presets enforced",
+    "steps": [
+      "Step 1: Create 10 presets",
+      "Step 2: Try to create 11th",
+      "Step 3: Verify limit error shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Preset persists across sessions",
+    "steps": [
+      "Step 1: Create preset",
+      "Step 2: Logout and login again",
+      "Step 3: Verify preset still exists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Loading preset updates URL",
+    "steps": [
+      "Step 1: Load a preset",
+      "Step 2: Verify URL contains packages",
+      "Step 3: URL is shareable"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Preset shows package count",
+    "steps": [
+      "Step 1: Open preset list",
+      "Step 2: Verify each shows package count",
+      "Step 3: Badge format: '3 packages'"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Anonymous user uses local presets",
+    "steps": [
+      "Step 1: Not logged in",
+      "Step 2: Save preset to localStorage",
+      "Step 3: Reload page",
+      "Step 4: Verify preset persists"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Logged-in presets sync to cloud",
+    "steps": [
+      "Step 1: Login",
+      "Step 2: Create preset",
+      "Step 3: Clear localStorage",
+      "Step 4: Reload - presets from server"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Preset name max 50 characters",
+    "steps": [
+      "Step 1: Try to create preset",
+      "Step 2: Enter 60 character name",
+      "Step 3: Verify truncated or error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Duplicate preset name warning",
+    "steps": [
+      "Step 1: Create preset 'My Preset'",
+      "Step 2: Try to create another with same name",
+      "Step 3: Verify warning shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Empty preset name not allowed",
+    "steps": [
+      "Step 1: Try to save preset",
+      "Step 2: Leave name empty",
+      "Step 3: Verify validation error"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Preset quick access from header",
+    "steps": [
+      "Step 1: Login with presets",
+      "Step 2: Click presets in header",
+      "Step 3: Dropdown shows recent presets",
+      "Step 4: Click to load"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "User can toggle dark mode",
+    "steps": [
+      "Step 1: Find theme toggle",
+      "Step 2: Click to toggle",
+      "Step 3: Verify theme changes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Theme persists after refresh",
+    "steps": [
+      "Step 1: Set dark mode",
+      "Step 2: Refresh page",
+      "Step 3: Verify still dark mode"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Theme respects system preference",
+    "steps": [
+      "Step 1: Clear stored preference",
+      "Step 2: Set system to dark mode",
+      "Step 3: Load page",
+      "Step 4: Verify dark mode active"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Theme toggle animates smoothly",
+    "steps": [
+      "Step 1: Toggle theme",
+      "Step 2: Verify smooth transition",
+      "Step 3: No flash of wrong theme"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All colors update in dark mode",
+    "steps": [
+      "Step 1: Enable dark mode",
+      "Step 2: Check background color",
+      "Step 3: Check text color",
+      "Step 4: All elements themed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All colors update in light mode",
+    "steps": [
+      "Step 1: Enable light mode",
+      "Step 2: Check background color",
+      "Step 3: Check text color",
+      "Step 4: All elements themed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart colors adapt to theme",
+    "steps": [
+      "Step 1: Load chart in light mode",
+      "Step 2: Note line colors",
+      "Step 3: Switch to dark mode",
+      "Step 4: Verify colors still visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Focus rings visible in both themes",
+    "steps": [
+      "Step 1: Tab through elements in light",
+      "Step 2: Verify focus ring visible",
+      "Step 3: Switch to dark",
+      "Step 4: Verify focus ring visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Contrast meets WCAG in light mode",
+    "steps": [
+      "Step 1: Set light mode",
+      "Step 2: Run axe contrast check",
+      "Step 3: Verify no violations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Contrast meets WCAG in dark mode",
+    "steps": [
+      "Step 1: Set dark mode",
+      "Step 2: Run axe contrast check",
+      "Step 3: Verify no violations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Theme switch no layout shift",
+    "steps": [
+      "Step 1: Note element positions",
+      "Step 2: Toggle theme",
+      "Step 3: Verify no layout changes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Icons update color with theme",
+    "steps": [
+      "Step 1: Check icon colors in light",
+      "Step 2: Switch to dark",
+      "Step 3: Verify icons visible/contrasting"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Input fields readable in both themes",
+    "steps": [
+      "Step 1: Check inputs in light mode",
+      "Step 2: Switch to dark",
+      "Step 3: Verify input text visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error states visible in both themes",
+    "steps": [
+      "Step 1: Trigger form error in light",
+      "Step 2: Verify error visible",
+      "Step 3: Switch to dark",
+      "Step 4: Error still visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Success states visible in both themes",
+    "steps": [
+      "Step 1: Trigger success in light",
+      "Step 2: Verify message visible",
+      "Step 3: Switch to dark",
+      "Step 4: Success still visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Page passes axe accessibility audit",
+    "steps": [
+      "Step 1: Navigate to main page",
+      "Step 2: Wait for load",
+      "Step 3: Run axe-core with WCAG 2.2 AA",
+      "Step 4: Verify 0 violations"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All images have alt text",
+    "steps": [
+      "Step 1: Find all img elements",
+      "Step 2: Verify each has alt attribute",
+      "Step 3: Alt text is descriptive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "All form inputs have labels",
+    "steps": [
+      "Step 1: Find all input elements",
+      "Step 2: Verify each has associated label",
+      "Step 3: Label is descriptive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Skip to content link works",
+    "steps": [
+      "Step 1: Press Tab on page load",
+      "Step 2: Verify skip link appears",
+      "Step 3: Press Enter",
+      "Step 4: Focus moves to main content"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Focus order is logical",
+    "steps": [
+      "Step 1: Tab through page",
+      "Step 2: Verify order follows layout",
+      "Step 3: No jumps to unexpected areas"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Keyboard-only navigation works",
+    "steps": [
+      "Step 1: Hide mouse cursor",
+      "Step 2: Navigate entire app with keyboard",
+      "Step 3: All features accessible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Screen reader announces page title",
+    "steps": [
+      "Step 1: Navigate to page",
+      "Step 2: Verify document.title is set",
+      "Step 3: Title is descriptive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error messages are announced",
+    "steps": [
+      "Step 1: Trigger form error",
+      "Step 2: Verify aria-live region",
+      "Step 3: Error announced to SR"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Loading states are announced",
+    "steps": [
+      "Step 1: Trigger data load",
+      "Step 2: Verify aria-busy or status",
+      "Step 3: Loading announced"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart has descriptive aria-label",
+    "steps": [
+      "Step 1: Load chart",
+      "Step 2: Verify chart container has aria-label",
+      "Step 3: Describes chart purpose/data"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tooltip content accessible to SR",
+    "steps": [
+      "Step 1: Focus element with tooltip",
+      "Step 2: Verify tooltip content in aria",
+      "Step 3: SR can read tooltip"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Modal dialogs trap focus",
+    "steps": [
+      "Step 1: Open modal",
+      "Step 2: Tab through modal",
+      "Step 3: Focus stays within modal",
+      "Step 4: Escape closes modal"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Color is not only indicator",
+    "steps": [
+      "Step 1: Find colored elements",
+      "Step 2: Verify icon or text also present",
+      "Step 3: Info conveyed without color"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Text resizable to 200%",
+    "steps": [
+      "Step 1: Set browser zoom to 200%",
+      "Step 2: Verify text readable",
+      "Step 3: No horizontal scroll",
+      "Step 4: Content not cut off"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Motion reduced when preferred",
+    "steps": [
+      "Step 1: Set prefers-reduced-motion",
+      "Step 2: Load page",
+      "Step 3: Verify no animations",
+      "Step 4: Transitions instant"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Links have distinguishable text",
+    "steps": [
+      "Step 1: Find all links",
+      "Step 2: Verify no 'click here' text",
+      "Step 3: Link text describes destination"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Language attribute set",
+    "steps": [
+      "Step 1: Check html element",
+      "Step 2: Verify lang='en' attribute"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Headings follow hierarchy",
+    "steps": [
+      "Step 1: Find all headings",
+      "Step 2: Verify h1 to h6 order",
+      "Step 3: No skipped levels"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tables have proper headers",
+    "steps": [
+      "Step 1: Find data tables",
+      "Step 2: Verify th elements present",
+      "Step 3: scope attributes set"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Form errors linked to inputs",
+    "steps": [
+      "Step 1: Trigger form error",
+      "Step 2: Verify aria-describedby on input",
+      "Step 3: Points to error message"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Initial page load under 3 seconds",
+    "steps": [
+      "Step 1: Clear cache",
+      "Step 2: Navigate to home page",
+      "Step 3: Measure load time",
+      "Step 4: Verify under 3000ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "LCP under 2.5 seconds",
+    "steps": [
+      "Step 1: Navigate to main page",
+      "Step 2: Measure LCP",
+      "Step 3: Verify under 2500ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "FCP under 1.8 seconds",
+    "steps": [
+      "Step 1: Navigate to main page",
+      "Step 2: Measure FCP",
+      "Step 3: Verify under 1800ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "CLS under 0.1",
+    "steps": [
+      "Step 1: Navigate to main page",
+      "Step 2: Wait for full load",
+      "Step 3: Measure CLS",
+      "Step 4: Verify under 0.1"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "JavaScript bundle under 300KB",
+    "steps": [
+      "Step 1: Build production",
+      "Step 2: Check bundle size",
+      "Step 3: Verify under 300KB"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API responses are cached",
+    "steps": [
+      "Step 1: Make API request",
+      "Step 2: Make same request again",
+      "Step 3: Verify cache hit (faster)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Cache invalidates after 1 hour",
+    "steps": [
+      "Step 1: Cache an API response",
+      "Step 2: Verify TTL is set",
+      "Step 3: Check expiry logic"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Stale-while-revalidate works",
+    "steps": [
+      "Step 1: Load cached data",
+      "Step 2: Verify stale shown immediately",
+      "Step 3: Fresh data fetched in background"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No memory leaks after navigation",
+    "steps": [
+      "Step 1: Navigate between pages 10 times",
+      "Step 2: Check memory usage",
+      "Step 3: Verify stable heap size"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart renders within 1 second",
+    "steps": [
+      "Step 1: Navigate with packages",
+      "Step 2: Measure time to chart visible",
+      "Step 3: Verify under 1000ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Network error shows retry button",
+    "steps": [
+      "Step 1: Mock network failure",
+      "Step 2: Try to load data",
+      "Step 3: Verify error message shown",
+      "Step 4: Retry button available"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "404 package not found message",
+    "steps": [
+      "Step 1: Navigate with invalid package",
+      "Step 2: Verify 'not found' message",
+      "Step 3: Suggests similar packages"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Rate limit error shows wait time",
+    "steps": [
+      "Step 1: Trigger rate limit",
+      "Step 2: Verify rate limit message",
+      "Step 3: Shows time to wait"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Invalid package name error",
+    "steps": [
+      "Step 1: Enter invalid package name",
+      "Step 2: Verify validation error",
+      "Step 3: Clear message about format"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "API timeout shows message",
+    "steps": [
+      "Step 1: Mock slow API (>30s)",
+      "Step 2: Verify timeout message",
+      "Step 3: Can retry"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Graceful degradation without Redis",
+    "steps": [
+      "Step 1: Disable Redis connection",
+      "Step 2: App still loads",
+      "Step 3: Features work without cache"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error boundary catches React errors",
+    "steps": [
+      "Step 1: Trigger component error",
+      "Step 2: Verify error boundary UI",
+      "Step 3: Page doesn't crash completely"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error page has navigation options",
+    "steps": [
+      "Step 1: Navigate to /error",
+      "Step 2: Verify home link present",
+      "Step 3: Can navigate away"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Partial data failure handled",
+    "steps": [
+      "Step 1: Mock one package API fail",
+      "Step 2: Verify other packages show",
+      "Step 3: Error only for failed package"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error toast auto-dismisses",
+    "steps": [
+      "Step 1: Trigger error toast",
+      "Step 2: Wait 5 seconds",
+      "Step 3: Verify toast disappeared"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Error details expandable",
+    "steps": [
+      "Step 1: Trigger error with details",
+      "Step 2: Click expand button",
+      "Step 3: Technical details shown"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Offline indicator shown",
+    "steps": [
+      "Step 1: Go offline",
+      "Step 2: Verify offline banner",
+      "Step 3: Banner is visible"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Reconnection auto-retries",
+    "steps": [
+      "Step 1: Go offline during load",
+      "Step 2: Go back online",
+      "Step 3: Verify auto-retry happens"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Form validation errors clear",
+    "steps": [
+      "Step 1: Submit invalid form",
+      "Step 2: Verify error message",
+      "Step 3: Error describes fix needed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Auth errors redirect to login",
+    "steps": [
+      "Step 1: Make authenticated request",
+      "Step 2: Session expires",
+      "Step 3: Verify redirect to login"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Mobile layout at 375px",
+    "steps": [
+      "Step 1: Set viewport to 375x667",
+      "Step 2: Navigate to home",
+      "Step 3: Verify mobile layout",
+      "Step 4: No horizontal scroll"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Tablet layout at 768px",
+    "steps": [
+      "Step 1: Set viewport to 768x1024",
+      "Step 2: Navigate to home",
+      "Step 3: Verify tablet layout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Desktop layout at 1440px",
+    "steps": [
+      "Step 1: Set viewport to 1440x900",
+      "Step 2: Navigate to home",
+      "Step 3: Verify desktop layout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Chart scrollable on mobile",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Load chart",
+      "Step 3: Verify chart scrollable if wider"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Search adapts to mobile width",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Verify search input full width",
+      "Step 3: Dropdown fits screen"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Package cards stack on mobile",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Load multiple packages",
+      "Step 3: Verify cards stack vertically"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Navigation hamburger on mobile",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Verify hamburger menu icon",
+      "Step 3: Click opens menu"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Touch targets at least 44px",
+    "steps": [
+      "Step 1: Find all interactive elements",
+      "Step 2: Measure touch target size",
+      "Step 3: All >= 44x44px"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "No horizontal scroll any viewport",
+    "steps": [
+      "Step 1: Test at 320px, 375px, 768px, 1024px",
+      "Step 2: Verify no horizontal overflow",
+      "Step 3: At each viewport"
+    ],
+    "passes": false
+  },
+  {
+    "category": "functional",
+    "description": "Font sizes scale appropriately",
+    "steps": [
+      "Step 1: Compare mobile and desktop fonts",
+      "Step 2: Verify readable on both",
+      "Step 3: Headings scale down on mobile"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Page title uses correct font family",
+    "steps": [
+      "Step 1: Inspect main heading font",
+      "Step 2: Verify SF Pro or Inter",
+      "Step 3: Fallback fonts defined"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Headings have proper font weights",
+    "steps": [
+      "Step 1: Inspect h1-h6 elements",
+      "Step 2: Verify weight hierarchy",
+      "Step 3: h1 boldest, h6 lightest"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Body text has readable line-height",
+    "steps": [
+      "Step 1: Inspect body text",
+      "Step 2: Verify line-height 1.5-1.7",
+      "Step 3: Text is comfortable to read"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Code text uses monospace font",
+    "steps": [
+      "Step 1: Find code elements",
+      "Step 2: Verify monospace family",
+      "Step 3: Fixed-width characters"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Package names properly styled",
+    "steps": [
+      "Step 1: Find package name elements",
+      "Step 2: Verify consistent styling",
+      "Step 3: Monospace or semibold"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Numbers use tabular figures",
+    "steps": [
+      "Step 1: Find download count numbers",
+      "Step 2: Verify font-variant-numeric",
+      "Step 3: Numbers align in columns"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Primary accent color is correct",
+    "steps": [
+      "Step 1: Find primary buttons/links",
+      "Step 2: Verify color matches design system",
+      "Step 3: Consistent across app"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Background color matches design",
+    "steps": [
+      "Step 1: Check body background",
+      "Step 2: Verify matches design spec",
+      "Step 3: Light: #fff or similar"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Text color has sufficient contrast",
+    "steps": [
+      "Step 1: Check text colors",
+      "Step 2: Run contrast checker",
+      "Step 3: Meets 4.5:1 ratio"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Chart line colors distinguishable",
+    "steps": [
+      "Step 1: Load chart with 5 packages",
+      "Step 2: Verify each has unique color",
+      "Step 3: Colors visually distinct"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Hover states use correct colors",
+    "steps": [
+      "Step 1: Hover over buttons",
+      "Step 2: Verify color change",
+      "Step 3: Matches design spec"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Active states use correct colors",
+    "steps": [
+      "Step 1: Click and hold button",
+      "Step 2: Verify active color",
+      "Step 3: Darker than hover"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Disabled states visually distinct",
+    "steps": [
+      "Step 1: Find disabled elements",
+      "Step 2: Verify muted appearance",
+      "Step 3: Clearly not interactive"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Success color is correct green",
+    "steps": [
+      "Step 1: Trigger success state",
+      "Step 2: Verify green color used",
+      "Step 3: Matches design token"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Error color is correct red",
+    "steps": [
+      "Step 1: Trigger error state",
+      "Step 2: Verify red color used",
+      "Step 3: Matches design token"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Warning color is correct amber",
+    "steps": [
+      "Step 1: Trigger warning state",
+      "Step 2: Verify amber/yellow color",
+      "Step 3: Matches design token"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Header has correct padding",
+    "steps": [
+      "Step 1: Inspect header element",
+      "Step 2: Verify padding matches spec",
+      "Step 3: Consistent horizontal padding"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Card components have consistent padding",
+    "steps": [
+      "Step 1: Inspect package cards",
+      "Step 2: Verify consistent padding",
+      "Step 3: Follows 8px grid"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button padding is correct",
+    "steps": [
+      "Step 1: Inspect primary buttons",
+      "Step 2: Verify horizontal/vertical padding",
+      "Step 3: Matches design system"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Input field padding is correct",
+    "steps": [
+      "Step 1: Inspect form inputs",
+      "Step 2: Verify internal padding",
+      "Step 3: Text not touching edges"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Section margins follow 8px grid",
+    "steps": [
+      "Step 1: Measure section gaps",
+      "Step 2: Verify multiples of 8px",
+      "Step 3: Consistent spacing"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "List items have consistent spacing",
+    "steps": [
+      "Step 1: Find lists in UI",
+      "Step 2: Verify item spacing",
+      "Step 3: Gap consistent throughout"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Chart has proper margins",
+    "steps": [
+      "Step 1: Inspect chart container",
+      "Step 2: Verify margins from edges",
+      "Step 3: Labels not cut off"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer has correct padding",
+    "steps": [
+      "Step 1: Inspect footer element",
+      "Step 2: Verify padding matches header",
+      "Step 3: Consistent with page"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Mobile padding adjusts correctly",
+    "steps": [
+      "Step 1: Set viewport to 375px",
+      "Step 2: Verify reduced horizontal padding",
+      "Step 3: Content uses available space"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Icon spacing is consistent",
+    "steps": [
+      "Step 1: Find icons with text",
+      "Step 2: Verify consistent gap",
+      "Step 3: Usually 4-8px"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button has correct border-radius",
+    "steps": [
+      "Step 1: Inspect button elements",
+      "Step 2: Verify border-radius value",
+      "Step 3: Matches design system (4/8/12px)"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Button has proper hover transition",
+    "steps": [
+      "Step 1: Hover over button",
+      "Step 2: Verify smooth transition",
+      "Step 3: Duration ~150-200ms"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Input fields have correct border",
+    "steps": [
+      "Step 1: Inspect input elements",
+      "Step 2: Verify border color/width",
+      "Step 3: Focus border color changes"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Cards have correct shadow",
+    "steps": [
+      "Step 1: Inspect card elements",
+      "Step 2: Verify box-shadow present",
+      "Step 3: Subtle elevation effect"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dropdown has proper z-index",
+    "steps": [
+      "Step 1: Open dropdown",
+      "Step 2: Verify appears above content",
+      "Step 3: No z-index conflicts"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Tooltip has correct arrow",
+    "steps": [
+      "Step 1: Trigger tooltip",
+      "Step 2: Verify arrow points to element",
+      "Step 3: Arrow styled correctly"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Modal has backdrop blur",
+    "steps": [
+      "Step 1: Open modal dialog",
+      "Step 2: Verify backdrop overlay",
+      "Step 3: Background blurred or dimmed"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Tags have correct pill shape",
+    "steps": [
+      "Step 1: Find package tags/chips",
+      "Step 2: Verify rounded pill shape",
+      "Step 3: Border-radius ~full"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Avatar has correct size",
+    "steps": [
+      "Step 1: Find user avatar",
+      "Step 2: Verify size (32-40px)",
+      "Step 3: Circular shape"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Skeleton loading has animation",
+    "steps": [
+      "Step 1: Observe loading skeleton",
+      "Step 2: Verify shimmer animation",
+      "Step 3: Animation is smooth"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Progress bar has gradient",
+    "steps": [
+      "Step 1: Find progress indicators",
+      "Step 2: Verify styled appearance",
+      "Step 3: Animated when loading"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Checkbox has custom styling",
+    "steps": [
+      "Step 1: Find checkbox inputs",
+      "Step 2: Verify custom appearance",
+      "Step 3: Check mark visible when checked"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Radio buttons have custom styling",
+    "steps": [
+      "Step 1: Find radio inputs",
+      "Step 2: Verify custom appearance",
+      "Step 3: Fill visible when selected"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Toggle switch has smooth animation",
+    "steps": [
+      "Step 1: Find toggle switch",
+      "Step 2: Click to toggle",
+      "Step 3: Verify smooth slide animation"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Logo is properly sized",
+    "steps": [
+      "Step 1: Find logo in header",
+      "Step 2: Verify correct dimensions",
+      "Step 3: Sharp on retina displays"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Favicon displays correctly",
+    "steps": [
+      "Step 1: Check browser tab",
+      "Step 2: Verify favicon visible",
+      "Step 3: Matches brand"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Loading spinner is centered",
+    "steps": [
+      "Step 1: Observe loading state",
+      "Step 2: Verify spinner centered",
+      "Step 3: Horizontally and vertically"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Empty state illustration displays",
+    "steps": [
+      "Step 1: Navigate to empty page",
+      "Step 2: Verify illustration shown",
+      "Step 3: Accompanied by helpful text"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "404 page has custom styling",
+    "steps": [
+      "Step 1: Navigate to /nonexistent",
+      "Step 2: Verify custom 404 page",
+      "Step 3: Has navigation back"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Scroll behavior is smooth",
+    "steps": [
+      "Step 1: Click anchor link",
+      "Step 2: Verify smooth scroll",
+      "Step 3: Not instant jump"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Selection highlight color themed",
+    "steps": [
+      "Step 1: Select text on page",
+      "Step 2: Verify highlight color",
+      "Step 3: Matches brand accent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Links have consistent underline",
+    "steps": [
+      "Step 1: Find inline links",
+      "Step 2: Verify underline style",
+      "Step 3: Consistent hover behavior"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Dividers have correct color",
+    "steps": [
+      "Step 1: Find hr or border elements",
+      "Step 2: Verify subtle color",
+      "Step 3: Not too prominent"
+    ],
+    "passes": false
+  },
+  {
+    "category": "style",
+    "description": "Footer links properly styled",
+    "steps": [
+      "Step 1: Find footer links",
+      "Step 2: Verify consistent styling",
+      "Step 3: Visible hover state"
+    ],
+    "passes": false
+  }
+]
