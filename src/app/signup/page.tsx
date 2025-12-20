@@ -2,7 +2,9 @@
 
 import { useState, useCallback, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Github, Check, X } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,12 +75,16 @@ function evaluatePasswordStrength(password: string): {
  * Includes password strength indicator and confirmation matching.
  */
 export default function SignupPage() {
+  const { signup } = useAuth();
+  const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<{
+    name?: string;
     email?: string;
     password?: string;
     confirmPassword?: string;
@@ -99,10 +105,15 @@ export default function SignupPage() {
    */
   const validateForm = useCallback((): boolean => {
     const newErrors: {
+      name?: string;
       email?: string;
       password?: string;
       confirmPassword?: string;
     } = {};
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required";
+    }
 
     if (!email.trim()) {
       newErrors.email = "Email is required";
@@ -124,11 +135,11 @@ export default function SignupPage() {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [email, password, confirmPassword]);
+  }, [name, email, password, confirmPassword]);
 
   /**
    * Handles form submission.
-   * Currently shows a demo message as backend is not implemented.
+   * Creates a demo account using localStorage.
    */
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -140,17 +151,22 @@ export default function SignupPage() {
 
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const success = await signup(name.trim(), email.trim(), password);
 
-      // Demo: Show error for duplicate email
-      toast.error("Email already exists", {
-        description: "Authentication backend is not yet implemented",
-      });
+      if (success) {
+        toast.success("Account created!", {
+          description: "Welcome to npm trends",
+        });
+        router.push("/");
+      } else {
+        toast.error("Signup failed", {
+          description: "Password must be at least 8 characters",
+        });
+      }
 
       setIsLoading(false);
     },
-    [validateForm]
+    [validateForm, name, email, password, signup, router]
   );
 
   /**
@@ -185,6 +201,30 @@ export default function SignupPage() {
 
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Name Field */}
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (errors.name)
+                    setErrors((prev) => ({ ...prev, name: undefined }));
+                }}
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                disabled={isLoading}
+              />
+              {errors.name && (
+                <p id="name-error" className="text-sm text-destructive">
+                  {errors.name}
+                </p>
+              )}
+            </div>
+
             {/* Email Field */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>

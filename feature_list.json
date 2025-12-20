@@ -883,7 +883,7 @@
       "Step 4: Click Login button",
       "Step 5: Verify redirect to dashboard"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -959,7 +959,7 @@
       "Step 3: Click Sign Up",
       "Step 4: Verify account created message"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

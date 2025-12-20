@@ -273,6 +273,56 @@ test.describe("Settings Features", () => {
   });
 });
 
+test.describe("Login and Signup", () => {
+  test("should login with valid credentials and redirect to home", async ({ page }) => {
+    // Clear any existing auth state
+    await page.goto("/");
+    await page.evaluate(() => localStorage.removeItem("npm-trend-demo-auth"));
+
+    // Go to login page
+    await page.goto("/login");
+
+    // Fill login form
+    await page.getByPlaceholder("you@example.com").fill("test@example.com");
+    await page.getByPlaceholder("Enter your password").fill("demo");
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    // Should redirect to home (dashboard)
+    await expect(page).toHaveURL("/", { timeout: 5000 });
+
+    // Verify user is logged in by checking localStorage
+    const stored = await page.evaluate(() => localStorage.getItem("npm-trend-demo-auth"));
+    expect(stored).toContain("test@example.com");
+  });
+
+  test("should create account and redirect to home", async ({ page }) => {
+    // Clear any existing auth state
+    await page.goto("/");
+    await page.evaluate(() => localStorage.removeItem("npm-trend-demo-auth"));
+
+    // Go to signup page
+    await page.goto("/signup");
+
+    // Fill signup form
+    await page.getByPlaceholder("Your name").fill("Test User");
+    await page.getByPlaceholder("you@example.com").fill("newuser@example.com");
+    await page.locator("#password").fill("password123");
+    await page.locator("#confirmPassword").fill("password123");
+
+    // Submit form
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    // Should show success toast and redirect to home
+    await expect(page.getByText("Account created!")).toBeVisible({ timeout: 3000 });
+    await expect(page).toHaveURL("/", { timeout: 5000 });
+
+    // Verify user is logged in
+    const stored = await page.evaluate(() => localStorage.getItem("npm-trend-demo-auth"));
+    expect(stored).toContain("Test User");
+    expect(stored).toContain("newuser@example.com");
+  });
+});
+
 test.describe("Health Endpoint", () => {
   test("should return health status", async ({ request }) => {
     const response = await request.get("/api/health");
