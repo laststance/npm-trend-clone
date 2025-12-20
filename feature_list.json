@@ -1640,7 +1640,7 @@
       "Step 1: Check html element",
       "Step 2: Verify lang='en' attribute"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
