@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { Suspense, useState, useCallback, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
@@ -18,11 +18,33 @@ import {
 } from "@/components/ui/card";
 
 /**
- * Password reset page component.
+ * Password reset page wrapper with Suspense.
+ * Required for useSearchParams in Next.js App Router.
+ */
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background p-4">
+          <Card className="w-full max-w-md">
+            <CardContent className="py-8">
+              <p className="text-center text-muted-foreground">Loading...</p>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+/**
+ * Password reset page content.
  * Handles password reset with token validation.
  * Shows error for invalid/expired tokens.
  */
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
