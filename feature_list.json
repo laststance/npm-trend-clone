@@ -2074,7 +2074,7 @@
       "Step 2: Verify consistent styling",
       "Step 3: Monospace or semibold"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2334,7 +2334,7 @@
       "Step 2: Verify appears above content",
       "Step 3: No z-index conflicts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
