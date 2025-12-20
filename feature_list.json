@@ -871,7 +871,7 @@
       "Step 3: Verify password input visible",
       "Step 4: Verify login button visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -904,7 +904,7 @@
       "Step 2: Try to submit",
       "Step 3: Verify validation error shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -915,7 +915,7 @@
       "Step 3: Submit form",
       "Step 4: Verify password required error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -926,7 +926,7 @@
       "Step 3: Verify type is 'password'",
       "Step 4: Characters are hidden"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -937,7 +937,7 @@
       "Step 3: Verify password is visible",
       "Step 4: Click again to hide"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -948,7 +948,7 @@
       "Step 3: Verify email input visible",
       "Step 4: Verify password input visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -981,7 +981,7 @@
       "Step 3: Type strong password",
       "Step 4: Verify strong indicator"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -992,7 +992,7 @@
       "Step 3: Submit form",
       "Step 4: Verify mismatch error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1055,7 +1055,7 @@
       "Step 2: Click 'Forgot password'",
       "Step 3: Verify reset page loads"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
