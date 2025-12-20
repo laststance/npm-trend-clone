@@ -24,6 +24,46 @@ const POPULAR_PACKAGES = [
 ];
 
 /**
+ * Validates npm package name format.
+ * @param name - Package name to validate
+ * @returns Error message if invalid, null if valid
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#name
+ */
+function validatePackageName(name: string): string | null {
+  if (!name || name.length < 1) {
+    return null; // Empty is not an error, just no validation needed
+  }
+
+  // Check for invalid starting characters
+  if (name.startsWith(".") || name.startsWith("_")) {
+    return "Package names cannot start with a dot or underscore";
+  }
+
+  // Check for spaces
+  if (/\s/.test(name)) {
+    return "Package names cannot contain spaces";
+  }
+
+  // Check for uppercase (except in scoped packages after @)
+  const nameWithoutScope = name.startsWith("@") ? name.split("/")[1] || "" : name;
+  if (nameWithoutScope !== nameWithoutScope.toLowerCase()) {
+    return "Package names must be lowercase";
+  }
+
+  // Check for invalid characters (allow @, /, -, _, .)
+  if (!/^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)) {
+    return "Package name contains invalid characters";
+  }
+
+  // Check maximum length
+  if (name.length > 214) {
+    return "Package name is too long (max 214 characters)";
+  }
+
+  return null;
+}
+
+/**
  * Formats a number to a human-readable string (e.g., 1500000 -> "1.5M").
  * @param num - The number to format
  * @returns Formatted string with K/M/B suffix
@@ -72,6 +112,7 @@ export function SearchBar({
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [error, setError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [popularPackages, setPopularPackages] = useState<NpmPackage[]>([]);
   const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -227,13 +268,25 @@ export function SearchBar({
       setQuery(value);
       setSelectedIndex(-1);
 
+      // Validate package name format
+      const validationErr = validatePackageName(value);
+      setValidationError(validationErr);
+
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
 
-      debounceRef.current = setTimeout(() => {
-        fetchSuggestions(value);
-      }, 300);
+      // Only fetch if no validation error
+      if (!validationErr) {
+        debounceRef.current = setTimeout(() => {
+          fetchSuggestions(value);
+        }, 300);
+      } else {
+        // Clear suggestions when there's a validation error
+        setSuggestions([]);
+        setIsOpen(true);
+        setHasSearched(false);
+      }
     },
     [fetchSuggestions]
   );
@@ -361,13 +414,24 @@ export function SearchBar({
         </span>
       </div>
 
-      {isOpen && (suggestions.length > 0 || error || (hasSearched && !isLoading) || (query.length === 0 && (popularPackages.length > 0 || isLoadingPopular))) && (
+      {isOpen && (suggestions.length > 0 || error || validationError || (hasSearched && !isLoading) || (query.length === 0 && (popularPackages.length > 0 || isLoadingPopular))) && (
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
           role="listbox"
         >
-          {error ? (
+          {validationError ? (
+            <div
+              className="px-3 py-6 text-center"
+              role="alert"
+              aria-live="polite"
+            >
+              <p className="text-sm font-medium text-destructive">{validationError}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Package names must be lowercase, no spaces, and use valid npm characters
+              </p>
+            </div>
+          ) : error ? (
             <div
               className="px-3 py-6 text-center text-sm text-destructive"
               role="alert"
