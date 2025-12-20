@@ -4,6 +4,7 @@ import { useCallback, Suspense } from "react";
 import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
 import { TrendChart } from "@/components/trend-chart";
+import { TimeRangeSelector } from "@/components/time-range-selector";
 import { MAX_PACKAGES } from "@/constants/colors";
 import { useUrlState } from "@/hooks/use-url-state";
 import { useDownloads } from "@/hooks/use-downloads";
@@ -12,7 +13,7 @@ import { useDownloads } from "@/hooks/use-downloads";
  * Inner component that uses URL state hooks.
  */
 function HomeContent() {
-  const { selectedPackages, timeRange, addPackage, removePackage } = useUrlState();
+  const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange } = useUrlState();
   const packageNames = selectedPackages.map((p) => p.name);
   const { data: chartData, isLoading, error } = useDownloads(packageNames, timeRange);
 
@@ -94,6 +95,13 @@ function HomeContent() {
               onRemovePackage={handleRemovePackage}
             />
           </section>
+
+          {/* Time Range Selector */}
+          {selectedPackages.length > 0 && (
+            <section className="flex justify-center">
+              <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+            </section>
+          )}
 
           {/* Chart */}
           <section className="rounded-lg p-4">

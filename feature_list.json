@@ -467,7 +467,7 @@
       "Step 2: Change time range to 1 year",
       "Step 3: Verify URL contains range parameter"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -477,7 +477,7 @@
       "Step 2: Reload page",
       "Step 3: Verify time range still 6 months"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -569,7 +569,7 @@
       "Step 3: Verify chart updates with new data",
       "Step 4: X-axis dates change accordingly"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -579,7 +579,7 @@
       "Step 2: Verify options: 1M, 3M, 6M, 1Y, 2Y, 5Y",
       "Step 3: All options are clickable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
