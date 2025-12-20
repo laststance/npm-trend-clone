@@ -2474,7 +2474,7 @@
       "Step 2: Verify custom 404 page",
       "Step 3: Has navigation back"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
