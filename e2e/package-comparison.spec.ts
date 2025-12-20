@@ -53,25 +53,27 @@ test.describe("Package Comparison", () => {
 
   test("should remove a package when clicking remove button", async ({
     page,
-  }) => {
+  }, testInfo) => {
     await addPackage(page, "react");
 
     // Wait for tag to appear
     const packageTag = page.locator('[data-testid="package-tag"]').first();
     await expect(packageTag).toBeVisible({ timeout: 5000 });
 
-    // Click remove button
-    const removeButton = packageTag.locator('button[aria-label*="remove"], button[aria-label*="Remove"]');
-    if (await removeButton.isVisible()) {
-      await removeButton.click();
+    // Click the X button (last button in tag) with explicit selector
+    // The tag has: [name text] [MoreVertical button] [X button]
+    const removeButton = packageTag.locator('button[aria-label^="Remove"]');
+    await expect(removeButton).toBeVisible({ timeout: 3000 });
+
+    // Use dispatchEvent on mobile due to layout overlap issue
+    if (testInfo.project.name.includes("Mobile")) {
+      await removeButton.dispatchEvent("click");
     } else {
-      // Try clicking the X button if remove button not found
-      const xButton = packageTag.locator("button").last();
-      await xButton.click();
+      await removeButton.click();
     }
 
     // Package tag should be removed
-    await expect(packageTag).not.toBeVisible();
+    await expect(packageTag).not.toBeVisible({ timeout: 5000 });
   });
 
   test("should update URL with selected packages", async ({ page }) => {

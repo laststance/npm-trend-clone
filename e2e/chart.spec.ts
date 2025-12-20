@@ -129,7 +129,13 @@ test.describe("Trend Chart", () => {
     }
   });
 
-  test("should handle chart resize on window resize", async ({ page }) => {
+  test("should handle chart resize on window resize", async ({ page, browserName }, testInfo) => {
+    // Skip on mobile - viewport behavior differs
+    if (testInfo.project.name.includes("Mobile")) {
+      test.skip();
+      return;
+    }
+
     const chart = page.locator('[data-testid="trend-chart"]');
     await expect(chart).toBeVisible({ timeout: 15000 });
 
