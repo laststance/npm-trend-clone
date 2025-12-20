@@ -49,14 +49,20 @@ function aggregateWeekly(
  * Uses a stable string key to prevent infinite re-renders from array reference changes.
  * @param packageNames - Array of package names to fetch
  * @param timeRange - Time range for the data
- * @returns Download data, loading state, error state, and refetch function
+ * @returns
+ * - data: Chart data points
+ * - isLoading: Loading state
+ * - error: Error message if request failed
+ * - invalidPackages: Array of package names that returned errors
+ * - refetch: Function to trigger re-fetch
  * @example
- * const { data, isLoading, error } = useDownloads(['react', 'vue'], '1y');
+ * const { data, isLoading, error, invalidPackages } = useDownloads(['react', 'vue'], '1y');
  */
 export function useDownloads(packageNames: string[], timeRange: TimeRange) {
   const [data, setData] = useState<ChartDataPoint[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [invalidPackages, setInvalidPackages] = useState<string[]>([]);
 
   // Use a stable string key to prevent infinite re-renders
   const packagesKey = packageNames.join(",");
@@ -80,6 +86,7 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     const fetchDownloads = async () => {
       setIsLoading(true);
       setError(null);
+      setInvalidPackages([]);
 
       try {
         const response = await fetch(
@@ -96,10 +103,12 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
         // Collect all unique dates
         const dateSet = new Set<string>();
         const packageDownloads: Record<string, Map<string, number>> = {};
+        const invalidPkgs: string[] = [];
 
         for (const [pkgName, pkgData] of Object.entries(downloadData)) {
           if ("error" in pkgData) {
             console.warn(`Error fetching ${pkgName}: ${pkgData.error}`);
+            invalidPkgs.push(pkgName);
             continue;
           }
 
@@ -124,6 +133,7 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
         });
 
         setData(chartData);
+        setInvalidPackages(invalidPkgs);
       } catch (err) {
         // Ignore abort errors
         if (err instanceof Error && err.name === "AbortError") {
@@ -150,5 +160,5 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     setError(null);
   };
 
-  return { data, isLoading, error, refetch };
+  return { data, isLoading, error, invalidPackages, refetch };
 }

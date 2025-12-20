@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, Suspense } from "react";
+import { useCallback, useEffect, Suspense } from "react";
+import { toast } from "sonner";
 import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
 import { TrendChart } from "@/components/trend-chart";
@@ -16,7 +17,21 @@ import { useDownloads } from "@/hooks/use-downloads";
 function HomeContent() {
   const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange } = useUrlState();
   const packageNames = selectedPackages.map((p) => p.name);
-  const { data: chartData, isLoading, error } = useDownloads(packageNames, timeRange);
+  const { data: chartData, isLoading, error, invalidPackages } = useDownloads(packageNames, timeRange);
+
+  /**
+   * Shows toast notification for invalid packages.
+   */
+  useEffect(() => {
+    if (invalidPackages.length > 0) {
+      for (const pkgName of invalidPackages) {
+        toast.error(`Package "${pkgName}" not found`, {
+          description: "This package doesn't exist on npm",
+          duration: 4000,
+        });
+      }
+    }
+  }, [invalidPackages]);
 
   /**
    * Handles package selection from search.
