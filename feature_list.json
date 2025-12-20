@@ -1361,7 +1361,7 @@
       "Step 3: Check text color",
       "Step 4: All elements themed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2034,7 +2034,7 @@
       "Step 2: Verify SF Pro or Inter",
       "Step 3: Fallback fonts defined"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2044,7 +2044,7 @@
       "Step 2: Verify weight hierarchy",
       "Step 3: h1 boldest, h6 lightest"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2054,7 +2054,7 @@
       "Step 2: Verify line-height 1.5-1.7",
       "Step 3: Text is comfortable to read"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2114,7 +2114,7 @@
       "Step 2: Run contrast checker",
       "Step 3: Meets 4.5:1 ratio"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2444,7 +2444,7 @@
       "Step 2: Verify favicon visible",
       "Step 3: Matches brand"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
