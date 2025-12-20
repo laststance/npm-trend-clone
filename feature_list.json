@@ -140,7 +140,7 @@
       "Step 2: Verify image is created",
       "Step 3: Check image size is reasonable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -150,7 +150,7 @@
       "Step 2: Navigate to exposed port",
       "Step 3: Verify app responds"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
