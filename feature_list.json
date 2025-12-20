@@ -1404,7 +1404,7 @@
       "Step 2: Run axe contrast check",
       "Step 3: Verify no violations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1477,7 +1477,7 @@
       "Step 3: Run axe-core with WCAG 2.2 AA",
       "Step 4: Verify 0 violations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1732,7 +1732,7 @@
       "Step 2: Make same request again",
       "Step 3: Verify cache hit (faster)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1742,7 +1742,7 @@
       "Step 2: Verify TTL is set",
       "Step 3: Check expiry logic"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1752,7 +1752,7 @@
       "Step 2: Verify stale shown immediately",
       "Step 3: Fresh data fetched in background"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
