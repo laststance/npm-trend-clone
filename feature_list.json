@@ -2094,7 +2094,7 @@
       "Step 2: Verify color matches design system",
       "Step 3: Consistent across app"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2154,7 +2154,7 @@
       "Step 2: Verify muted appearance",
       "Step 3: Clearly not interactive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2174,7 +2174,7 @@
       "Step 2: Verify red color used",
       "Step 3: Matches design token"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
