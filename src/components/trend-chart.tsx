@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   Brush,
 } from "recharts";
+import { Search, TrendingUp, Package } from "lucide-react";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
@@ -125,10 +126,21 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
 
   if (packages.length === 0) {
     return (
-      <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed bg-muted/30">
-        <p className="text-muted-foreground">
-          Search and select packages to compare download trends
-        </p>
+      <div className="flex h-[400px] flex-col items-center justify-center gap-4 rounded-lg border border-dashed bg-muted/30">
+        {/* Empty state illustration */}
+        <div className="relative">
+          <div className="flex items-center gap-2 text-muted-foreground/40">
+            <Package className="h-12 w-12" />
+            <TrendingUp className="h-16 w-16" />
+            <Package className="h-12 w-12" />
+          </div>
+          <Search className="absolute -bottom-2 -right-2 h-8 w-8 text-muted-foreground/60" />
+        </div>
+        <div className="text-center">
+          <p className="text-muted-foreground">
+            Search and select packages to compare download trends
+          </p>
+        </div>
       </div>
     );
   }

@@ -2464,7 +2464,7 @@
       "Step 2: Verify illustration shown",
       "Step 3: Accompanied by helpful text"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
