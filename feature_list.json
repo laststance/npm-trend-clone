@@ -1077,7 +1077,7 @@
       "Step 3: Submit",
       "Step 4: Verify password changed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
