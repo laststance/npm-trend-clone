@@ -25,7 +25,7 @@ import { usePackageInfo } from "@/hooks/use-package-info";
 function HomeContent() {
   const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange } = useUrlState();
   const packageNames = selectedPackages.map((p) => p.name);
-  const { data: chartData, isLoading, error, invalidPackages } = useDownloads(packageNames, timeRange);
+  const { data: chartData, isLoading, error, invalidPackages, refetch } = useDownloads(packageNames, timeRange);
   const { data: packageInfoData, isLoading: isLoadingInfo } = usePackageInfo(packageNames);
   const shownToastsRef = useRef<Set<string>>(new Set());
 
@@ -65,11 +65,6 @@ function HomeContent() {
     },
     [removePackage]
   );
-
-  // Show error state if API fails
-  if (error && packageNames.length > 0) {
-    console.error("Download data error:", error);
-  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -144,6 +139,8 @@ function HomeContent() {
                 data={chartData}
                 packages={selectedPackages}
                 isLoading={isLoading}
+                error={error}
+                onRetry={refetch}
               />
             </div>
           </section>

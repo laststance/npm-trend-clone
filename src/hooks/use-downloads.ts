@@ -63,6 +63,7 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [invalidPackages, setInvalidPackages] = useState<string[]>([]);
+  const [refetchCount, setRefetchCount] = useState(0);
 
   // Use a stable string key to prevent infinite re-renders
   const packagesKey = packageNames.join(",");
@@ -151,12 +152,11 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     return () => {
       controller.abort();
     };
-  }, [packagesKey, timeRange]);
+  }, [packagesKey, timeRange, refetchCount]);
 
   const refetch = () => {
-    // Trigger re-fetch by creating a new effect cycle
-    setData([]);
-    setError(null);
+    // Trigger re-fetch by incrementing counter to force useEffect re-run
+    setRefetchCount((c) => c + 1);
   };
 
   return { data, isLoading, error, invalidPackages, refetch };

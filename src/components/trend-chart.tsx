@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
   Brush,
 } from "recharts";
-import { Search, TrendingUp, Package } from "lucide-react";
+import { Search, TrendingUp, Package, AlertCircle, RefreshCw } from "lucide-react";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
@@ -23,6 +23,10 @@ interface TrendChartProps {
   packages: SelectedPackage[];
   /** Whether to show loading state */
   isLoading?: boolean;
+  /** Error message if request failed */
+  error?: string | null;
+  /** Callback to retry failed request */
+  onRetry?: () => void;
 }
 
 /**
@@ -108,7 +112,7 @@ function CustomTooltip({
  * @param packages - Selected packages with their colors
  * @param isLoading - Whether data is being loaded
  */
-export function TrendChart({ data, packages, isLoading = false }: TrendChartProps) {
+export function TrendChart({ data, packages, isLoading = false, error, onRetry }: TrendChartProps) {
   const [hiddenLines, setHiddenLines] = useState<string[]>([]);
   const prefersReducedMotion = useReducedMotion();
 
@@ -162,6 +166,31 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
           />
           <span>Loading download data...</span>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className="flex h-[400px] flex-col items-center justify-center gap-4 rounded-lg border border-destructive/50 bg-destructive/5"
+        role="alert"
+        aria-live="assertive"
+      >
+        <div className="flex items-center gap-2 text-destructive">
+          <AlertCircle className="h-5 w-5" aria-hidden="true" />
+          <span className="font-medium">Failed to load download data</span>
+        </div>
+        <p className="text-sm text-muted-foreground">{error}</p>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          >
+            <RefreshCw className="h-4 w-4" aria-hidden="true" />
+            Try again
+          </button>
+        )}
       </div>
     );
   }

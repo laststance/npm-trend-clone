@@ -1783,7 +1783,7 @@
       "Step 3: Verify error message shown",
       "Step 4: Retry button available"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
