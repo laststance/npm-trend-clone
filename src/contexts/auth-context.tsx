@@ -46,40 +46,31 @@ const AuthContext = createContext<AuthContextType | null>(null);
  * In production, this would connect to a real auth backend.
  */
 /**
- * Auth state interface for combined state management.
+ * Reads user from localStorage.
+ * Returns null if not found or invalid.
  */
-interface AuthState {
-  user: DemoUser | null;
-  isLoading: boolean;
-}
-
-/**
- * Loads initial auth state from localStorage.
- * Pure function for state initialization.
- */
-function loadInitialAuthState(): AuthState {
-  // SSR check - localStorage not available on server
-  if (typeof window === "undefined") {
-    return { user: null, isLoading: true };
-  }
-
+function readUserFromStorage(): DemoUser | null {
+  if (typeof window === "undefined") return null;
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      const parsed = JSON.parse(stored) as DemoUser;
-      return { user: parsed, isLoading: false };
+      return JSON.parse(stored) as DemoUser;
     }
   } catch {
-    // Invalid stored data, clear it
     localStorage.removeItem(STORAGE_KEY);
   }
-
-  return { user: null, isLoading: false };
+  return null;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [authState, setAuthState] = useState<AuthState>(() => loadInitialAuthState());
-  const { user, isLoading } = authState;
+  // User state - initialized from localStorage on client
+  // Using a function initializer to avoid reading localStorage on every render
+  const [user, setUser] = useState<DemoUser | null>(() => readUserFromStorage());
+
+  // Track mount state for hydration
+  // Start as true on both server and client to avoid hydration mismatch
+  // The actual loading is instant since we read localStorage synchronously in useState
+  const isLoading = false;
 
   /**
    * Demo login - accepts any email with password "demo" or length >= 8.
@@ -100,8 +91,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         name: email.split("@")[0],
       };
 
-      setAuthState({ user: demoUser, isLoading: false });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(demoUser));
+      setUser(demoUser);
       return true;
     },
     []
@@ -125,8 +116,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         name,
       };
 
-      setAuthState({ user: demoUser, isLoading: false });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(demoUser));
+      setUser(demoUser);
       return true;
     },
     []
@@ -136,8 +127,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * Logout - clears auth state.
    */
   const logout = useCallback(() => {
-    setAuthState({ user: null, isLoading: false });
     localStorage.removeItem(STORAGE_KEY);
+    setUser(null);
   }, []);
 
   const value = useMemo(

@@ -11,6 +11,7 @@ import { ExportButton } from "@/components/export-button";
 import { PresetManager } from "@/components/preset-manager";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
+import { UserMenu } from "@/components/user-menu";
 import {
   PackageInfoCard,
   PackageInfoCardSkeleton,
@@ -89,6 +90,7 @@ function HomeContent() {
               GitHub
             </a>
             <ThemeToggle />
+            <UserMenu />
           </nav>
 
           {/* Mobile navigation - visible only on mobile */}
