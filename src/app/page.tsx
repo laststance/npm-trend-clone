@@ -5,6 +5,7 @@ import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
 import { TrendChart } from "@/components/trend-chart";
 import { TimeRangeSelector } from "@/components/time-range-selector";
+import { ShareButton } from "@/components/share-button";
 import { MAX_PACKAGES } from "@/constants/colors";
 import { useUrlState } from "@/hooks/use-url-state";
 import { useDownloads } from "@/hooks/use-downloads";
@@ -97,10 +98,11 @@ function HomeContent() {
             />
           </section>
 
-          {/* Time Range Selector */}
+          {/* Time Range Selector & Share */}
           {selectedPackages.length > 0 && (
-            <section className="flex justify-center">
+            <section className="flex items-center justify-center gap-4">
               <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+              <ShareButton />
             </section>
           )}
 

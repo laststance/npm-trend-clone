@@ -457,7 +457,7 @@
       "Step 3: Verify URL copied to clipboard",
       "Step 4: Toast confirms copy"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
