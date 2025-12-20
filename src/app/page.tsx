@@ -1,85 +1,46 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, Suspense } from "react";
 import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
 import { TrendChart } from "@/components/trend-chart";
-import { getChartColor, MAX_PACKAGES } from "@/constants/colors";
-import type { SelectedPackage, ChartDataPoint } from "@/types/package";
+import { MAX_PACKAGES } from "@/constants/colors";
+import { useUrlState } from "@/hooks/use-url-state";
+import { useDownloads } from "@/hooks/use-downloads";
 
 /**
- * Generates mock chart data for demonstration.
- * @param packages - Array of package names
- * @returns Mock chart data points
+ * Inner component that uses URL state hooks.
  */
-function generateMockData(packages: string[]): ChartDataPoint[] {
-  if (packages.length === 0) return [];
-
-  const data: ChartDataPoint[] = [];
-  const today = new Date();
-
-  for (let i = 365; i >= 0; i -= 7) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    const dateStr = date.toISOString().split("T")[0];
-
-    const point: ChartDataPoint = { date: dateStr };
-    packages.forEach((pkg, index) => {
-      const baseDownloads = (index + 1) * 1_000_000;
-      const variation = Math.sin(i / 30) * 200_000 + Math.random() * 100_000;
-      const trend = (365 - i) * 5000;
-      point[pkg] = Math.max(0, Math.round(baseDownloads + variation + trend));
-    });
-
-    data.push(point);
-  }
-
-  return data;
-}
-
-/**
- * Home page for npm trends comparison.
- * Allows users to search and compare npm package download statistics.
- */
-export default function Home() {
-  const [selectedPackages, setSelectedPackages] = useState<SelectedPackage[]>(
-    []
-  );
-  const [isLoading, setIsLoading] = useState(false);
+function HomeContent() {
+  const { selectedPackages, timeRange, addPackage, removePackage } = useUrlState();
+  const packageNames = selectedPackages.map((p) => p.name);
+  const { data: chartData, isLoading, error } = useDownloads(packageNames, timeRange);
 
   /**
    * Handles package selection from search.
    */
-  const handleSelectPackage = useCallback((packageName: string) => {
-    setSelectedPackages((prev) => {
-      if (prev.length >= MAX_PACKAGES) {
-        return prev;
-      }
-      if (prev.some((p) => p.name === packageName)) {
-        return prev;
-      }
-      const color = getChartColor(prev.length);
-      return [...prev, { name: packageName, color }];
-    });
-
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 500);
-  }, []);
+  const handleSelectPackage = useCallback(
+    async (packageName: string) => {
+      if (selectedPackages.length >= MAX_PACKAGES) return;
+      await addPackage(packageName);
+    },
+    [selectedPackages.length, addPackage]
+  );
 
   /**
    * Handles package removal.
    */
-  const handleRemovePackage = useCallback((packageName: string) => {
-    setSelectedPackages((prev) => {
-      const filtered = prev.filter((p) => p.name !== packageName);
-      return filtered.map((p, index) => ({
-        ...p,
-        color: getChartColor(index),
-      }));
-    });
-  }, []);
+  const handleRemovePackage = useCallback(
+    async (packageName: string) => {
+      await removePackage(packageName);
+    },
+    [removePackage]
+  );
 
-  const chartData = generateMockData(selectedPackages.map((p) => p.name));
+  // Show error state if API fails
+  if (error && packageNames.length > 0) {
+    console.error("Download data error:", error);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -135,7 +96,7 @@ export default function Home() {
           </section>
 
           {/* Chart */}
-          <section className="rounded-lg border bg-card p-4">
+          <section className="rounded-lg p-4">
             <TrendChart
               data={chartData}
               packages={selectedPackages}
@@ -191,5 +152,24 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  );
+}
+
+/**
+ * Home page for npm trends comparison.
+ * Allows users to search and compare npm package download statistics.
+ * Uses Suspense for nuqs URL state hydration.
+ */
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }

@@ -116,11 +116,11 @@
     "category": "functional",
     "description": "Storybook builds successfully",
     "steps": [
-      "Step 1: Run pnpm storybook:build",
+      "Step 1: Run pnpm build-storybook",
       "Step 2: Verify build completes",
       "Step 3: Check storybook-static directory exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -130,7 +130,7 @@
       "Step 2: Navigate to http://localhost:6006",
       "Step 3: Verify stories load correctly"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -375,7 +375,7 @@
       "Step 2: Select 'react' package",
       "Step 3: Verify URL contains packages=react"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -385,7 +385,7 @@
       "Step 2: Remove 'vue' package",
       "Step 3: Verify URL only contains packages=react"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -395,7 +395,7 @@
       "Step 2: Verify all three packages selected",
       "Step 3: Verify chart shows all three"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

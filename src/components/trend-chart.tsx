@@ -8,7 +8,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
 
@@ -42,11 +41,11 @@ function formatNumber(value: number): string {
 /**
  * Formats date for display.
  * @param dateStr - ISO date string
- * @returns Formatted date (e.g., "Jan 2024")
+ * @returns Formatted date as year only (e.g., "2024")
  */
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+  return date.getFullYear().toString();
 }
 
 /**
@@ -138,7 +137,11 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
           data={data}
           margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
         >
-          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="rgba(255,255,255,0.05)"
+            vertical={false}
+          />
           <XAxis
             dataKey="date"
             tickFormatter={formatDate}
@@ -146,6 +149,12 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
             tickLine={{ stroke: "currentColor" }}
             axisLine={{ stroke: "currentColor" }}
             className="text-muted-foreground"
+            label={{
+              value: "Date →",
+              position: "insideBottomRight",
+              offset: -5,
+              style: { textAnchor: "end", fill: "currentColor", fontSize: 11 },
+            }}
           />
           <YAxis
             tickFormatter={formatNumber}
@@ -162,12 +171,6 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
             }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{ paddingTop: 20 }}
-            formatter={(value) => (
-              <span className="text-foreground">{value}</span>
-            )}
-          />
           {packages.map((pkg) => (
             <Line
               key={pkg.name}

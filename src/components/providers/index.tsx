@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "./theme-provider";
 
 /**
@@ -8,5 +9,9 @@ import { ThemeProvider } from "./theme-provider";
  * @param children - Child components to wrap with providers
  */
 export function Providers({ children }: { children: ReactNode }) {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return (
+    <NuqsAdapter>
+      <ThemeProvider>{children}</ThemeProvider>
+    </NuqsAdapter>
+  );
 }

@@ -25,7 +25,7 @@ interface PackageTagProps {
 export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
   return (
     <div
-      className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium text-white"
+      className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-white shadow-sm"
       style={{ backgroundColor: pkg.color }}
     >
       <span className="max-w-[150px] truncate">{pkg.name}</span>
