@@ -1538,7 +1538,7 @@
       "Step 2: Verify document.title is set",
       "Step 3: Title is descriptive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1650,7 +1650,7 @@
       "Step 2: Verify h1 to h6 order",
       "Step 3: No skipped levels"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
