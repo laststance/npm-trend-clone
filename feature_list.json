@@ -2404,7 +2404,7 @@
       "Step 2: Verify custom appearance",
       "Step 3: Check mark visible when checked"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2414,7 +2414,7 @@
       "Step 2: Verify custom appearance",
       "Step 3: Fill visible when selected"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
