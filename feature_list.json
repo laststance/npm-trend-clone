@@ -690,7 +690,7 @@
       "Step 2: Click export/download button",
       "Step 3: Verify PNG file downloads"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

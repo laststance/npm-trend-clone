@@ -157,6 +157,7 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
       className="h-[400px] w-full"
       role="img"
       aria-label={ariaLabel}
+      data-chart-container
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
