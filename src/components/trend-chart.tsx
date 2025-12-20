@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   LineChart,
   Line,
@@ -105,6 +106,20 @@ function CustomTooltip({
  * @param isLoading - Whether data is being loaded
  */
 export function TrendChart({ data, packages, isLoading = false }: TrendChartProps) {
+  const [hiddenLines, setHiddenLines] = useState<string[]>([]);
+
+  /**
+   * Handles legend item click to toggle line visibility.
+   * @param dataKey - The package name (dataKey) of the clicked legend item
+   */
+  const handleLegendClick = (dataKey: string) => {
+    setHiddenLines((prev) =>
+      prev.includes(dataKey)
+        ? prev.filter((name) => name !== dataKey)
+        : [...prev, dataKey]
+    );
+  };
+
   if (packages.length === 0) {
     return (
       <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed bg-muted/30">
@@ -179,8 +194,26 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
             wrapperStyle={{
               paddingTop: 16,
             }}
+            onClick={(e) => {
+              if (e && e.dataKey) {
+                handleLegendClick(e.dataKey as string);
+              }
+            }}
             formatter={(value: string) => (
-              <span className="text-foreground text-sm">{value}</span>
+              <span
+                className="text-sm cursor-pointer select-none"
+                style={{
+                  color: hiddenLines.includes(value)
+                    ? "var(--muted-foreground)"
+                    : "var(--foreground)",
+                  textDecoration: hiddenLines.includes(value)
+                    ? "line-through"
+                    : "none",
+                  opacity: hiddenLines.includes(value) ? 0.5 : 1,
+                }}
+              >
+                {value}
+              </span>
             )}
           />
           {packages.map((pkg) => (
@@ -192,6 +225,7 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 4, strokeWidth: 0 }}
+              hide={hiddenLines.includes(pkg.name)}
             />
           ))}
         </LineChart>

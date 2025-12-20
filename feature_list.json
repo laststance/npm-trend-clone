@@ -619,7 +619,7 @@
       "Step 2: Click on one legend item",
       "Step 3: Verify that line is hidden/shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
