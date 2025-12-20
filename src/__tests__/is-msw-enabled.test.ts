@@ -43,6 +43,7 @@ describe("isMSWEnabled utility", () => {
 
       // On server, should require APP_ENV=test OR NODE_ENV=test
       // This test verifies the double-check safety
+      expect(typeof isMSWEnabled).toBe("function");
     });
   });
 

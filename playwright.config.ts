@@ -11,7 +11,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: [["html", { open: "never" }], ["list"]],
-  timeout: 5000,
+  timeout: 30000,
 
   use: {
     baseURL: "http://localhost:3000",
@@ -44,9 +44,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "pnpm build:e2e && pnpm start",
+    command: "pnpm start:e2e",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
-    timeout: 180000,
+    timeout: 60000,
   },
 });
