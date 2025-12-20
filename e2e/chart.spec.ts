@@ -129,7 +129,7 @@ test.describe("Trend Chart", () => {
     }
   });
 
-  test("should handle chart resize on window resize", async ({ page, browserName }, testInfo) => {
+  test("should handle chart resize on window resize", async ({ page }, testInfo) => {
     // Skip on mobile - viewport behavior differs
     if (testInfo.project.name.includes("Mobile")) {
       test.skip();
