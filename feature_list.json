@@ -630,7 +630,7 @@
       "Step 3: Verify chart fits container",
       "Step 4: Labels don't overflow"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -640,7 +640,7 @@
       "Step 2: Resize window",
       "Step 3: Verify chart resizes proportionally"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
