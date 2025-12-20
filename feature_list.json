@@ -589,7 +589,7 @@
       "Step 2: Verify loading skeleton/spinner",
       "Step 3: Loading disappears after data loads"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -599,7 +599,7 @@
       "Step 2: Verify empty state message",
       "Step 3: Prompt to add packages shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
