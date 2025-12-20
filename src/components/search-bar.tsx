@@ -1,10 +1,28 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { NpmPackage } from "@/types/package";
+
+/**
+ * Formats a number to a human-readable string (e.g., 1500000 -> "1.5M").
+ * @param num - The number to format
+ * @returns Formatted string with K/M/B suffix
+ */
+function formatDownloads(num: number): string {
+  if (num >= 1_000_000_000) {
+    return `${(num / 1_000_000_000).toFixed(1)}B`;
+  }
+  if (num >= 1_000_000) {
+    return `${(num / 1_000_000).toFixed(1)}M`;
+  }
+  if (num >= 1_000) {
+    return `${(num / 1_000).toFixed(1)}K`;
+  }
+  return num.toString();
+}
 
 interface SearchBarProps {
   /** Callback when a package is selected */
@@ -42,6 +60,46 @@ export function SearchBar({
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   /**
+   * Fetches weekly download counts for multiple packages.
+   * Uses parallel individual requests for reliability with scoped packages.
+   * @param packageNames - Array of package names
+   * @returns Map of package name to download count
+   */
+  const fetchDownloadCounts = useCallback(
+    async (packageNames: string[]): Promise<Map<string, number>> => {
+      const downloadMap = new Map<string, number>();
+      if (packageNames.length === 0) return downloadMap;
+
+      // Fetch downloads for each package in parallel
+      const fetchPromises = packageNames.map(async (name) => {
+        try {
+          const response = await fetch(
+            `https://api.npmjs.org/downloads/point/last-week/${encodeURIComponent(name)}`
+          );
+          if (!response.ok) return null;
+          const data = await response.json();
+          if (data.downloads !== undefined) {
+            return { name, downloads: data.downloads as number };
+          }
+        } catch {
+          // Silently fail for individual packages
+        }
+        return null;
+      });
+
+      const results = await Promise.all(fetchPromises);
+      for (const result of results) {
+        if (result) {
+          downloadMap.set(result.name, result.downloads);
+        }
+      }
+
+      return downloadMap;
+    },
+    []
+  );
+
+  /**
    * Fetches package suggestions from npm registry.
    */
   const fetchSuggestions = useCallback(async (searchQuery: string) => {
@@ -72,7 +130,18 @@ export function SearchBar({
       const filteredPackages = packages.filter(
         (pkg) => !selectedPackages.includes(pkg.name)
       );
-      setSuggestions(filteredPackages);
+
+      // Fetch download counts for filtered packages
+      const packageNames = filteredPackages.map((pkg) => pkg.name);
+      const downloadCounts = await fetchDownloadCounts(packageNames);
+
+      // Merge download counts into packages
+      const packagesWithDownloads = filteredPackages.map((pkg) => ({
+        ...pkg,
+        weeklyDownloads: downloadCounts.get(pkg.name),
+      }));
+
+      setSuggestions(packagesWithDownloads);
       setHasSearched(true);
       setIsOpen(true);
     } catch {
@@ -83,7 +152,7 @@ export function SearchBar({
     } finally {
       setIsLoading(false);
     }
-  }, [selectedPackages]);
+  }, [selectedPackages, fetchDownloadCounts]);
 
   /**
    * Handles input change with debouncing.
@@ -226,7 +295,15 @@ export function SearchBar({
                   onClick={() => handleSelect(pkg.name)}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
-                  <div className="font-medium">{pkg.name}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium">{pkg.name}</span>
+                    {pkg.weeklyDownloads !== undefined && (
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Download className="h-3 w-3" />
+                        {formatDownloads(pkg.weeklyDownloads)}/wk
+                      </span>
+                    )}
+                  </div>
                   {pkg.description && (
                     <div className="truncate text-sm text-muted-foreground">
                       {pkg.description}

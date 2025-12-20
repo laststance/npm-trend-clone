@@ -311,7 +311,7 @@
       "Step 3: Verify each result shows downloads",
       "Step 4: Numbers are formatted (e.g., 25M)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

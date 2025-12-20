@@ -8,6 +8,8 @@ export interface NpmPackage {
   description?: string;
   /** Latest version */
   version?: string;
+  /** Weekly download count */
+  weeklyDownloads?: number;
 }
 
 /**
