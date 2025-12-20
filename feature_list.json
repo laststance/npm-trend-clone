@@ -1843,7 +1843,7 @@
       "Step 2: Verify error boundary UI",
       "Step 3: Page doesn't crash completely"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
