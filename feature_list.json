@@ -650,7 +650,7 @@
       "Step 2: Verify horizontal grid lines",
       "Step 3: Grid helps read values"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
