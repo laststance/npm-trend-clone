@@ -1414,7 +1414,7 @@
       "Step 2: Run axe contrast check",
       "Step 3: Verify no violations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1444,7 +1444,7 @@
       "Step 2: Switch to dark",
       "Step 3: Verify input text visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2134,7 +2134,7 @@
       "Step 2: Verify color change",
       "Step 3: Matches design spec"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2144,7 +2144,7 @@
       "Step 2: Verify active color",
       "Step 3: Darker than hover"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
