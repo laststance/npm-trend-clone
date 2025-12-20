@@ -446,7 +446,7 @@
       "Step 2: Verify no packages selected",
       "Step 3: Verify prompt to add packages"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2284,7 +2284,7 @@
       "Step 2: Verify consistent gap",
       "Step 3: Usually 4-8px"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
