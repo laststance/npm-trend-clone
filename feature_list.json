@@ -1660,7 +1660,7 @@
       "Step 2: Verify th elements present",
       "Step 3: scope attributes set"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
