@@ -40,13 +40,16 @@ function formatNumber(value: number): string {
 }
 
 /**
- * Formats date for display.
+ * Formats date for display on X-axis.
  * @param dateStr - ISO date string
- * @returns Formatted date as year only (e.g., "2024")
+ * @returns Formatted date as "Mon YYYY" (e.g., "Jan 2025")
  */
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.getFullYear().toString();
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
 }
 
 /**
