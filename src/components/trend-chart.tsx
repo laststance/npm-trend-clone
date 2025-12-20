@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Brush,
 } from "recharts";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -243,6 +244,26 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
               isAnimationActive={!prefersReducedMotion}
             />
           ))}
+          <Brush
+            dataKey="date"
+            height={30}
+            stroke="hsl(var(--primary))"
+            fill="hsl(var(--muted))"
+            tickFormatter={formatDate}
+          >
+            <LineChart>
+              {packages.map((pkg) => (
+                <Line
+                  key={`brush-${pkg.name}`}
+                  type="monotone"
+                  dataKey={pkg.name}
+                  stroke={pkg.color}
+                  strokeWidth={1}
+                  dot={false}
+                />
+              ))}
+            </LineChart>
+          </Brush>
         </LineChart>
       </ResponsiveContainer>
     </div>

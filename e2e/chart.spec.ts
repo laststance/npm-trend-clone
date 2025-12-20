@@ -205,4 +205,22 @@ test.describe("Trend Chart", () => {
     const paths = chart.locator("path.recharts-line-curve");
     await expect(paths.first()).toBeVisible({ timeout: 5000 });
   });
+
+  test("should display brush control for zoom", async ({ page }) => {
+    const chart = page.locator('[data-testid="trend-chart"]');
+    await expect(chart).toBeVisible({ timeout: 15000 });
+
+    // The Brush component renders as a recharts-brush element
+    const brush = chart.locator(".recharts-brush");
+    await expect(brush).toBeVisible({ timeout: 5000 });
+
+    // Brush should have a slide area for dragging
+    const brushSlide = brush.locator(".recharts-brush-slide");
+    await expect(brushSlide).toBeVisible({ timeout: 3000 });
+
+    // Brush should have traveller handles at both ends
+    const travellers = brush.locator(".recharts-brush-traveller");
+    const travellerCount = await travellers.count();
+    expect(travellerCount).toBe(2);
+  });
 });

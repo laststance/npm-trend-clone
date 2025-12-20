@@ -710,7 +710,7 @@
       "Step 2: Drag brush to select range",
       "Step 3: Verify chart zooms to selection"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
