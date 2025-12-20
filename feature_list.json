@@ -215,7 +215,7 @@
       "Step 3: Press Escape key",
       "Step 4: Verify dropdown closes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
