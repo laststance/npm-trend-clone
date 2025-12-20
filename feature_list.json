@@ -1893,7 +1893,7 @@
       "Step 2: Verify offline banner",
       "Step 3: Banner is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
