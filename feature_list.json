@@ -1621,7 +1621,7 @@
       "Step 3: Verify no animations",
       "Step 4: Transitions instant"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
