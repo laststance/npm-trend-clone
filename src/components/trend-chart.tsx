@@ -147,12 +147,18 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
 
   if (isLoading) {
     return (
-      <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30">
+      <div
+        className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30"
+        role="status"
+        aria-busy="true"
+        aria-live="polite"
+      >
         <div className="flex items-center gap-2 text-muted-foreground">
           <div
             className={`h-5 w-5 rounded-full border-2 border-current border-t-transparent ${
               prefersReducedMotion ? "" : "animate-spin"
             }`}
+            aria-hidden="true"
           />
           <span>Loading download data...</span>
         </div>

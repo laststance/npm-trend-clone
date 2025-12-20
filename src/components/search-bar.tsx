@@ -346,8 +346,19 @@ export function SearchBar({
           role="combobox"
         />
         {isLoading && (
-          <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+          <Loader2
+            className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-muted-foreground"
+            aria-hidden="true"
+          />
         )}
+        {/* Screen reader announcement for loading state */}
+        <span
+          role="status"
+          aria-live="polite"
+          className="sr-only"
+        >
+          {isLoading ? "Searching for packages..." : ""}
+        </span>
       </div>
 
       {isOpen && (suggestions.length > 0 || error || (hasSearched && !isLoading) || (query.length === 0 && (popularPackages.length > 0 || isLoadingPopular))) && (
@@ -357,7 +368,11 @@ export function SearchBar({
           role="listbox"
         >
           {error ? (
-            <div className="px-3 py-6 text-center text-sm text-destructive">
+            <div
+              className="px-3 py-6 text-center text-sm text-destructive"
+              role="alert"
+              aria-live="assertive"
+            >
               {error}
             </div>
           ) : query.length === 0 && (popularPackages.length > 0 || isLoadingPopular) ? (
@@ -367,8 +382,14 @@ export function SearchBar({
                 Popular packages
               </div>
               {isLoadingPopular ? (
-                <div className="flex items-center justify-center py-4">
-                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                <div
+                  className="flex items-center justify-center py-4"
+                  role="status"
+                  aria-busy="true"
+                  aria-live="polite"
+                >
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" aria-hidden="true" />
+                  <span className="sr-only">Loading popular packages...</span>
                 </div>
               ) : (
                 <ul className="max-h-60 overflow-auto py-1">

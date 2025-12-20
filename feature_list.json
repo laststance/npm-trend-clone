@@ -1548,7 +1548,7 @@
       "Step 2: Verify aria-live region",
       "Step 3: Error announced to SR"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1558,7 +1558,7 @@
       "Step 2: Verify aria-busy or status",
       "Step 3: Loading announced"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

@@ -56,7 +56,13 @@ export default function RootLayout({
           Skip to main content
         </a>
         <Providers>{children}</Providers>
-        <Toaster richColors position="bottom-center" duration={4000} />
+        {/*
+          Aria-live region wrapper for toast announcements.
+          Sonner toasts are announced to screen readers via this wrapper.
+        */}
+        <div aria-live="polite" aria-atomic="true">
+          <Toaster richColors position="bottom-center" duration={4000} />
+        </div>
       </body>
     </html>
   );

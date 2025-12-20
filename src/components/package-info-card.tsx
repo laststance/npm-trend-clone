@@ -188,10 +188,16 @@ export function PackageInfoCard({
 
 /**
  * Loading skeleton for PackageInfoCard.
+ * Includes aria-busy and role="status" for screen reader announcements.
  */
 export function PackageInfoCardSkeleton() {
   return (
-    <Card className="relative overflow-hidden">
+    <Card
+      className="relative overflow-hidden"
+      role="status"
+      aria-busy="true"
+      aria-label="Loading package information"
+    >
       <div className="absolute left-0 top-0 h-full w-1 bg-muted" />
 
       <CardHeader className="pl-5">
