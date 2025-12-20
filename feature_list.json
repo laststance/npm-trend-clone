@@ -1487,7 +1487,7 @@
       "Step 2: Verify each has alt attribute",
       "Step 3: Alt text is descriptive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1578,7 +1578,7 @@
       "Step 2: Verify tooltip content in aria",
       "Step 3: SR can read tooltip"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1610,7 +1610,7 @@
       "Step 3: No horizontal scroll",
       "Step 4: Content not cut off"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
