@@ -2104,7 +2104,7 @@
       "Step 2: Verify matches design spec",
       "Step 3: Light: #fff or similar"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2314,7 +2314,7 @@
       "Step 2: Verify border color/width",
       "Step 3: Focus border color changes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2504,7 +2504,7 @@
       "Step 2: Verify underline style",
       "Step 3: Consistent hover behavior"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
