@@ -1994,7 +1994,7 @@
       "Step 2: Verify hamburger menu icon",
       "Step 3: Click opens menu"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
