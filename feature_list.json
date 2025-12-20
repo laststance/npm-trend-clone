@@ -90,7 +90,7 @@
       "Step 2: Check response headers",
       "Step 3: Verify Content-Type is application/json"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -670,7 +670,7 @@
       "Step 2: Remove one package",
       "Step 3: Verify chart now shows 1 line"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -680,7 +680,7 @@
       "Step 2: Add another package",
       "Step 3: Verify chart now shows 2 lines"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -850,7 +850,7 @@
       "Step 2: Click X on package card",
       "Step 3: Package removed from comparison"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
