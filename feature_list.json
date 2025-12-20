@@ -332,7 +332,7 @@
       "Step 2: Verify 'react' package found",
       "Step 3: Results are correct"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -860,7 +860,7 @@
       "Step 2: Verify card accent color",
       "Step 3: Matches corresponding chart line"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
