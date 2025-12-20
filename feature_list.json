@@ -322,7 +322,7 @@
       "Step 3: Click back on input",
       "Step 4: Verify text is preserved"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -660,7 +660,7 @@
       "Step 2: Load chart",
       "Step 3: Verify tooltip values match API data"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1394,7 +1394,7 @@
       "Step 3: Switch to dark",
       "Step 4: Verify focus ring visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1518,7 +1518,7 @@
       "Step 2: Verify order follows layout",
       "Step 3: No jumps to unexpected areas"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1528,7 +1528,7 @@
       "Step 2: Navigate entire app with keyboard",
       "Step 3: All features accessible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1631,7 +1631,7 @@
       "Step 2: Verify no 'click here' text",
       "Step 3: Link text describes destination"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2244,7 +2244,7 @@
       "Step 2: Verify item spacing",
       "Step 3: Gap consistent throughout"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2254,7 +2254,7 @@
       "Step 2: Verify margins from edges",
       "Step 3: Labels not cut off"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
