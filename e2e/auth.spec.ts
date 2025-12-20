@@ -183,6 +183,96 @@ test.describe("Auth Pages", () => {
   });
 });
 
+test.describe("Settings Features", () => {
+  test.beforeEach(async ({ page }) => {
+    // Set up demo auth state before each test
+    await page.goto("/");
+    await page.evaluate(() => {
+      localStorage.setItem("npm-trend-demo-auth", JSON.stringify({
+        id: "demo-user-1",
+        email: "test@example.com",
+        name: "TestUser"
+      }));
+    });
+  });
+
+  test("should update profile name", async ({ page }) => {
+    await page.goto("/settings");
+
+    // Wait for page to load
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    // Change name
+    const nameInput = page.locator("#name");
+    await nameInput.clear();
+    await nameInput.fill("NewUserName");
+
+    // Submit form
+    await page.getByRole("button", { name: "Save Changes" }).click();
+
+    // Verify success toast
+    await expect(page.getByText("Profile updated")).toBeVisible({ timeout: 3000 });
+
+    // Verify localStorage was updated
+    const stored = await page.evaluate(() => localStorage.getItem("npm-trend-demo-auth"));
+    expect(stored).toContain("NewUserName");
+  });
+
+  test("should validate password change", async ({ page }) => {
+    await page.goto("/settings");
+
+    // Wait for page to load
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    // Try to submit with empty fields
+    await page.getByRole("button", { name: "Change Password" }).click();
+    await expect(page.getByText("All password fields are required")).toBeVisible({ timeout: 3000 });
+  });
+
+  test("should change password successfully", async ({ page }) => {
+    await page.goto("/settings");
+
+    // Wait for page to load
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    // Fill password fields
+    await page.locator("#currentPassword").fill("demo");
+    await page.locator("#newPassword").fill("newpassword123");
+    await page.locator("#confirmNewPassword").fill("newpassword123");
+
+    // Submit form
+    await page.getByRole("button", { name: "Change Password" }).click();
+
+    // Verify success toast
+    await expect(page.getByText("Password changed")).toBeVisible({ timeout: 3000 });
+  });
+
+  test("should delete account and redirect", async ({ page }) => {
+    await page.goto("/settings");
+
+    // Wait for page to load
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    // Click delete account button to open dialog
+    await page.getByRole("button", { name: "Delete Account" }).click();
+
+    // Wait for dialog to appear
+    const dialog = page.getByRole("alertdialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText("Are you absolutely sure?")).toBeVisible();
+
+    // Click confirm button in dialog
+    await dialog.getByRole("button", { name: "Delete Account" }).click();
+
+    // Should redirect to login (ProtectedRoute detects user is no longer authenticated)
+    await expect(page).toHaveURL(/\/login/, { timeout: 5000 });
+
+    // Verify localStorage was cleared
+    const stored = await page.evaluate(() => localStorage.getItem("npm-trend-demo-auth"));
+    expect(stored).toBeNull();
+  });
+});
+
 test.describe("Health Endpoint", () => {
   test("should return health status", async ({ request }) => {
     const response = await request.get("/api/health");

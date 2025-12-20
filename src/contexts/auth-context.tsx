@@ -34,6 +34,10 @@ interface AuthContextType {
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   /** Logout function */
   logout: () => void;
+  /** Update profile name */
+  updateName: (name: string) => Promise<boolean>;
+  /** Delete account */
+  deleteAccount: () => Promise<boolean>;
 }
 
 const STORAGE_KEY = "npm-trend-demo-auth";
@@ -131,6 +135,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }, []);
 
+  /**
+   * Update profile name - updates localStorage and state.
+   */
+  const updateName = useCallback(
+    async (newName: string): Promise<boolean> => {
+      if (!user) return false;
+
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      const updatedUser: DemoUser = {
+        ...user,
+        name: newName,
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+      setUser(updatedUser);
+      return true;
+    },
+    [user]
+  );
+
+  /**
+   * Delete account - clears all auth state.
+   */
+  const deleteAccount = useCallback(async (): Promise<boolean> => {
+    // Simulate API delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    localStorage.removeItem(STORAGE_KEY);
+    setUser(null);
+    return true;
+  }, []);
+
   const value = useMemo(
     () => ({
       user,
@@ -139,8 +177,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       login,
       signup,
       logout,
+      updateName,
+      deleteAccount,
     }),
-    [user, isLoading, login, signup, logout]
+    [user, isLoading, login, signup, logout, updateName, deleteAccount]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

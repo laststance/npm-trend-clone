@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, User, Mail, Lock, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -45,9 +46,13 @@ export default function SettingsPage() {
  * Settings page content (protected).
  */
 function SettingsContent() {
-  const { user } = useAuth();
+  const { user, updateName, deleteAccount } = useAuth();
+  const router = useRouter();
   const [name, setName] = useState(user?.name || "Demo User");
   const [email] = useState(user?.email || "demo@example.com");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   /**
@@ -55,34 +60,70 @@ function SettingsContent() {
    */
   const handleUpdateProfile = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim()) {
+      toast.error("Name is required");
+      return;
+    }
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const success = await updateName(name.trim());
 
-    toast.info("Profile update", {
-      description: "Account backend is not yet implemented",
-    });
+    if (success) {
+      toast.success("Profile updated", {
+        description: "Your name has been updated successfully",
+      });
+    } else {
+      toast.error("Update failed", {
+        description: "Please try again",
+      });
+    }
 
     setIsLoading(false);
-  }, []);
+  }, [name, updateName]);
 
   /**
    * Handles password change submission.
    */
   const handleChangePassword = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate inputs
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("All password fields are required");
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast.error("New password must be at least 8 characters");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+
+    // Demo validation: current password must be "demo" or 8+ chars
+    if (currentPassword !== "demo" && currentPassword.length < 8) {
+      toast.error("Current password is incorrect");
+      return;
+    }
+
     setIsLoading(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-    toast.info("Password change", {
-      description: "Account backend is not yet implemented",
+    toast.success("Password changed", {
+      description: "Your password has been updated successfully",
     });
 
+    // Clear form
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
     setIsLoading(false);
-  }, []);
+  }, [currentPassword, newPassword, confirmPassword]);
 
   /**
    * Handles account deletion.
@@ -90,15 +131,21 @@ function SettingsContent() {
   const handleDeleteAccount = useCallback(async () => {
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const success = await deleteAccount();
 
-    toast.error("Account deletion", {
-      description: "Account backend is not yet implemented",
-    });
+    if (success) {
+      toast.success("Account deleted", {
+        description: "Your account has been removed",
+      });
+      router.push("/");
+    } else {
+      toast.error("Deletion failed", {
+        description: "Please try again",
+      });
+    }
 
     setIsLoading(false);
-  }, []);
+  }, [deleteAccount, router]);
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -178,6 +225,8 @@ function SettingsContent() {
                   id="currentPassword"
                   type="password"
                   placeholder="Enter current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
@@ -187,6 +236,8 @@ function SettingsContent() {
                   id="newPassword"
                   type="password"
                   placeholder="Enter new password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
@@ -196,6 +247,8 @@ function SettingsContent() {
                   id="confirmNewPassword"
                   type="password"
                   placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
