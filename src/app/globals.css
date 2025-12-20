@@ -138,6 +138,33 @@
   }
 }
 
+/* Gradient spinner animation */
+@keyframes gradient-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner-gradient {
+  @apply relative h-10 w-10 rounded-full;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 90deg,
+    var(--primary) 90deg 180deg,
+    var(--chart-1) 180deg 270deg,
+    var(--chart-2) 270deg 360deg
+  );
+  animation: gradient-spin 1s linear infinite;
+}
+
+.loading-spinner-gradient::before {
+  content: "";
+  @apply absolute inset-1 rounded-full bg-background;
+}
+
 /* Reduced motion support - placed outside @layer for proper specificity */
 @media (prefers-reduced-motion: reduce) {
   html {

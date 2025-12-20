@@ -1589,7 +1589,7 @@
       "Step 3: Focus stays within modal",
       "Step 4: Escape closes modal"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2394,7 +2394,7 @@
       "Step 2: Verify styled appearance",
       "Step 3: Animated when loading"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
