@@ -29,7 +29,7 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
       className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium text-white shadow-sm"
       style={{ backgroundColor: pkg.color }}
     >
-      <span className="max-w-[150px] truncate">{pkg.name}</span>
+      <span className="max-w-[150px] truncate font-mono">{pkg.name}</span>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -2064,7 +2064,7 @@
       "Step 2: Verify monospace family",
       "Step 3: Fixed-width characters"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",

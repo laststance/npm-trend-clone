@@ -385,7 +385,7 @@ export function SearchBar({
                       onMouseEnter={() => setSelectedIndex(index)}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-medium">{pkg.name}</span>
+                        <span className="font-medium font-mono">{pkg.name}</span>
                         {pkg.weeklyDownloads !== undefined && (
                           <span className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Download className="h-3 w-3" />
