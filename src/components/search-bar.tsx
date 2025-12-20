@@ -387,7 +387,7 @@ export function SearchBar({
                       <div className="flex items-center justify-between gap-2">
                         <span className="font-medium font-mono">{pkg.name}</span>
                         {pkg.weeklyDownloads !== undefined && (
-                          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1 text-xs text-muted-foreground tabular-nums">
                             <Download className="h-3 w-3" />
                             {formatDownloads(pkg.weeklyDownloads)}/wk
                           </span>
@@ -413,9 +413,9 @@ export function SearchBar({
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium">{pkg.name}</span>
+                    <span className="font-medium font-mono">{pkg.name}</span>
                     {pkg.weeklyDownloads !== undefined && (
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground tabular-nums">
                         <Download className="h-3 w-3" />
                         {formatDownloads(pkg.weeklyDownloads)}/wk
                       </span>

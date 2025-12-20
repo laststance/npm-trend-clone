@@ -2084,7 +2084,7 @@
       "Step 2: Verify font-variant-numeric",
       "Step 3: Numbers align in columns"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",

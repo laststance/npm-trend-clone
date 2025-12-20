@@ -92,7 +92,7 @@ function CustomTooltip({
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-muted-foreground">{entry.name}:</span>
-            <span className="font-medium">{formatNumber(entry.value)}</span>
+            <span className="font-medium tabular-nums">{formatNumber(entry.value)}</span>
           </div>
         ))}
       </div>
