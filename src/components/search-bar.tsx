@@ -9,6 +9,8 @@ import type { NpmPackage } from "@/types/package";
 interface SearchBarProps {
   /** Callback when a package is selected */
   onSelectPackage: (packageName: string) => void;
+  /** Already selected package names to exclude from suggestions */
+  selectedPackages?: string[];
   /** Disabled state */
   disabled?: boolean;
   /** Placeholder text */
@@ -24,6 +26,7 @@ interface SearchBarProps {
  */
 export function SearchBar({
   onSelectPackage,
+  selectedPackages = [],
   disabled = false,
   placeholder = "Search npm packages...",
 }: SearchBarProps) {
@@ -33,6 +36,7 @@ export function SearchBar({
   const [isOpen, setIsOpen] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -48,10 +52,14 @@ export function SearchBar({
     }
 
     setIsLoading(true);
+    setError(null);
     try {
       const response = await fetch(
         `https://registry.npmjs.org/-/v1/search?text=${encodeURIComponent(searchQuery)}&size=10`
       );
+      if (!response.ok) {
+        throw new Error("Failed to fetch packages");
+      }
       const data = await response.json();
       const packages: NpmPackage[] = data.objects.map(
         (obj: { package: NpmPackage }) => ({
@@ -60,16 +68,22 @@ export function SearchBar({
           version: obj.package.version,
         })
       );
-      setSuggestions(packages);
+      // Filter out already selected packages
+      const filteredPackages = packages.filter(
+        (pkg) => !selectedPackages.includes(pkg.name)
+      );
+      setSuggestions(filteredPackages);
       setHasSearched(true);
       setIsOpen(true);
     } catch {
       setSuggestions([]);
       setHasSearched(true);
+      setError("Failed to search packages. Please try again.");
+      setIsOpen(true);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [selectedPackages]);
 
   /**
    * Handles input change with debouncing.
@@ -188,13 +202,17 @@ export function SearchBar({
         )}
       </div>
 
-      {isOpen && (suggestions.length > 0 || (hasSearched && !isLoading)) && (
+      {isOpen && (suggestions.length > 0 || error || (hasSearched && !isLoading)) && (
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
           role="listbox"
         >
-          {suggestions.length > 0 ? (
+          {error ? (
+            <div className="px-3 py-6 text-center text-sm text-destructive">
+              {error}
+            </div>
+          ) : suggestions.length > 0 ? (
             <ul className="max-h-60 overflow-auto py-1">
               {suggestions.map((pkg, index) => (
                 <li

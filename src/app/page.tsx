@@ -79,6 +79,7 @@ function HomeContent() {
           <section className="flex justify-center">
             <SearchBar
               onSelectPackage={handleSelectPackage}
+              selectedPackages={packageNames}
               disabled={selectedPackages.length >= MAX_PACKAGES}
               placeholder={
                 selectedPackages.length >= MAX_PACKAGES
