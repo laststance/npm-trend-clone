@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, Suspense } from "react";
+import { useCallback, useEffect, useRef, Suspense } from "react";
 import { toast } from "sonner";
 import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
@@ -27,13 +27,16 @@ function HomeContent() {
   const packageNames = selectedPackages.map((p) => p.name);
   const { data: chartData, isLoading, error, invalidPackages } = useDownloads(packageNames, timeRange);
   const { data: packageInfoData, isLoading: isLoadingInfo } = usePackageInfo(packageNames);
+  const shownToastsRef = useRef<Set<string>>(new Set());
 
   /**
    * Shows toast notification for invalid packages.
+   * Uses ref to track shown toasts and prevent duplicates across re-renders.
    */
   useEffect(() => {
-    if (invalidPackages.length > 0) {
-      for (const pkgName of invalidPackages) {
+    for (const pkgName of invalidPackages) {
+      if (!shownToastsRef.current.has(pkgName)) {
+        shownToastsRef.current.add(pkgName);
         toast.error(`Package "${pkgName}" not found`, {
           description: "This package doesn't exist on npm",
           duration: 4000,

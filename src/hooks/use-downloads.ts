@@ -86,7 +86,6 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     const fetchDownloads = async () => {
       setIsLoading(true);
       setError(null);
-      setInvalidPackages([]);
 
       try {
         const response = await fetch(

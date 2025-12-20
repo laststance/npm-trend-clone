@@ -1793,7 +1793,7 @@
       "Step 2: Verify 'not found' message",
       "Step 3: Suggests similar packages"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1873,7 +1873,7 @@
       "Step 2: Wait 5 seconds",
       "Step 3: Verify toast disappeared"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
