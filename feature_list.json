@@ -1833,7 +1833,7 @@
       "Step 2: App still loads",
       "Step 3: Features work without cache"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
