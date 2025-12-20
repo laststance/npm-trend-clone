@@ -1,11 +1,34 @@
 "use client";
 
 import { useCallback, useEffect, useRef, Suspense } from "react";
+import dynamic from "next/dynamic";
 import { toast } from "sonner";
 import { SearchBar } from "@/components/search-bar";
 import { PackageTagBar } from "@/components/package-tag-bar";
-import { TrendChart } from "@/components/trend-chart";
 import { TimeRangeSelector } from "@/components/time-range-selector";
+
+/**
+ * Dynamically imported TrendChart to reduce initial bundle size.
+ * Recharts library (~500KB) is loaded only when needed.
+ */
+const TrendChart = dynamic(
+  () => import("@/components/trend-chart").then((mod) => ({ default: mod.TrendChart })),
+  {
+    loading: () => (
+      <div
+        className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30"
+        role="status"
+        aria-busy="true"
+      >
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <span>Loading chart...</span>
+        </div>
+      </div>
+    ),
+    ssr: false,
+  }
+);
 import { ShareButton } from "@/components/share-button";
 import { ExportButton } from "@/components/export-button";
 import { PresetManager } from "@/components/preset-manager";
