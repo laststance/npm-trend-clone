@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface TrendChartProps {
   /** Chart data with dates and download counts */
@@ -107,6 +108,7 @@ function CustomTooltip({
  */
 export function TrendChart({ data, packages, isLoading = false }: TrendChartProps) {
   const [hiddenLines, setHiddenLines] = useState<string[]>([]);
+  const prefersReducedMotion = useReducedMotion();
 
   /**
    * Handles legend item click to toggle line visibility.
@@ -134,7 +136,11 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
     return (
       <div className="flex h-[400px] items-center justify-center rounded-lg border bg-muted/30">
         <div className="flex items-center gap-2 text-muted-foreground">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <div
+            className={`h-5 w-5 rounded-full border-2 border-current border-t-transparent ${
+              prefersReducedMotion ? "" : "animate-spin"
+            }`}
+          />
           <span>Loading download data...</span>
         </div>
       </div>
@@ -234,6 +240,7 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
               dot={false}
               activeDot={{ r: 4, strokeWidth: 0 }}
               hide={hiddenLines.includes(pkg.name)}
+              isAnimationActive={!prefersReducedMotion}
             />
           ))}
         </LineChart>

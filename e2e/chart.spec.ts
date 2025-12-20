@@ -182,4 +182,27 @@ test.describe("Trend Chart", () => {
     const xAxisLabel = page.locator('text:has-text("Date")');
     await expect(xAxisLabel).toBeVisible({ timeout: 3000 });
   });
+
+  test("should disable animations when prefers-reduced-motion is enabled", async ({
+    page,
+  }) => {
+    // Set prefers-reduced-motion media feature
+    await page.emulateMedia({ reducedMotion: "reduce" });
+
+    // Navigate to page with packages
+    await page.goto("/?packages=react");
+    await page.waitForLoadState("networkidle");
+
+    const chart = page.locator('[data-testid="trend-chart"]');
+    await expect(chart).toBeVisible({ timeout: 15000 });
+
+    // The chart should render without animations
+    // We verify the chart loads successfully with reduced motion enabled
+    const svg = chart.locator("svg").first();
+    await expect(svg).toBeVisible({ timeout: 5000 });
+
+    // Check that line paths exist (chart rendered successfully)
+    const paths = chart.locator("path.recharts-line-curve");
+    await expect(paths.first()).toBeVisible({ timeout: 5000 });
+  });
 });

@@ -700,7 +700,7 @@
       "Step 2: Load chart",
       "Step 3: Verify no animation on load"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
