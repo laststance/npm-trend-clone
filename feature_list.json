@@ -2494,7 +2494,7 @@
       "Step 2: Verify highlight color",
       "Step 3: Matches brand accent"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
