@@ -270,7 +270,7 @@
       "Step 3: Verify popular packages shown",
       "Step 4: Can select from popular list"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

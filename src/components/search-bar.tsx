@@ -7,6 +7,23 @@ import { cn } from "@/lib/utils";
 import type { NpmPackage } from "@/types/package";
 
 /**
+ * Popular packages shown when search input is focused but empty.
+ * Sorted by typical download counts to show most popular first.
+ */
+const POPULAR_PACKAGES = [
+  "react",
+  "vue",
+  "angular",
+  "svelte",
+  "next",
+  "typescript",
+  "express",
+  "lodash",
+  "axios",
+  "webpack",
+];
+
+/**
  * Formats a number to a human-readable string (e.g., 1500000 -> "1.5M").
  * @param num - The number to format
  * @returns Formatted string with K/M/B suffix
@@ -55,9 +72,12 @@ export function SearchBar({
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [error, setError] = useState<string | null>(null);
+  const [popularPackages, setPopularPackages] = useState<NpmPackage[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const popularFetchedRef = useRef(false);
 
   /**
    * Fetches weekly download counts for multiple packages.
@@ -98,6 +118,50 @@ export function SearchBar({
     },
     []
   );
+
+  /**
+   * Fetches popular packages with download counts.
+   * Only fetches once per component mount.
+   */
+  const fetchPopularPackages = useCallback(async () => {
+    // Skip if already fetched
+    if (popularFetchedRef.current || popularPackages.length > 0) {
+      return;
+    }
+
+    setIsLoadingPopular(true);
+    popularFetchedRef.current = true;
+
+    try {
+      // Filter out already selected packages
+      const availablePackages = POPULAR_PACKAGES.filter(
+        (name) => !selectedPackages.includes(name)
+      );
+
+      if (availablePackages.length === 0) {
+        setPopularPackages([]);
+        return;
+      }
+
+      // Fetch download counts for popular packages
+      const downloadCounts = await fetchDownloadCounts(availablePackages);
+
+      // Create package objects with download counts, sorted by downloads
+      const packagesWithDownloads: NpmPackage[] = availablePackages
+        .map((name) => ({
+          name,
+          description: `Popular package`,
+          weeklyDownloads: downloadCounts.get(name),
+        }))
+        .sort((a, b) => (b.weeklyDownloads ?? 0) - (a.weeklyDownloads ?? 0));
+
+      setPopularPackages(packagesWithDownloads);
+    } catch {
+      // Silently fail - popular packages are optional
+    } finally {
+      setIsLoadingPopular(false);
+    }
+  }, [selectedPackages, fetchDownloadCounts, popularPackages.length]);
 
   /**
    * Fetches package suggestions from npm registry.
@@ -191,10 +255,17 @@ export function SearchBar({
 
   /**
    * Handles keyboard navigation.
+   * Supports both search suggestions and popular packages lists.
    */
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!isOpen || suggestions.length === 0) {
+      // Determine which list to use based on query state
+      const filteredPopular = popularPackages.filter(
+        (pkg) => !selectedPackages.includes(pkg.name)
+      );
+      const activeList = query.length === 0 ? filteredPopular : suggestions;
+
+      if (!isOpen || activeList.length === 0) {
         if (e.key === "Escape") {
           setIsOpen(false);
         }
@@ -205,7 +276,7 @@ export function SearchBar({
         case "ArrowDown":
           e.preventDefault();
           setSelectedIndex((prev) =>
-            prev < suggestions.length - 1 ? prev + 1 : prev
+            prev < activeList.length - 1 ? prev + 1 : prev
           );
           break;
         case "ArrowUp":
@@ -214,8 +285,8 @@ export function SearchBar({
           break;
         case "Enter":
           e.preventDefault();
-          if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-            handleSelect(suggestions[selectedIndex].name);
+          if (selectedIndex >= 0 && activeList[selectedIndex]) {
+            handleSelect(activeList[selectedIndex].name);
           }
           break;
         case "Escape":
@@ -224,7 +295,7 @@ export function SearchBar({
           break;
       }
     },
-    [isOpen, suggestions, selectedIndex, handleSelect]
+    [isOpen, suggestions, popularPackages, selectedPackages, query, selectedIndex, handleSelect]
   );
 
   /**
@@ -256,7 +327,15 @@ export function SearchBar({
           value={query}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onFocus={() => suggestions.length > 0 && setIsOpen(true)}
+          onFocus={() => {
+            if (query.length === 0) {
+              // Show popular packages when focusing on empty input
+              fetchPopularPackages();
+              setIsOpen(true);
+            } else if (suggestions.length > 0) {
+              setIsOpen(true);
+            }
+          }}
           placeholder={placeholder}
           disabled={disabled}
           className="pl-10 pr-10"
@@ -271,7 +350,7 @@ export function SearchBar({
         )}
       </div>
 
-      {isOpen && (suggestions.length > 0 || error || (hasSearched && !isLoading)) && (
+      {isOpen && (suggestions.length > 0 || error || (hasSearched && !isLoading) || (query.length === 0 && (popularPackages.length > 0 || isLoadingPopular))) && (
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
@@ -281,6 +360,44 @@ export function SearchBar({
             <div className="px-3 py-6 text-center text-sm text-destructive">
               {error}
             </div>
+          ) : query.length === 0 && (popularPackages.length > 0 || isLoadingPopular) ? (
+            // Show popular packages when query is empty
+            <>
+              <div className="px-3 py-2 text-xs font-medium text-muted-foreground border-b">
+                Popular packages
+              </div>
+              {isLoadingPopular ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                </div>
+              ) : (
+                <ul className="max-h-60 overflow-auto py-1">
+                  {popularPackages.filter(pkg => !selectedPackages.includes(pkg.name)).map((pkg, index) => (
+                    <li
+                      key={pkg.name}
+                      role="option"
+                      aria-selected={index === selectedIndex}
+                      className={cn(
+                        "cursor-pointer px-3 py-2 hover:bg-accent",
+                        index === selectedIndex && "bg-accent"
+                      )}
+                      onClick={() => handleSelect(pkg.name)}
+                      onMouseEnter={() => setSelectedIndex(index)}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-medium">{pkg.name}</span>
+                        {pkg.weeklyDownloads !== undefined && (
+                          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Download className="h-3 w-3" />
+                            {formatDownloads(pkg.weeklyDownloads)}/wk
+                          </span>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           ) : suggestions.length > 0 ? (
             <ul className="max-h-60 overflow-auto py-1">
               {suggestions.map((pkg, index) => (
