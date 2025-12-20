@@ -70,7 +70,7 @@
       "Step 3: Verify UPSTASH_REDIS_REST_TOKEN is set",
       "Step 4: Verify app starts with env vars"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -100,7 +100,7 @@
       "Step 2: Check Access-Control-Allow-Origin header",
       "Step 3: Verify allowed methods"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
