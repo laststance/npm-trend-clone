@@ -204,7 +204,7 @@
       "Step 3: Verify second item is highlighted",
       "Step 4: Press Enter to select"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
