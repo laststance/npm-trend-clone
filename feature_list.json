@@ -1309,7 +1309,7 @@
       "Step 3: Dropdown shows recent presets",
       "Step 4: Click to load"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
