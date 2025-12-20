@@ -497,7 +497,7 @@
       "Step 2: Wait for data to load",
       "Step 3: Verify .recharts-wrapper is visible"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -507,7 +507,7 @@
       "Step 2: Wait for chart to render",
       "Step 3: Verify 2 .recharts-line elements"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -527,7 +527,7 @@
       "Step 2: Verify X-axis has date labels",
       "Step 3: Dates are formatted correctly"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -537,7 +537,7 @@
       "Step 2: Verify Y-axis has number labels",
       "Step 3: Numbers are formatted (K, M)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -548,7 +548,7 @@
       "Step 3: Verify tooltip appears",
       "Step 4: Shows date and download count"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -558,7 +558,7 @@
       "Step 2: Hover over chart",
       "Step 3: Tooltip shows all 3 package values"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -609,7 +609,7 @@
       "Step 2: Verify each line has unique color",
       "Step 3: Colors are distinguishable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
