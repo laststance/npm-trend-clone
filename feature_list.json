@@ -1087,7 +1087,7 @@
       "Step 2: Verify error message",
       "Step 3: Link to request new token"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
