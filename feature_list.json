@@ -1903,7 +1903,7 @@
       "Step 2: Go back online",
       "Step 3: Verify auto-retry happens"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

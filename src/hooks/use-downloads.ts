@@ -93,21 +93,50 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
       controller.abort();
     }, 30000);
 
+    /**
+     * Fetch with automatic retry and exponential backoff.
+     * @param url - URL to fetch
+     * @param options - Fetch options
+     * @param retries - Number of retries remaining
+     * @param delay - Current delay in ms
+     */
+    async function fetchWithRetry(
+      url: string,
+      options: RequestInit,
+      retries = 3,
+      delay = 1000
+    ): Promise<Response> {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error("Failed to fetch download data");
+        }
+        return response;
+      } catch (err) {
+        // Don't retry on abort or when no retries left
+        if (
+          retries <= 0 ||
+          (err instanceof Error && err.name === "AbortError")
+        ) {
+          throw err;
+        }
+        // Wait with exponential backoff and retry
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return fetchWithRetry(url, options, retries - 1, delay * 2);
+      }
+    }
+
     const fetchDownloads = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const response = await fetch(
+        const response = await fetchWithRetry(
           `/api/downloads?packages=${packagesKey}&range=${timeRange}`,
           { signal: controller.signal }
         );
 
         clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch download data");
-        }
 
         const downloadData: DownloadData = await response.json();
 
