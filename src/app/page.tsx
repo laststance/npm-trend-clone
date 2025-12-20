@@ -8,6 +8,7 @@ import { TrendChart } from "@/components/trend-chart";
 import { TimeRangeSelector } from "@/components/time-range-selector";
 import { ShareButton } from "@/components/share-button";
 import { ExportButton } from "@/components/export-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { MAX_PACKAGES } from "@/constants/colors";
 import { useUrlState } from "@/hooks/use-url-state";
 import { useDownloads } from "@/hooks/use-downloads";
@@ -66,7 +67,7 @@ function HomeContent() {
       <header className="border-b">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <h1 className="text-xl font-bold">npm trends</h1>
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center gap-2">
             <a
               href="https://github.com/laststance/npm-trend-clone"
               target="_blank"
@@ -75,6 +76,7 @@ function HomeContent() {
             >
               GitHub
             </a>
+            <ThemeToggle />
           </nav>
         </div>
       </header>

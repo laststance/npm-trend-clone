@@ -24,4 +24,31 @@ test.describe("Home Page", () => {
   test("should have correct page title", async ({ page }) => {
     await expect(page).toHaveTitle(/npm trend/i);
   });
+
+  test("should toggle dark mode when clicking theme button", async ({
+    page,
+  }) => {
+    // Wait for page to fully load
+    await page.waitForLoadState("networkidle");
+
+    // Find the theme toggle button
+    const themeButton = page.getByRole("button", { name: /toggle theme|switch to/i });
+    await expect(themeButton).toBeVisible();
+
+    // Get initial theme state (default is dark)
+    const htmlElement = page.locator("html");
+    const initialClass = await htmlElement.getAttribute("class");
+    const wasDark = initialClass?.includes("dark");
+
+    // Click to toggle
+    await themeButton.click();
+    await page.waitForTimeout(200);
+
+    // Verify theme changed
+    const newClass = await htmlElement.getAttribute("class");
+    const isDark = newClass?.includes("dark");
+
+    // Theme should have toggled
+    expect(isDark).not.toBe(wasDark);
+  });
 });

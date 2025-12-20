@@ -1319,7 +1319,7 @@
       "Step 2: Click to toggle",
       "Step 3: Verify theme changes"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
