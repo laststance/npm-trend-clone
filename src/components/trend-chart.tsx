@@ -7,6 +7,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import type { SelectedPackage, ChartDataPoint } from "@/types/package";
@@ -171,6 +172,14 @@ export function TrendChart({ data, packages, isLoading = false }: TrendChartProp
             }}
           />
           <Tooltip content={<CustomTooltip />} />
+          <Legend
+            wrapperStyle={{
+              paddingTop: 16,
+            }}
+            formatter={(value: string) => (
+              <span className="text-foreground text-sm">{value}</span>
+            )}
+          />
           {packages.map((pkg) => (
             <Line
               key={pkg.name}

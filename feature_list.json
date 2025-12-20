@@ -517,7 +517,7 @@
       "Step 2: Verify legend shows package names",
       "Step 3: Legend colors match line colors"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
