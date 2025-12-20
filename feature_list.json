@@ -1003,7 +1003,7 @@
       "Step 3: Verify redirect to home",
       "Step 4: Verify auth state cleared"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1013,7 +1013,7 @@
       "Step 2: Verify avatar in header",
       "Step 3: Click shows user menu"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1023,7 +1023,7 @@
       "Step 2: Refresh page",
       "Step 3: Verify still logged in"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
