@@ -2354,7 +2354,7 @@
       "Step 2: Verify backdrop overlay",
       "Step 3: Background blurred or dimmed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
