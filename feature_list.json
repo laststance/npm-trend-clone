@@ -426,7 +426,7 @@
       "Step 2: Press F5 to refresh",
       "Step 3: Verify packages still selected"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
