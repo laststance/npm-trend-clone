@@ -1954,7 +1954,7 @@
       "Step 2: Navigate to home",
       "Step 3: Verify desktop layout"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2214,7 +2214,7 @@
       "Step 2: Verify horizontal/vertical padding",
       "Step 3: Matches design system"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2224,7 +2224,7 @@
       "Step 2: Verify internal padding",
       "Step 3: Text not touching edges"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2234,7 +2234,7 @@
       "Step 2: Verify multiples of 8px",
       "Step 3: Consistent spacing"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2294,7 +2294,7 @@
       "Step 2: Verify border-radius value",
       "Step 3: Matches design system (4/8/12px)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
@@ -2304,7 +2304,7 @@
       "Step 2: Verify smooth transition",
       "Step 3: Duration ~150-200ms"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
