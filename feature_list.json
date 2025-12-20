@@ -1497,7 +1497,7 @@
       "Step 2: Verify each has associated label",
       "Step 3: Label is descriptive"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1772,7 +1772,7 @@
       "Step 2: Measure time to chart visible",
       "Step 3: Verify under 1000ms"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
