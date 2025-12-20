@@ -1681,7 +1681,7 @@
       "Step 3: Measure load time",
       "Step 4: Verify under 3000ms"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1691,7 +1691,7 @@
       "Step 2: Measure LCP",
       "Step 3: Verify under 2500ms"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1701,7 +1701,7 @@
       "Step 2: Measure FCP",
       "Step 3: Verify under 1800ms"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1712,7 +1712,7 @@
       "Step 3: Measure CLS",
       "Step 4: Verify under 0.1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
