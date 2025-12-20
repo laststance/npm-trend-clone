@@ -83,6 +83,17 @@ export function useUrlState() {
     await setPackagesParam([]);
   }, [setPackagesParam]);
 
+  /**
+   * Sets all packages (replaces current selection).
+   * @param packages - Array of package names to set
+   */
+  const setPackages = useCallback(
+    async (packages: string[]) => {
+      await setPackagesParam(packages);
+    },
+    [setPackagesParam]
+  );
+
   return {
     selectedPackages,
     timeRange,
@@ -90,6 +101,7 @@ export function useUrlState() {
     removePackage,
     setTimeRange,
     clearPackages,
+    setPackages,
     packageNames: packagesParam,
   };
 }

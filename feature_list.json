@@ -1163,7 +1163,7 @@
       "Step 4: Enter preset name",
       "Step 5: Verify preset saved"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1174,7 +1174,7 @@
       "Step 3: Click saved preset",
       "Step 4: Verify packages loaded"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1185,7 +1185,7 @@
       "Step 3: Confirm deletion",
       "Step 4: Verify preset removed"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1196,7 +1196,7 @@
       "Step 3: Change name",
       "Step 4: Save and verify"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1206,7 +1206,7 @@
       "Step 2: Open preset list",
       "Step 3: Verify newest first"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1216,7 +1216,7 @@
       "Step 2: Try to create 11th",
       "Step 3: Verify limit error shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1226,7 +1226,7 @@
       "Step 2: Logout and login again",
       "Step 3: Verify preset still exists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1236,7 +1236,7 @@
       "Step 2: Verify URL contains packages",
       "Step 3: URL is shareable"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1246,7 +1246,7 @@
       "Step 2: Verify each shows package count",
       "Step 3: Badge format: '3 packages'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1257,7 +1257,7 @@
       "Step 3: Reload page",
       "Step 4: Verify preset persists"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1278,7 +1278,7 @@
       "Step 2: Enter 60 character name",
       "Step 3: Verify truncated or error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1288,7 +1288,7 @@
       "Step 2: Try to create another with same name",
       "Step 3: Verify warning shown"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1298,7 +1298,7 @@
       "Step 2: Leave name empty",
       "Step 3: Verify validation error"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

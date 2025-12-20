@@ -8,6 +8,7 @@ import { TrendChart } from "@/components/trend-chart";
 import { TimeRangeSelector } from "@/components/time-range-selector";
 import { ShareButton } from "@/components/share-button";
 import { ExportButton } from "@/components/export-button";
+import { PresetManager } from "@/components/preset-manager";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { MobileNav } from "@/components/mobile-nav";
 import {
@@ -24,7 +25,7 @@ import { usePackageInfo } from "@/hooks/use-package-info";
  * Inner component that uses URL state hooks.
  */
 function HomeContent() {
-  const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange } = useUrlState();
+  const { selectedPackages, timeRange, addPackage, removePackage, setTimeRange, setPackages } = useUrlState();
   const packageNames = selectedPackages.map((p) => p.name);
   const { data: chartData, isLoading, error, invalidPackages, refetch } = useDownloads(packageNames, timeRange);
   const { data: packageInfoData, isLoading: isLoadingInfo } = usePackageInfo(packageNames);
@@ -131,6 +132,11 @@ function HomeContent() {
             <section className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
               <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
               <div className="flex items-center gap-2">
+                <PresetManager
+                  currentPackages={packageNames}
+                  onLoadPreset={setPackages}
+                  disabled={isLoading}
+                />
                 <ExportButton disabled={isLoading} />
                 <ShareButton />
               </div>
