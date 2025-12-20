@@ -1599,7 +1599,7 @@
       "Step 2: Verify icon or text also present",
       "Step 3: Info conveyed without color"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -2184,7 +2184,7 @@
       "Step 2: Verify amber/yellow color",
       "Step 3: Matches design token"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "style",
