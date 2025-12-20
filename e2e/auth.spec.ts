@@ -133,12 +133,53 @@ test.describe("Auth Pages", () => {
     await expect(page.getByPlaceholder("you@example.com")).toBeVisible();
   });
 
-  test("should display settings page", async ({ page }) => {
+  test("should redirect to login from protected settings page", async ({ page }) => {
+    // Clear any existing auth state
+    await page.goto("/");
+    await page.evaluate(() => localStorage.removeItem("npm-trend-demo-auth"));
+
+    // Try to access settings
     await page.goto("/settings");
 
+    // Should redirect to login with returnUrl
+    await expect(page).toHaveURL(/\/login\?returnUrl=%2Fsettings/);
+    await expect(page.getByText("Welcome back")).toBeVisible();
+  });
+
+  test("should allow access to settings when authenticated", async ({ page }) => {
+    // Set up demo auth state
+    await page.goto("/");
+    await page.evaluate(() => {
+      localStorage.setItem("npm-trend-demo-auth", JSON.stringify({
+        id: "demo-user-1",
+        email: "test@example.com",
+        name: "test"
+      }));
+    });
+
+    // Navigate to settings
+    await page.goto("/settings");
+
+    // Should show settings page
     await expect(page.getByText("Account Settings")).toBeVisible();
     await expect(page.getByText("Profile").first()).toBeVisible();
     await expect(page.getByText("Danger Zone")).toBeVisible();
+  });
+
+  test("should login and redirect to returnUrl", async ({ page }) => {
+    // Clear auth state and go to login with returnUrl
+    await page.goto("/");
+    await page.evaluate(() => localStorage.removeItem("npm-trend-demo-auth"));
+    await page.goto("/login?returnUrl=%2Fsettings");
+
+    // Fill login form
+    await page.getByPlaceholder("you@example.com").fill("test@example.com");
+    await page.getByPlaceholder("Enter your password").fill("demo");
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    // Should redirect to settings after login
+    await expect(page).toHaveURL("/settings", { timeout: 5000 });
+    await expect(page.getByText("Account Settings")).toBeVisible();
   });
 });
 

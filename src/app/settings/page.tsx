@@ -25,15 +25,29 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { ProtectedRoute } from "@/components/protected-route";
+import { useAuth } from "@/contexts/auth-context";
 
 /**
  * Account settings page component.
  * Allows users to manage their profile, change password, and delete account.
- * Currently displays demo UI as backend is not implemented.
+ * Protected route - requires authentication.
  */
 export default function SettingsPage() {
-  const [name, setName] = useState("Demo User");
-  const [email] = useState("demo@example.com");
+  return (
+    <ProtectedRoute>
+      <SettingsContent />
+    </ProtectedRoute>
+  );
+}
+
+/**
+ * Settings page content (protected).
+ */
+function SettingsContent() {
+  const { user } = useAuth();
+  const [name, setName] = useState(user?.name || "Demo User");
+  const [email] = useState(user?.email || "demo@example.com");
   const [isLoading, setIsLoading] = useState(false);
 
   /**

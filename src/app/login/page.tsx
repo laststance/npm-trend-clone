@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Github } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAuth } from "@/contexts/auth-context";
 
 /**
  * Validates email format.
@@ -30,8 +32,34 @@ function isValidEmail(email: string): boolean {
  * Login page component.
  * Provides email/password login with client-side validation.
  * Includes OAuth login options and forgot password link.
+ * Supports returnUrl for redirect after successful login.
  */
 export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background p-4">
+          <Card className="w-full max-w-md">
+            <CardContent className="py-8">
+              <p className="text-center text-muted-foreground">Loading...</p>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+/**
+ * Login page content (wrapped in Suspense for useSearchParams).
+ */
+function LoginContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/";
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -61,7 +89,7 @@ export default function LoginPage() {
 
   /**
    * Handles form submission.
-   * Currently shows a demo message as backend is not implemented.
+   * Uses demo auth context - accepts password "demo" or any 8+ char password.
    */
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -73,17 +101,23 @@ export default function LoginPage() {
 
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const success = await login(email, password);
 
-      // Demo: Show error for invalid credentials
-      toast.error("Invalid credentials", {
-        description: "Authentication backend is not yet implemented",
-      });
+      if (success) {
+        toast.success("Welcome back!", {
+          description: "You have been signed in successfully",
+        });
+        // Redirect to return URL or home
+        router.push(returnUrl);
+      } else {
+        toast.error("Invalid credentials", {
+          description: "Password must be 'demo' or at least 8 characters",
+        });
+      }
 
       setIsLoading(false);
     },
-    [validateForm]
+    [validateForm, login, email, password, router, returnUrl]
   );
 
   /**

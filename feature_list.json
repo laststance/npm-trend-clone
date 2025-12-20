@@ -1097,7 +1097,7 @@
       "Step 2: Navigate to /settings",
       "Step 3: Verify redirect to /login"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1108,7 +1108,7 @@
       "Step 3: Login successfully",
       "Step 4: Verify redirect to /settings"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
