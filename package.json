@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
-    "build:e2e": "NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next build",
+    "build": "prisma generate && next build",
+    "build:e2e": "prisma generate && NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next build",
     "start": "next start",
     "start:e2e": "NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next start",
     "lint": "eslint . --ext .ts,.tsx",

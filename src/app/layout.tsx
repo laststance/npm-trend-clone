@@ -29,12 +29,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "npm trends - Compare npm package downloads",
+  title: "npm trend clone - Compare npm package downloads",
   description:
     "Compare npm package download statistics over time. Find the best packages for your project.",
   keywords: ["npm", "trends", "packages", "downloads", "statistics", "compare"],
   openGraph: {
-    title: "npm trends - Compare npm package downloads",
+    title: "npm trend clone - Compare npm package downloads",
     description: "Compare npm package download statistics over time.",
     type: "website",
   },
