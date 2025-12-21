@@ -97,7 +97,7 @@ function HomeContent() {
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4">
-          <h1 className="text-lg sm:text-xl font-bold">npm trends</h1>
+          <h1 className="text-lg sm:text-xl font-bold">npm trend clone</h1>
           {/* Desktop navigation - hidden on mobile */}
           <nav className="hidden md:flex items-center gap-1 sm:gap-2">
             <PresetManager
