@@ -110,7 +110,7 @@
       "Step 2: Verify 429 response after limit",
       "Step 3: Check Retry-After header"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
