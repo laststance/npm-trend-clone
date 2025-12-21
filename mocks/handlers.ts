@@ -20,9 +20,18 @@ export const handlers = [
   // Health check endpoint
   http.get("/api/health", () => {
     return HttpResponse.json({
-      status: "ok",
+      status: "healthy",
       timestamp: new Date().toISOString(),
-      environment: "test",
+      services: {
+        app: "ok",
+        redis: "up",
+      },
+      details: {
+        redis: {
+          latencyMs: 50,
+        },
+      },
+      uptime: 123.456,
     });
   }),
 
