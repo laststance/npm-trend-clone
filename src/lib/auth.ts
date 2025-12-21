@@ -27,6 +27,29 @@ export const auth = betterAuth({
   }),
 
   /**
+   * Base URL for Better Auth.
+   * Required for OAuth callback URLs to work correctly in production.
+   * Falls back to BETTER_AUTH_URL env var, then VERCEL_URL for Vercel deployments.
+   */
+  baseURL:
+    process.env.BETTER_AUTH_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000"),
+
+  /**
+   * Trusted origins for CORS and security.
+   * Includes localhost for development and Vercel domains for production.
+   */
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:3002",
+    "https://npm-trend-clone.vercel.app",
+    "https://*.vercel.app",
+  ],
+
+  /**
    * Email and password authentication configuration.
    * Allows users to sign up and sign in with email/password.
    */
