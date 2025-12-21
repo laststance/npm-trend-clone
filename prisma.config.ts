@@ -10,6 +10,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env.DATABASE_URL!,
+    // Use direct (unpooled) connection for migrations
+    // This is required because Prisma Migrate needs a direct connection
+    url: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL!,
   },
 });
