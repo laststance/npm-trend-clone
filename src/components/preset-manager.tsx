@@ -86,8 +86,8 @@ export function PresetManager({
   /**
    * Saves the current packages as a new preset.
    */
-  const handleSavePreset = useCallback(() => {
-    const result = savePreset(presetName, currentPackages);
+  const handleSavePreset = useCallback(async () => {
+    const result = await savePreset(presetName, currentPackages);
     if (result.error) {
       setNameError(result.error);
       return;
@@ -120,9 +120,9 @@ export function PresetManager({
   /**
    * Renames the selected preset.
    */
-  const handleRenamePreset = useCallback(() => {
+  const handleRenamePreset = useCallback(async () => {
     if (!selectedPreset) return;
-    const error = renamePreset(selectedPreset.id, presetName);
+    const error = await renamePreset(selectedPreset.id, presetName);
     if (error) {
       setNameError(error);
       return;
@@ -142,11 +142,15 @@ export function PresetManager({
   /**
    * Deletes the selected preset.
    */
-  const handleDeletePreset = useCallback(() => {
+  const handleDeletePreset = useCallback(async () => {
     if (!selectedPreset) return;
-    deletePreset(selectedPreset.id);
-    setDeleteDialogOpen(false);
-    toast.success(`Preset "${selectedPreset.name}" deleted`);
+    const success = await deletePreset(selectedPreset.id);
+    if (success) {
+      setDeleteDialogOpen(false);
+      toast.success(`Preset "${selectedPreset.name}" deleted`);
+    } else {
+      toast.error("Failed to delete preset");
+    }
   }, [selectedPreset, deletePreset]);
 
   const canSave = currentPackages.length > 0 && presets.length < maxPresets;

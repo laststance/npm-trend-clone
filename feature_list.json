@@ -1034,7 +1034,7 @@
       "Step 3: Complete OAuth flow",
       "Step 4: Verify logged in"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1045,7 +1045,7 @@
       "Step 3: Complete OAuth flow",
       "Step 4: Verify logged in"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1268,7 +1268,7 @@
       "Step 3: Clear localStorage",
       "Step 4: Reload - presets from server"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -1923,7 +1923,7 @@
       "Step 2: Session expires",
       "Step 3: Verify redirect to login"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
