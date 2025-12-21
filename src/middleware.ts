@@ -3,20 +3,31 @@ import { Redis } from "@upstash/redis";
 import { type NextRequest, NextResponse } from "next/server";
 
 /**
+ * Checks if rate limiting should be bypassed.
+ * Bypasses in test environment to allow E2E tests without Redis.
+ */
+const shouldBypassRateLimit =
+  process.env.APP_ENV === "test" ||
+  process.env.NEXT_PUBLIC_ENABLE_MSW_MOCK === "true";
+
+/**
  * Rate limiter using Upstash Redis with sliding window algorithm.
  * Limits: 100 requests per 10 seconds per IP address.
  *
  * @description
  * Uses sliding window for accurate rate limiting without burst issues.
  * Ephemeral cache reduces Redis calls for hot IPs.
+ * Skipped in test mode to allow E2E testing without Redis dependency.
  */
-const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(100, "10 s"),
-  ephemeralCache: new Map(),
-  analytics: true,
-  prefix: "npm-trend-ratelimit",
-});
+const ratelimit = shouldBypassRateLimit
+  ? null
+  : new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(100, "10 s"),
+      ephemeralCache: new Map(),
+      analytics: true,
+      prefix: "npm-trend-ratelimit",
+    });
 
 /**
  * Extracts client IP address from request headers.
@@ -46,6 +57,11 @@ function getClientIp(request: NextRequest): string {
 }
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  // Bypass rate limiting in test mode
+  if (!ratelimit) {
+    return NextResponse.next();
+  }
+
   const ip = getClientIp(request);
 
   try {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Github, Check, X } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
+import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -170,14 +171,35 @@ export default function SignupPage() {
   );
 
   /**
-   * Handles OAuth signup.
-   * Currently shows a demo message as OAuth is not implemented.
+   * Handles OAuth signup via Better Auth.
+   * Initiates the OAuth flow with the specified provider.
+   * @param provider - OAuth provider ("github" or "google")
    */
-  const handleOAuthSignup = useCallback((provider: "github" | "google") => {
-    toast.info(`${provider} OAuth`, {
-      description: "OAuth integration is not yet implemented",
-    });
-  }, []);
+  const handleOAuthSignup = useCallback(
+    async (provider: "github" | "google") => {
+      setIsLoading(true);
+      try {
+        const { error } = await authClient.signIn.social({
+          provider,
+          callbackURL: "/",
+        });
+
+        if (error) {
+          toast.error("OAuth sign-up failed", {
+            description: error.message || "Please try again",
+          });
+        }
+        // On success, the user will be redirected by Better Auth
+      } catch {
+        toast.error("OAuth sign-up failed", {
+          description: "An unexpected error occurred",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   /**
    * Renders password strength indicator.
