@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
+import { authClient } from "@/lib/auth-client";
 
 /**
  * Validates email format.
@@ -121,14 +122,35 @@ function LoginContent() {
   );
 
   /**
-   * Handles OAuth login.
-   * Currently shows a demo message as OAuth is not implemented.
+   * Handles OAuth login via Better Auth.
+   * Initiates the OAuth flow with the specified provider.
+   * @param provider - OAuth provider ("github" or "google")
    */
-  const handleOAuthLogin = useCallback((provider: "github" | "google") => {
-    toast.info(`${provider} OAuth`, {
-      description: "OAuth integration is not yet implemented",
-    });
-  }, []);
+  const handleOAuthLogin = useCallback(
+    async (provider: "github" | "google") => {
+      setIsLoading(true);
+      try {
+        const { error } = await authClient.signIn.social({
+          provider,
+          callbackURL: returnUrl,
+        });
+
+        if (error) {
+          toast.error("OAuth sign-in failed", {
+            description: error.message || "Please try again",
+          });
+        }
+        // On success, the user will be redirected by Better Auth
+      } catch {
+        toast.error("OAuth sign-in failed", {
+          description: "An unexpected error occurred",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [returnUrl]
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
