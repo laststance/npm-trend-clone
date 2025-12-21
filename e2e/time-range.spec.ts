@@ -9,7 +9,14 @@ test.describe("Time Range Selection", () => {
     // Load page with a package to see the time range selector
     await page.goto("/?packages=react");
     await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(1000);
+
+    // Wait for chart to fully load (dynamic import + data fetch)
+    // The chart shows "Loading download data..." while fetching, then renders
+    await expect(page.locator('[data-testid="trend-chart"]')).toBeVisible({ timeout: 15000 });
+
+    // Wait for the actual chart content to render (not just loading state)
+    // Check for the recharts-wrapper which appears after data loads
+    await expect(page.locator('.recharts-wrapper').first()).toBeVisible({ timeout: 15000 });
   });
 
   test("should display time range selector", async ({ page }) => {
@@ -109,11 +116,13 @@ test.describe("Time Range Selection", () => {
   test("should load with time range from URL", async ({ page }) => {
     await page.goto("/?packages=react&range=6m");
     await page.waitForLoadState("networkidle");
-    await page.waitForTimeout(1000);
 
-    // Chart should load with 6 month range
+    // Wait for chart to be visible
     const chart = page.locator('[data-testid="trend-chart"]');
-    await expect(chart).toBeVisible({ timeout: 10000 });
+    await expect(chart).toBeVisible({ timeout: 15000 });
+
+    // Wait for chart data to load (loading text disappears, chart wrapper appears)
+    await expect(page.locator(".recharts-wrapper").first()).toBeVisible({ timeout: 15000 });
 
     // Check if 6M button is active
     const sixMonthButton = page.locator('button:has-text("6 Months"), button:has-text("6M")').first();
@@ -124,16 +133,20 @@ test.describe("Time Range Selection", () => {
   });
 
   test("should update chart when time range changes", async ({ page }) => {
-    // Wait for initial chart
+    // Wait for initial chart and data to load
     const chart = page.locator('[data-testid="trend-chart"]');
-    await expect(chart).toBeVisible({ timeout: 10000 });
+    await expect(chart).toBeVisible({ timeout: 15000 });
+    await expect(page.locator(".recharts-wrapper")).toBeVisible({ timeout: 15000 });
 
     // Change time range
     const monthButton = page.locator('button:has-text("1 Month"), button:has-text("1M")').first();
 
     if (await monthButton.isVisible()) {
       await monthButton.click();
-      await page.waitForTimeout(1000);
+
+      // Wait for chart to update with new data
+      await page.waitForLoadState("networkidle");
+      await page.waitForTimeout(500);
 
       // Chart should still be visible after time range change
       await expect(chart).toBeVisible();
