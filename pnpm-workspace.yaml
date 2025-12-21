@@ -1,6 +1,9 @@
-packages:
-  - .
-ignoredBuiltDependencies:
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - '@sentry/cli'
+  - core-js-pure
+  - esbuild
+  - msw
+  - prisma
   - sharp
   - unrs-resolver
-allowedBuildScripts: ["prisma", "@prisma/engines", "@sentry/cli", "msw", "esbuild"]
