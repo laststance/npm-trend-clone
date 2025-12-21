@@ -37,6 +37,8 @@ jobs:
         env:
           APP_ENV: test
           NEXT_PUBLIC_ENABLE_MSW_MOCK: 'true'
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
