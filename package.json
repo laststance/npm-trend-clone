@@ -1,6 +1,25 @@
 {
   "name": "npm-trend-clone",
   "version": "0.1.0",
+  "description": "A modern clone of npmtrends.com built with Next.js 16, featuring npm package download statistics comparison and visualization",
+  "author": "Laststance.io (https://github.com/laststance)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laststance/npm-trend-clone.git"
+  },
+  "homepage": "https://github.com/laststance/npm-trend-clone#readme",
+  "bugs": {
+    "url": "https://github.com/laststance/npm-trend-clone/issues"
+  },
+  "keywords": [
+    "npm",
+    "trends",
+    "statistics",
+    "nextjs",
+    "typescript",
+    "react"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
