@@ -1,12 +1,16 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
 
 /**
  * Prisma client instance for database operations.
- * Uses standard Prisma client - Neon's pooled connections work directly.
+ * Uses PrismaPg adapter for Neon PostgreSQL (required for Prisma 7.x).
+ *
+ * @see https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections
  */
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
 /**
  * Better Auth server-side configuration.
