@@ -10,8 +10,9 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // Use direct (unpooled) connection for migrations
-    // This is required because Prisma Migrate needs a direct connection
-    url: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL!,
+    // Use DATABASE_URL for db push (works with pooled connections)
+    // Use DATABASE_URL_UNPOOLED for migrate commands (requires direct connection)
+    // On Vercel, db push is preferred as pooled connections are more reliable
+    url: process.env.DATABASE_URL!,
   },
 });
