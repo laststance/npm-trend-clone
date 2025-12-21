@@ -2,7 +2,7 @@
   "name": "npm-trend-clone",
   "version": "0.1.0",
   "description": "A modern clone of npmtrends.com built with Next.js 16, featuring npm package download statistics comparison and visualization",
-  "author": "Laststance.io (https://github.com/laststance)",
+  "author": "Ryota Murakami <ryota.murakami@laststance.io> (https://github.com/ryota-murakami)",
   "license": "MIT",
   "repository": {
     "type": "git",
