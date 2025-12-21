@@ -10,6 +10,29 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
+    # Service containers for Redis + Upstash-compatible REST API
+    # See: https://upstash.com/docs/redis/sdks/ts/developing
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis-http:
+        image: hiett/serverless-redis-http:latest
+        ports:
+          - 8079:80
+        env:
+          SRH_MODE: env
+          SRH_TOKEN: ci_test_token
+          SRH_CONNECTION_STRING: redis://redis:6379
+
     steps:
       - uses: actions/checkout@v4
 
@@ -22,11 +45,14 @@ jobs:
       - name: Build application
         run: pnpm build
         env:
+          # Use local SRH for Redis (Upstash-compatible)
+          UPSTASH_REDIS_REST_URL: http://localhost:8079
+          UPSTASH_REDIS_REST_TOKEN: ci_test_token
+          # Database (still using Neon for now - can be replaced with local PG later)
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
-          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
-          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+          # Auth
+          BETTER_AUTH_SECRET: ci_test_secret_key_for_testing_only
           GITHUB_CLIENT_ID: ${{ secrets.OAUTH_GITHUB_CLIENT_ID }}
           GITHUB_CLIENT_SECRET: ${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}
           GOOGLE_CLIENT_ID: ${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}
@@ -37,8 +63,9 @@ jobs:
         env:
           APP_ENV: test
           NEXT_PUBLIC_ENABLE_MSW_MOCK: 'true'
-          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
-          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          # Use local SRH for Redis (Upstash-compatible)
+          UPSTASH_REDIS_REST_URL: http://localhost:8079
+          UPSTASH_REDIS_REST_TOKEN: ci_test_token
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
