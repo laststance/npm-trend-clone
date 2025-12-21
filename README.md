@@ -205,5 +205,3 @@ This project is open source and available under the [MIT License](LICENSE).
 
 - [npm trends](https://npmtrends.com/) - The original inspiration
 - [npm Registry API](https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md) - npm API documentation
-- [Next.js Documentation](https://nextjs.org/docs) - Next.js framework docs
-- [Upstash Redis](https://upstash.com/docs/redis) - Serverless Redis documentation
