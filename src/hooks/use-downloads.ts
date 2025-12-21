@@ -1,7 +1,22 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 import type { ChartDataPoint, TimeRange } from "@/types/package";
+
+/**
+ * Custom error class for rate limit responses.
+ * Contains the retry-after duration in seconds.
+ */
+class RateLimitError extends Error {
+  retryAfter: number;
+
+  constructor(retryAfter: number) {
+    super(`Rate limit exceeded. Please try again in ${retryAfter} seconds.`);
+    this.name = "RateLimitError";
+    this.retryAfter = retryAfter;
+  }
+}
 
 /**
  * API response structure for download data.
@@ -108,15 +123,38 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
     ): Promise<Response> {
       try {
         const response = await fetch(url, options);
+
+        // Handle rate limiting - don't retry, show wait time to user
+        if (response.status === 429) {
+          const retryAfterHeader = response.headers.get("Retry-After");
+          let retryAfter = 10; // Default fallback
+
+          // Try to get retryAfter from response body
+          try {
+            const errorBody = await response.json();
+            if (typeof errorBody.retryAfter === "number") {
+              retryAfter = errorBody.retryAfter;
+            }
+          } catch {
+            // If body parsing fails, use header value
+            if (retryAfterHeader) {
+              retryAfter = parseInt(retryAfterHeader, 10) || 10;
+            }
+          }
+
+          throw new RateLimitError(retryAfter);
+        }
+
         if (!response.ok) {
           throw new Error("Failed to fetch download data");
         }
         return response;
       } catch (err) {
-        // Don't retry on abort or when no retries left
+        // Don't retry on abort, rate limit, or when no retries left
         if (
           retries <= 0 ||
-          (err instanceof Error && err.name === "AbortError")
+          (err instanceof Error && err.name === "AbortError") ||
+          err instanceof RateLimitError
         ) {
           throw err;
         }
@@ -185,6 +223,19 @@ export function useDownloads(packageNames: string[], timeRange: TimeRange) {
           // User-initiated abort (component unmount, etc.) - ignore silently
           return;
         }
+
+        // Handle rate limiting with user-friendly toast
+        if (err instanceof RateLimitError) {
+          const waitTime = err.retryAfter;
+          toast.error("Rate limit exceeded", {
+            description: `Too many requests. Please wait ${waitTime} seconds before trying again.`,
+            duration: Math.min(waitTime * 1000, 10000), // Show for wait time, max 10s
+          });
+          setError(`Rate limited. Please wait ${waitTime} seconds.`);
+          setData([]);
+          return;
+        }
+
         console.error("Error fetching downloads:", err);
         setError(err instanceof Error ? err.message : "Unknown error");
         setData([]);

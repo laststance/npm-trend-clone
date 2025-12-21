@@ -1803,7 +1803,7 @@
       "Step 2: Verify rate limit message",
       "Step 3: Shows time to wait"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
