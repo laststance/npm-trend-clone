@@ -80,7 +80,7 @@
       "Step 2: Check health endpoint /api/health",
       "Step 3: Verify Redis status is 'up'"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
