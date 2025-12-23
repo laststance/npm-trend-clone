@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "sonner";
 import { Providers } from "@/components/providers";
 import { OfflineIndicator } from "@/components/offline-indicator";
@@ -65,6 +66,7 @@ export default function RootLayout({
         <div aria-live="polite" aria-atomic="true">
           <Toaster richColors position="bottom-center" duration={4000} />
         </div>
+        <Analytics />
       </body>
     </html>
   );
