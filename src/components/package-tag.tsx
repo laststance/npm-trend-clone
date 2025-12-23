@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import type { SelectedPackage } from "@/types/package";
+import { getContrastTextColor, getContrastHoverClass } from "@/utils/color";
 
 interface PackageTagProps {
   /** Package data with name and color */
@@ -19,14 +20,18 @@ interface PackageTagProps {
 
 /**
  * Displays a colored tag for a selected package with remove and options buttons.
+ * Uses WCAG-compliant contrast colors for accessibility.
  * @param package - The package to display
  * @param onRemove - Callback when the package is removed
  */
 export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
+  const textColorClass = getContrastTextColor(pkg.color);
+  const hoverClass = getContrastHoverClass(pkg.color);
+
   return (
     <div
       data-testid="package-tag"
-      className="inline-flex items-center gap-0.5 rounded-lg pl-3 pr-1 py-1 min-h-[44px] text-sm font-medium text-white shadow-sm"
+      className={`inline-flex items-center gap-0.5 rounded-lg pl-3 pr-1 py-1 min-h-[44px] text-sm font-medium ${textColorClass} shadow-sm`}
       style={{ backgroundColor: pkg.color }}
     >
       <span className="max-w-[150px] truncate font-mono">{pkg.name}</span>
@@ -36,7 +41,7 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 text-white/80 hover:text-white hover:bg-white/20"
+            className={`h-9 w-9 min-h-[36px] min-w-[36px] p-0 ${hoverClass}`}
             aria-label={`Options for ${pkg.name}`}
           >
             <MoreVertical className="h-4 w-4" />
@@ -63,7 +68,7 @@ export function PackageTag({ package: pkg, onRemove }: PackageTagProps) {
       <Button
         variant="ghost"
         size="sm"
-        className="h-9 w-9 min-h-[36px] min-w-[36px] p-0 text-white/80 hover:text-white hover:bg-white/20"
+        className={`h-9 w-9 min-h-[36px] min-w-[36px] p-0 ${hoverClass}`}
         onClick={() => onRemove(pkg.name)}
         aria-label={`Remove ${pkg.name}`}
       >

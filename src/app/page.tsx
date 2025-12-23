@@ -41,6 +41,8 @@ import {
   PackageInfoCardError,
 } from "@/components/package-info-card";
 import { MAX_PACKAGES } from "@/constants/colors";
+import { PopularLibraries } from "@/components/popular-libraries";
+import { DiscoverPackages } from "@/components/discover-packages";
 import { useUrlState } from "@/hooks/use-url-state";
 import { useDownloads } from "@/hooks/use-downloads";
 import { usePackageInfo } from "@/hooks/use-package-info";
@@ -93,7 +95,7 @@ function HomeContent() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-4">
@@ -122,7 +124,7 @@ function HomeContent() {
       </header>
 
       {/* Main Content */}
-      <main id="main-content" className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+      <main id="main-content" className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         <div className="mx-auto max-w-5xl space-y-4 sm:space-y-6">
           {/* Hero Section */}
           <section className="text-center">
@@ -221,32 +223,22 @@ function HomeContent() {
             </section>
           )}
 
-          {/* Info */}
+          {/* Popular Libraries & Discover Packages - shown when no packages selected */}
           {selectedPackages.length === 0 && (
-            <section className="text-center text-xs sm:text-sm text-muted-foreground">
-              <p>
-                Try searching for popular packages like{" "}
-                <button
-                  onClick={() => handleSelectPackage("react")}
-                  className="text-primary underline-offset-4 hover:underline"
-                >
-                  react
-                </button>
-                ,{" "}
-                <button
-                  onClick={() => handleSelectPackage("vue")}
-                  className="text-primary underline-offset-4 hover:underline"
-                >
-                  vue
-                </button>
-                , or{" "}
-                <button
-                  onClick={() => handleSelectPackage("svelte")}
-                  className="text-primary underline-offset-4 hover:underline"
-                >
-                  svelte
-                </button>
-              </p>
+            <section className="space-y-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <PopularLibraries
+                  onSelectPackage={handleSelectPackage}
+                  selectedPackages={packageNames}
+                />
+                <DiscoverPackages
+                  onSelectCategory={(packages) => {
+                    // Set packages from the category (up to MAX_PACKAGES)
+                    const toSet = packages.slice(0, MAX_PACKAGES);
+                    setPackages(toSet);
+                  }}
+                />
+              </div>
             </section>
           )}
         </div>

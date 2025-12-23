@@ -2525,5 +2525,106 @@
       "Step 3: Visible hover state"
     ],
     "passes": true
+  },
+  {
+    "category": "functional",
+    "description": "Popular libraries menu shows top 10 packages with fire icon and red accent underline",
+    "steps": [
+      "Step 1: Navigate to home page",
+      "Step 2: Verify 'Popular libraries' section visible with fire icon",
+      "Step 3: Verify red accent underline below title",
+      "Step 4: Verify list contains react, lodash, react-dom, axios, chalk, tslib, commander, inquirer, express, vue",
+      "Step 5: Click package name adds it to comparison"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - shadcn/ui components with site design consistency"
+  },
+  {
+    "category": "functional",
+    "description": "Discover packages category grid shows 12 category buttons with icons",
+    "steps": [
+      "Step 1: Navigate to home page",
+      "Step 2: Verify 'Discover packages' section visible with search icon",
+      "Step 3: Verify yellow/orange accent underline below title",
+      "Step 4: Verify grid contains: Front-end, Back-end, CLI, Documentation, CSS, Testing, IoT, Coverage, Mobile, Frameworks, Robotics, Math",
+      "Step 5: Each category has appropriate Lucide icon"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - responsive grid layout with shadcn/ui"
+  },
+  {
+    "category": "functional",
+    "description": "Category button click loads preset packages for that category",
+    "steps": [
+      "Step 1: Click 'Front-end' category button",
+      "Step 2: Verify react, vue, angular, svelte packages added to comparison",
+      "Step 3: Click 'CLI' category button",
+      "Step 4: Verify commander, inquirer, chalk, ora packages added"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - implement category presets with package selection"
+  },
+  {
+    "category": "style",
+    "description": "Site container uses min-height viewport with footer pushed to bottom",
+    "steps": [
+      "Step 1: Navigate to home with no packages selected",
+      "Step 2: Verify footer is at bottom of viewport (not floating in middle)",
+      "Step 3: Verify main content area fills available space",
+      "Step 4: No unwanted vertical scroll gap"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - flex layout with min-h-screen"
+  },
+  {
+    "category": "style",
+    "description": "Package tag text color has proper contrast on all background colors in dark mode",
+    "steps": [
+      "Step 1: Enable dark mode",
+      "Step 2: Add 'react' package (light blue #61dafb background)",
+      "Step 3: Verify text color is dark (not white) for readability",
+      "Step 4: Add 'angular' package (dark red #dd0031 background)",
+      "Step 5: Verify text color is white for readability",
+      "Step 6: All package tags meet WCAG AA contrast ratio (4.5:1)"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - implement getContrastTextColor utility"
+  },
+  {
+    "category": "style",
+    "description": "Popular library items show dotted underline and primary color on hover",
+    "steps": [
+      "Step 1: Hover over package name in Popular libraries list",
+      "Step 2: Verify dotted underline appears",
+      "Step 3: Verify text color changes to primary",
+      "Step 4: Verify smooth transition animation"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - CSS hover states with transitions"
+  },
+  {
+    "category": "style",
+    "description": "Category buttons have border, rounded corners, and hover state",
+    "steps": [
+      "Step 1: Inspect category button styling",
+      "Step 2: Verify border is visible and subtle",
+      "Step 3: Verify rounded corners match design system",
+      "Step 4: Hover shows background color change",
+      "Step 5: Focus ring visible for accessibility"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - shadcn/ui Button with custom styling"
+  },
+  {
+    "category": "functional",
+    "description": "Popular libraries and Discover packages sections responsive on mobile",
+    "steps": [
+      "Step 1: Set viewport to 375px width",
+      "Step 2: Verify sections stack vertically",
+      "Step 3: Verify category grid adjusts to 2 columns",
+      "Step 4: Verify touch targets are 44px minimum"
+    ],
+    "passes": true,
+    "delegation": "gui-phd-web-electron agent - responsive breakpoints"
   }
 ]
