@@ -152,7 +152,7 @@ export default function SignupPage() {
 
       if (result.success) {
         toast.success("Account created!", {
-          description: "Welcome to npm trends",
+          description: "Check your email to verify your account",
         });
         router.push("/");
       } else {

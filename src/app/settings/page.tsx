@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, User, Mail, Lock, Trash2 } from "lucide-react";
+import { ArrowLeft, User, Mail, Lock, Trash2, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -181,10 +181,47 @@ function SettingsContent() {
                     disabled
                     className="bg-muted"
                   />
+                  {user?.emailVerified ? (
+                    <span className="flex items-center gap-1 text-xs text-green-600 whitespace-nowrap">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      Verified
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-xs text-amber-600 whitespace-nowrap">
+                      <AlertCircle className="h-3.5 w-3.5" />
+                      Unverified
+                    </span>
+                  )}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Email cannot be changed
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs text-muted-foreground">
+                    Email cannot be changed
+                  </p>
+                  {user && !user.emailVerified && (
+                    <Button
+                      type="button"
+                      variant="link"
+                      size="sm"
+                      className="h-auto p-0 text-xs"
+                      disabled={isLoading}
+                      onClick={async () => {
+                        const { error } = await authClient.sendVerificationEmail({
+                          email: user.email,
+                          callbackURL: "/settings",
+                        });
+                        if (error) {
+                          toast.error("Failed to send verification email");
+                        } else {
+                          toast.success("Verification email sent", {
+                            description: "Check your inbox",
+                          });
+                        }
+                      }}
+                    >
+                      Resend verification email
+                    </Button>
+                  )}
+                </div>
               </div>
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save Changes"}

@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma generate && prisma db push --accept-data-loss && next build",
-    "build:e2e": "prisma generate && NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next build",
+    "build:e2e": "prisma generate && DATABASE_URL=postgresql://postgres:postgres@localhost:5433/npm_trend_clone prisma db push --accept-data-loss && NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next build",
     "start": "next start",
     "start:e2e": "NEXT_PUBLIC_ENABLE_MSW_MOCK=true APP_ENV=test next start",
     "lint": "eslint . --ext .ts,.tsx",

@@ -1,10 +1,11 @@
 "use client";
 
-import { Suspense, useState, useCallback, useEffect, useMemo } from "react";
+import { Suspense, useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, AlertCircle, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +48,7 @@ export default function ResetPasswordPage() {
 function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const errorParam = searchParams.get("error");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -57,27 +59,15 @@ function ResetPasswordContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [resetComplete, setResetComplete] = useState(false);
 
-  /**
-   * Validates the reset token synchronously.
-   * In demo mode, only "valid" or "demo" tokens are accepted.
-   * @returns true if valid, false if invalid, null if no token provided
-   */
-  const tokenValid = useMemo(() => {
-    if (!token) return false;
-    return token === "valid" || token === "demo";
-  }, [token]);
+  const hasValidToken = !!token && !errorParam;
 
-  /**
-   * Shows error toast for invalid tokens.
-   * Side effect only - token validation is done in useMemo.
-   */
   useEffect(() => {
-    if (token && !tokenValid) {
+    if (errorParam || (!token && !errorParam)) {
       toast.error("Invalid or expired token", {
         description: "Please request a new password reset link",
       });
     }
-  }, [token, tokenValid]);
+  }, [token, errorParam]);
 
   /**
    * Validates the password form.
@@ -108,28 +98,34 @@ function ResetPasswordContent() {
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      if (!validateForm()) {
+      if (!validateForm() || !token) {
         return;
       }
 
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Demo: Show success
-      setResetComplete(true);
-      toast.success("Password reset successful", {
-        description: "You can now login with your new password",
+      const { error } = await authClient.resetPassword({
+        newPassword: password,
+        token,
       });
+
+      if (error) {
+        toast.error("Reset failed", {
+          description: error.message ?? "Could not reset password",
+        });
+      } else {
+        setResetComplete(true);
+        toast.success("Password reset successful", {
+          description: "You can now login with your new password",
+        });
+      }
 
       setIsLoading(false);
     },
-    [validateForm]
+    [validateForm, token, password]
   );
 
-  // Invalid or missing token
-  if (tokenValid === false) {
+  if (!hasValidToken) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
@@ -190,7 +186,6 @@ function ResetPasswordContent() {
     );
   }
 
-  // Valid token - show reset form
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">

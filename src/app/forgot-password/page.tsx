@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,10 +54,6 @@ export default function ForgotPasswordPage() {
     return true;
   }, [email]);
 
-  /**
-   * Handles form submission.
-   * Currently shows a demo message as backend is not implemented.
-   */
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -67,18 +64,25 @@ export default function ForgotPasswordPage() {
 
       setIsLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Demo: Show success message
-      setIsSubmitted(true);
-      toast.success("Reset email sent", {
-        description: "Check your inbox for password reset instructions",
+      const { error } = await authClient.requestPasswordReset({
+        email,
+        redirectTo: "/reset-password",
       });
+
+      if (error) {
+        toast.error("Request failed", {
+          description: error.message ?? "Could not send reset email",
+        });
+      } else {
+        setIsSubmitted(true);
+        toast.success("Reset email sent", {
+          description: "Check your inbox for password reset instructions",
+        });
+      }
 
       setIsLoading(false);
     },
-    [validateEmail]
+    [validateEmail, email]
   );
 
   if (isSubmitted) {

@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
+import { sendEmail } from "@/lib/email";
 
 /**
  * Prisma client instance for database operations.
@@ -62,6 +63,31 @@ export const auth = betterAuth({
     minPasswordLength: 8,
     maxPasswordLength: 128,
     autoSignIn: true,
+    sendResetPassword: async ({ user, url }) => {
+      void sendEmail({
+        to: user.email,
+        subject: "Reset your password",
+        html: `<p>Click <a href="${url}">here</a> to reset your password. This link expires in 1 hour.</p>`,
+      });
+    },
+    resetPasswordTokenExpiresIn: 3600,
+  },
+
+  /**
+   * Email verification configuration.
+   * Sends verification email on signup; does not block login for unverified users.
+   */
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }) => {
+      void sendEmail({
+        to: user.email,
+        subject: "Verify your email address",
+        html: `<p>Click <a href="${url}">here</a> to verify your email address.</p>`,
+      });
+    },
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    expiresIn: 3600,
   },
 
   /**
@@ -88,6 +114,12 @@ export const auth = betterAuth({
     cookieCache: {
       enabled: true,
       maxAge: 60 * 5, // 5 minutes
+    },
+  },
+
+  user: {
+    deleteUser: {
+      enabled: true,
     },
   },
 

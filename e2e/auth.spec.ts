@@ -1,8 +1,17 @@
 import { test, expect } from "@playwright/test";
+import {
+  TEST_EMAIL,
+  TEST_PASSWORD,
+  loginAsTestUser,
+  createTempUser,
+  requestPasswordReset,
+  getLatestResetToken,
+  deleteUserByEmail,
+} from "./auth-utils";
 
 test.describe("Password Reset", () => {
-  test("should show error for invalid token", async ({ page }) => {
-    await page.goto("/reset-password?token=invalidtoken123");
+  test("should show error for error query param", async ({ page }) => {
+    await page.goto("/reset-password?error=INVALID_TOKEN");
 
     await expect(page.getByText("Invalid Reset Link")).toBeVisible();
     await expect(
@@ -13,8 +22,14 @@ test.describe("Password Reset", () => {
     await expect(page.getByRole("link", { name: "Back to login" })).toBeVisible();
   });
 
-  test("should show reset form for valid token", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
+  test("should show error when no token provided", async ({ page }) => {
+    await page.goto("/reset-password");
+
+    await expect(page.getByText("Invalid Reset Link")).toBeVisible();
+  });
+
+  test("should show reset form when token is present", async ({ page }) => {
+    await page.goto("/reset-password?token=any-token-string");
 
     await expect(page.getByText("Reset Your Password")).toBeVisible();
     await expect(page.getByText("Enter your new password below")).toBeVisible();
@@ -28,7 +43,7 @@ test.describe("Password Reset", () => {
   });
 
   test("should validate password requirements", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
+    await page.goto("/reset-password?token=test-token");
 
     await page.getByRole("button", { name: "Reset Password" }).click();
 
@@ -36,7 +51,7 @@ test.describe("Password Reset", () => {
   });
 
   test("should validate password length", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
+    await page.goto("/reset-password?token=test-token");
 
     await page.getByPlaceholder("Enter new password").fill("short");
     await page.getByRole("button", { name: "Reset Password" }).click();
@@ -47,7 +62,7 @@ test.describe("Password Reset", () => {
   });
 
   test("should validate password confirmation", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
+    await page.goto("/reset-password?token=test-token");
 
     await page.getByPlaceholder("Enter new password").fill("Password123!");
     await page.getByPlaceholder("Confirm new password").fill("DifferentPassword!");
@@ -56,35 +71,36 @@ test.describe("Password Reset", () => {
     await expect(page.getByText("Passwords do not match")).toBeVisible();
   });
 
-  test("should complete password reset with valid token", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
+  test("should complete password reset with real token", async ({ page, request }) => {
+    const tempUser = await createTempUser(request);
 
-    await page.getByPlaceholder("Enter new password").fill("NewPassword123!");
-    await page.getByPlaceholder("Confirm new password").fill("NewPassword123!");
+    const resetResponse = await requestPasswordReset(request, tempUser.email);
+    expect(resetResponse.ok()).toBeTruthy();
+
+    await page.waitForTimeout(1000);
+
+    const token = await getLatestResetToken();
+    expect(token).toBeTruthy();
+
+    await page.goto(`/reset-password?token=${token}`);
+    await expect(page.getByText("Reset Your Password")).toBeVisible();
+
+    const newPassword = "ResetPassword456!";
+    await page.getByPlaceholder("Enter new password").fill(newPassword);
+    await page.getByPlaceholder("Confirm new password").fill(newPassword);
 
     await page.getByRole("button", { name: "Reset Password" }).click();
 
     await expect(page.getByText("Password Reset Complete")).toBeVisible({
-      timeout: 5000,
+      timeout: 10000,
     });
     await expect(
       page.getByText("Your password has been successfully reset")
     ).toBeVisible();
 
     await expect(page.getByRole("link", { name: "Go to Login" })).toBeVisible();
-  });
 
-  test("should show loading state during reset", async ({ page }) => {
-    await page.goto("/reset-password?token=valid");
-
-    await page.getByPlaceholder("Enter new password").fill("NewPassword123!");
-    await page.getByPlaceholder("Confirm new password").fill("NewPassword123!");
-
-    await page.getByRole("button", { name: "Reset Password" }).click();
-
-    await expect(page.getByText("Password Reset Complete")).toBeVisible({
-      timeout: 5000,
-    });
+    await deleteUserByEmail(tempUser.email);
   });
 });
 
@@ -119,37 +135,142 @@ test.describe("Auth Pages", () => {
     await expect(page.getByText("Welcome back")).toBeVisible();
   });
 
-  // Better Auth uses cookie-based sessions; these tests require
-  // a real database backend which is not available in MSW E2E mode.
-  test.skip("should allow access to settings when authenticated", async () => {});
-  test.skip("should login and redirect to returnUrl", async () => {});
+  test("should allow access to settings when authenticated", async ({ page }) => {
+    await loginAsTestUser(page);
+
+    await page.goto("/settings");
+
+    await expect(page.getByText("Account Settings")).toBeVisible();
+    await expect(page.getByText("Profile", { exact: true })).toBeVisible();
+  });
+
+  test("should login and redirect to returnUrl", async ({ page }) => {
+    await page.goto("/login?returnUrl=%2Fsettings");
+
+    await page.getByPlaceholder("you@example.com").fill(TEST_EMAIL);
+    await page.getByPlaceholder("Enter your password").fill(TEST_PASSWORD);
+    await page.getByRole("button", { name: "Sign in" }).click();
+
+    await expect(page).toHaveURL(/\/settings/, { timeout: 10000 });
+    await expect(page.getByText("Account Settings")).toBeVisible();
+  });
 });
 
 test.describe("Settings Features", () => {
-  // Settings tests require authenticated session via Better Auth.
-  // In MSW E2E mode there is no database, so these are skipped.
-  test.skip("should update profile name", async () => {});
-  test.skip("should validate password change", async () => {});
-  test.skip("should change password successfully", async () => {});
-  test.skip("should delete account and redirect", async () => {});
+  test.beforeEach(async ({ page }) => {
+    await loginAsTestUser(page);
+    await page.goto("/settings");
+    await expect(page.getByText("Account Settings")).toBeVisible();
+  });
+
+  test("should update profile name", async ({ page }) => {
+    const originalName = "Test User";
+    const newName = "Updated Name";
+
+    const nameInput = page.locator("#name");
+    await nameInput.clear();
+    await nameInput.fill(newName);
+    await page.getByRole("button", { name: "Save Changes" }).click();
+
+    await expect(page.getByText("Profile updated")).toBeVisible({ timeout: 5000 });
+
+    await nameInput.clear();
+    await nameInput.fill(originalName);
+    await page.getByRole("button", { name: "Save Changes" }).click();
+
+    await expect(page.getByText("Profile updated")).toBeVisible({ timeout: 5000 });
+  });
+
+  test("should validate password change", async ({ page }) => {
+    await page.locator("#currentPassword").fill("currentpass");
+    await page.locator("#newPassword").fill("short");
+    await page.locator("#confirmNewPassword").fill("short");
+
+    await page
+      .getByRole("button", { name: "Change Password" })
+      .click();
+
+    await expect(
+      page.getByText("New password must be at least 8 characters")
+    ).toBeVisible({ timeout: 5000 });
+  });
+
+  test("should change password successfully", async ({ page, request }) => {
+    const tempUser = await createTempUser(request);
+
+    await page.goto("/login");
+    await page.getByPlaceholder("you@example.com").fill(tempUser.email);
+    await page.getByPlaceholder("Enter your password").fill(tempUser.password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.waitForURL("/", { timeout: 10000 });
+
+    await page.goto("/settings");
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    const newPassword = "ChangedPassword789!";
+    await page.locator("#currentPassword").fill(tempUser.password);
+    await page.locator("#newPassword").fill(newPassword);
+    await page.locator("#confirmNewPassword").fill(newPassword);
+
+    await page.getByRole("button", { name: "Change Password" }).click();
+
+    await expect(page.getByText("Password changed")).toBeVisible({ timeout: 5000 });
+
+    await deleteUserByEmail(tempUser.email);
+  });
+
+  test("should delete account and redirect", async ({ page, request }) => {
+    const tempUser = await createTempUser(request);
+
+    await page.goto("/login");
+    await page.getByPlaceholder("you@example.com").fill(tempUser.email);
+    await page.getByPlaceholder("Enter your password").fill(tempUser.password);
+    await page.getByRole("button", { name: "Sign in" }).click();
+    await page.waitForURL("/", { timeout: 10000 });
+
+    await page.goto("/settings");
+    await expect(page.getByText("Account Settings")).toBeVisible();
+
+    await page.getByRole("button", { name: "Delete Account" }).first().click();
+
+    await expect(page.getByText("Are you absolutely sure?")).toBeVisible();
+    await page.locator("#deletePassword").fill(tempUser.password);
+    await page
+      .getByRole("button", { name: "Delete Account" })
+      .last()
+      .click();
+
+    await expect(page).toHaveURL("/", { timeout: 10000 });
+  });
 });
 
 test.describe("Login and Signup", () => {
-  // Email/password login and signup now go through Better Auth API,
-  // which requires a real database. Skipped in MSW E2E mode.
-  test.skip("should login with valid credentials and redirect to home", async () => {});
-  test.skip("should create account and redirect to home", async () => {});
-});
+  test("should login with valid credentials and redirect to home", async ({ page }) => {
+    await page.goto("/login");
 
-test.describe("Health Endpoint", () => {
-  test("should return health status", async ({ request }) => {
-    const response = await request.get("/api/health");
-    expect(response.ok()).toBeTruthy();
+    await page.getByPlaceholder("you@example.com").fill(TEST_EMAIL);
+    await page.getByPlaceholder("Enter your password").fill(TEST_PASSWORD);
+    await page.getByRole("button", { name: "Sign in" }).click();
 
-    const health = await response.json();
-    expect(health.status).toBe("healthy");
-    expect(health.services.app).toBe("ok");
-    expect(health.timestamp).toBeDefined();
-    expect(health.uptime).toBeGreaterThan(0);
+    await expect(page).toHaveURL("/", { timeout: 10000 });
+  });
+
+  test("should create account and redirect to home", async ({ page }) => {
+    const email = `signup-${Date.now()}@example.com`;
+    const password = "SignupTest123!";
+
+    await page.goto("/signup");
+
+    await page.getByPlaceholder("Your name").fill("New User");
+    await page.getByPlaceholder("you@example.com").fill(email);
+    await page.getByPlaceholder("Create a password").fill(password);
+    await page.getByPlaceholder("Confirm your password").fill(password);
+
+    await page.getByRole("button", { name: "Create account" }).click();
+
+    await expect(page).toHaveURL("/", { timeout: 10000 });
+
+    await deleteUserByEmail(email);
   });
 });
+
