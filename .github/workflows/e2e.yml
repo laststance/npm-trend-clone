@@ -11,9 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
-    # Service containers for Redis + Upstash-compatible REST API
-    # See: https://upstash.com/docs/redis/sdks/ts/developing
+    # Service containers for PostgreSQL, Redis + Upstash-compatible REST API
     services:
+      postgres:
+        image: postgres:16-alpine
+        ports:
+          - 5433:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: npm_trend_clone
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
       redis:
         image: redis:7-alpine
         ports:
@@ -42,26 +55,16 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Build application
-        run: pnpm build
-        env:
-          # Use local SRH for Redis (Upstash-compatible)
-          UPSTASH_REDIS_REST_URL: http://localhost:8079
-          UPSTASH_REDIS_REST_TOKEN: ci_test_token
-          # Database (still using Neon for now - can be replaced with local PG later)
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
-          # Auth
-          BETTER_AUTH_SECRET: ci_test_secret_key_for_testing_only
-          GITHUB_CLIENT_ID: ${{ secrets.OAUTH_GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET: ${{ secrets.OAUTH_GITHUB_CLIENT_SECRET }}
-
       - name: Run E2E tests
         run: pnpm test:e2e
         env:
           APP_ENV: test
           NEXT_PUBLIC_ENABLE_MSW_MOCK: 'true'
-          # Use local SRH for Redis (Upstash-compatible)
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/npm_trend_clone
+          BETTER_AUTH_SECRET: ci_test_secret_key_for_testing_only
+          GITHUB_CLIENT_ID: ci_test_github_client_id
+          GITHUB_CLIENT_SECRET: ci_test_github_client_secret
+          RESEND_API_KEY: ''
           UPSTASH_REDIS_REST_URL: http://localhost:8079
           UPSTASH_REDIS_REST_TOKEN: ci_test_token
 
