@@ -78,9 +78,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const deleteAccount = useCallback(async (password?: string): Promise<boolean> => {
-    const { error } = await authClient.deleteUser({
-      password: password ?? "",
-    });
+    const { error } = password
+      ? await authClient.deleteUser({ password })
+      : await authClient.deleteUser();
     return !error;
   }, []);
 

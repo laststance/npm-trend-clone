@@ -115,14 +115,9 @@ function SettingsContent() {
   }, [currentPassword, newPassword, confirmPassword]);
 
   const handleDeleteAccount = useCallback(async () => {
-    if (!deletePassword) {
-      toast.error("Password is required to delete your account");
-      return;
-    }
-
     setIsLoading(true);
 
-    const success = await deleteAccount(deletePassword);
+    const success = await deleteAccount(deletePassword || undefined);
 
     if (success) {
       toast.success("Account deleted", {
@@ -131,7 +126,9 @@ function SettingsContent() {
       router.push("/");
     } else {
       toast.error("Deletion failed", {
-        description: "Password may be incorrect. Please try again.",
+        description: deletePassword
+          ? "Password may be incorrect. Please try again."
+          : "Please enter your password to confirm deletion.",
       });
     }
 
@@ -275,7 +272,7 @@ function SettingsContent() {
                 </AlertDialogHeader>
                 <div className="py-2">
                   <Label htmlFor="deletePassword">
-                    Enter your password to confirm
+                    Password (required for email accounts, optional for OAuth)
                   </Label>
                   <Input
                     id="deletePassword"
@@ -292,7 +289,6 @@ function SettingsContent() {
                   </AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleDeleteAccount}
-                    disabled={!deletePassword}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
                     Delete Account
