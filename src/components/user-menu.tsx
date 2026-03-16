@@ -26,8 +26,8 @@ export function UserMenu() {
    * Handles logout action.
    * Clears auth state and redirects to home.
    */
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push("/");
   };
 
