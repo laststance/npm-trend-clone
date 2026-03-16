@@ -104,6 +104,29 @@ test.describe("Password Reset", () => {
   });
 });
 
+test.describe("Email Verification", () => {
+  test("should show success state by default", async ({ page }) => {
+    await page.goto("/verify-email");
+
+    await expect(page.getByText("Email Verified")).toBeVisible();
+    await expect(
+      page.getByText("Your email address has been successfully verified")
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Go to Home" })).toBeVisible();
+  });
+
+  test("should show error state for error query param", async ({ page }) => {
+    await page.goto("/verify-email?error=INVALID_TOKEN");
+
+    await expect(page.getByText("Verification Failed")).toBeVisible();
+    await expect(
+      page.getByText("The verification link is invalid or has expired")
+    ).toBeVisible();
+    await expect(page.getByRole("link", { name: "Go to Settings" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Back to login" })).toBeVisible();
+  });
+});
+
 test.describe("Auth Pages", () => {
   test("should display login page", async ({ page }) => {
     await page.goto("/login");

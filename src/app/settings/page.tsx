@@ -207,7 +207,7 @@ function SettingsContent() {
                       onClick={async () => {
                         const { error } = await authClient.sendVerificationEmail({
                           email: user.email,
-                          callbackURL: "/settings",
+                          callbackURL: "/verify-email",
                         });
                         if (error) {
                           toast.error("Failed to send verification email");

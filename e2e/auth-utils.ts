@@ -11,14 +11,15 @@ const DB_URL =
 
 /**
  * Logs in the seed test user via the login page UI.
- * Waits for redirect to the home page after successful login.
+ * Includes a warmup navigation to avoid cold-start timeouts on first run,
+ * then fills credentials and waits for redirect to the home page.
  */
 export async function loginAsTestUser(page: Page) {
-  await page.goto("/login");
+  await page.goto("/login", { waitUntil: "networkidle" });
   await page.getByPlaceholder("you@example.com").fill(TEST_EMAIL);
   await page.getByPlaceholder("Enter your password").fill(TEST_PASSWORD);
   await page.getByRole("button", { name: "Sign in" }).click();
-  await page.waitForURL("/", { timeout: 10000 });
+  await page.waitForURL("/", { timeout: 15000 });
 }
 
 /**

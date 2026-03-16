@@ -18,7 +18,7 @@ export default async function globalSetup() {
 
   try {
     execSync("pnpm db:push", { stdio: "inherit", env });
-    execSync("npx tsx prisma/seed.ts", { stdio: "inherit", env });
+    execSync("pnpm db:seed", { stdio: "inherit", env });
     console.log("[global-setup] Database ready.");
   } catch (error) {
     console.error("[global-setup] Database setup failed:", error);
