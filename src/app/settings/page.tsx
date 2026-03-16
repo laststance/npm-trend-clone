@@ -28,12 +28,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ProtectedRoute } from "@/components/protected-route";
 import { useAuth } from "@/contexts/auth-context";
+import { authClient } from "@/lib/auth-client";
 
-/**
- * Account settings page component.
- * Allows users to manage their profile, change password, and delete account.
- * Protected route - requires authentication.
- */
 export default function SettingsPage() {
   return (
     <ProtectedRoute>
@@ -42,22 +38,17 @@ export default function SettingsPage() {
   );
 }
 
-/**
- * Settings page content (protected).
- */
 function SettingsContent() {
   const { user, updateName, deleteAccount } = useAuth();
   const router = useRouter();
-  const [name, setName] = useState(user?.name || "Demo User");
-  const [email] = useState(user?.email || "demo@example.com");
+  const [name, setName] = useState(user?.name || "");
+  const [email] = useState(user?.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [deletePassword, setDeletePassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  /**
-   * Handles profile update submission.
-   */
   const handleUpdateProfile = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
@@ -81,13 +72,9 @@ function SettingsContent() {
     setIsLoading(false);
   }, [name, updateName]);
 
-  /**
-   * Handles password change submission.
-   */
   const handleChangePassword = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate inputs
     if (!currentPassword || !newPassword || !confirmPassword) {
       toast.error("All password fields are required");
       return;
@@ -103,35 +90,39 @@ function SettingsContent() {
       return;
     }
 
-    // Demo validation: current password must be "demo" or 8+ chars
-    if (currentPassword !== "demo" && currentPassword.length < 8) {
-      toast.error("Current password is incorrect");
+    setIsLoading(true);
+
+    const { error } = await authClient.changePassword({
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: true,
+    });
+
+    if (error) {
+      toast.error("Password change failed", {
+        description: error.message ?? "Current password may be incorrect",
+      });
+    } else {
+      toast.success("Password changed", {
+        description: "Your password has been updated successfully",
+      });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+
+    setIsLoading(false);
+  }, [currentPassword, newPassword, confirmPassword]);
+
+  const handleDeleteAccount = useCallback(async () => {
+    if (!deletePassword) {
+      toast.error("Password is required to delete your account");
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    toast.success("Password changed", {
-      description: "Your password has been updated successfully",
-    });
-
-    // Clear form
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setIsLoading(false);
-  }, [currentPassword, newPassword, confirmPassword]);
-
-  /**
-   * Handles account deletion.
-   */
-  const handleDeleteAccount = useCallback(async () => {
-    setIsLoading(true);
-
-    const success = await deleteAccount();
+    const success = await deleteAccount(deletePassword);
 
     if (success) {
       toast.success("Account deleted", {
@@ -140,17 +131,17 @@ function SettingsContent() {
       router.push("/");
     } else {
       toast.error("Deletion failed", {
-        description: "Please try again",
+        description: "Password may be incorrect. Please try again.",
       });
     }
 
+    setDeletePassword("");
     setIsLoading(false);
-  }, [deleteAccount, router]);
+  }, [deleteAccount, deletePassword, router]);
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        {/* Header */}
         <div className="flex items-center gap-4">
           <Link
             href="/"
@@ -161,7 +152,6 @@ function SettingsContent() {
           <h1 className="text-2xl font-bold">Account Settings</h1>
         </div>
 
-        {/* Profile Section */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -206,7 +196,6 @@ function SettingsContent() {
           </CardContent>
         </Card>
 
-        {/* Password Section */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -259,7 +248,6 @@ function SettingsContent() {
           </CardContent>
         </Card>
 
-        {/* Danger Zone */}
         <Card className="border-destructive/50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-destructive">
@@ -285,10 +273,26 @@ function SettingsContent() {
                     your account and remove all your data from our servers.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
+                <div className="py-2">
+                  <Label htmlFor="deletePassword">
+                    Enter your password to confirm
+                  </Label>
+                  <Input
+                    id="deletePassword"
+                    type="password"
+                    placeholder="Your password"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    className="mt-2"
+                  />
+                </div>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel onClick={() => setDeletePassword("")}>
+                    Cancel
+                  </AlertDialogCancel>
                   <AlertDialogAction
                     onClick={handleDeleteAccount}
+                    disabled={!deletePassword}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
                     Delete Account

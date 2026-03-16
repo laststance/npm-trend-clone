@@ -138,10 +138,6 @@ export default function SignupPage() {
     return Object.keys(newErrors).length === 0;
   }, [name, email, password, confirmPassword]);
 
-  /**
-   * Handles form submission.
-   * Creates a demo account using localStorage.
-   */
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -152,16 +148,16 @@ export default function SignupPage() {
 
       setIsLoading(true);
 
-      const success = await signup(name.trim(), email.trim(), password);
+      const result = await signup(name.trim(), email.trim(), password);
 
-      if (success) {
+      if (result.success) {
         toast.success("Account created!", {
           description: "Welcome to npm trends",
         });
         router.push("/");
       } else {
-        toast.error("Signup failed", {
-          description: "Password must be at least 8 characters",
+        toast.error("Sign up failed", {
+          description: result.error ?? "Could not create account",
         });
       }
 

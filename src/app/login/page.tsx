@@ -88,10 +88,6 @@ function LoginContent() {
     return Object.keys(newErrors).length === 0;
   }, [email, password]);
 
-  /**
-   * Handles form submission.
-   * Uses demo auth context - accepts password "demo" or any 8+ char password.
-   */
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -102,17 +98,16 @@ function LoginContent() {
 
       setIsLoading(true);
 
-      const success = await login(email, password);
+      const result = await login(email, password);
 
-      if (success) {
+      if (result.success) {
         toast.success("Welcome back!", {
           description: "You have been signed in successfully",
         });
-        // Redirect to return URL or home
         router.push(returnUrl);
       } else {
-        toast.error("Invalid credentials", {
-          description: "Password must be 'demo' or at least 8 characters",
+        toast.error("Sign in failed", {
+          description: result.error ?? "Invalid email or password",
         });
       }
 
