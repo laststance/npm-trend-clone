@@ -123,18 +123,20 @@ function SettingsContent() {
       toast.success("Account deleted", {
         description: "Your account has been removed",
       });
-      router.push("/");
-    } else {
-      toast.error("Deletion failed", {
-        description: deletePassword
-          ? "Password may be incorrect. Please try again."
-          : "Please enter your password to confirm deletion.",
-      });
+      // Full navigation to bypass ProtectedRoute redirect race condition
+      window.location.href = "/";
+      return;
     }
+
+    toast.error("Deletion failed", {
+      description: deletePassword
+        ? "Password may be incorrect. Please try again."
+        : "Please enter your password to confirm deletion.",
+    });
 
     setDeletePassword("");
     setIsLoading(false);
-  }, [deleteAccount, deletePassword, router]);
+  }, [deleteAccount, deletePassword]);
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
