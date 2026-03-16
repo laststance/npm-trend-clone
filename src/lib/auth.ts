@@ -21,7 +21,7 @@ const prisma = new PrismaClient({ adapter });
  *
  * @description
  * - Uses Prisma adapter for PostgreSQL database
- * - Supports GitHub and Google OAuth providers
+ * - Supports GitHub OAuth provider
  * - Email/password authentication enabled
  *
  * @see https://www.better-auth.com/docs
@@ -92,16 +92,12 @@ export const auth = betterAuth({
 
   /**
    * Social OAuth providers configuration.
-   * GitHub and Google OAuth are enabled when environment variables are set.
+   * GitHub OAuth is enabled when environment variables are set.
    */
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    },
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
 

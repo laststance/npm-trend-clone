@@ -15,7 +15,7 @@ This project is inspired by and pays tribute to [npm trends](https://npmtrends.c
 
 - **Package Comparison** - Compare download trends of multiple npm packages
 - **Interactive Charts** - Visualize download statistics with dynamic charts
-- **OAuth Authentication** - Sign in with GitHub or Google via Better Auth
+- **OAuth Authentication** - Sign in with GitHub via Better Auth
 - **Rate Limiting** - API protection with Upstash Redis
 - **Dark Mode** - Full dark/light theme support
 - **Responsive Design** - Mobile-friendly interface with shadcn/ui
@@ -29,7 +29,7 @@ This project is inspired by and pays tribute to [npm trends](https://npmtrends.c
 | Database | [PostgreSQL](https://www.postgresql.org/) via [Neon](https://neon.tech/) |
 | ORM | [Prisma 7](https://www.prisma.io/) |
 | Cache | [Upstash Redis](https://upstash.com/) |
-| Auth | [Better Auth](https://www.better-auth.com/) (GitHub, Google OAuth) |
+| Auth | [Better Auth](https://www.better-auth.com/) (GitHub OAuth) |
 | UI | [shadcn/ui](https://ui.shadcn.com/) + [Radix UI](https://www.radix-ui.com/) |
 | Styling | [Tailwind CSS](https://tailwindcss.com/) |
 | State | [TanStack Query](https://tanstack.com/query) |
@@ -185,7 +185,6 @@ Required environment variables:
 - `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis REST token
 - `BETTER_AUTH_SECRET` - Auth secret key
 - `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` - GitHub OAuth credentials
-- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` - Google OAuth credentials
 
 ## Contributing
 

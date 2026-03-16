@@ -1038,17 +1038,6 @@
   },
   {
     "category": "functional",
-    "description": "Google OAuth login works",
-    "steps": [
-      "Step 1: Navigate to /login",
-      "Step 2: Click 'Sign in with Google'",
-      "Step 3: Complete OAuth flow",
-      "Step 4: Verify logged in"
-    ],
-    "passes": true
-  },
-  {
-    "category": "functional",
     "description": "Forgot password link works",
     "steps": [
       "Step 1: Navigate to /login",
