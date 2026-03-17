@@ -399,6 +399,7 @@ export function SearchBar({
           aria-invalid={!!validationError || !!error}
           aria-describedby={validationError ? "search-validation-error" : error ? "search-error" : undefined}
           role="combobox"
+          aria-controls="search-suggestions-listbox"
         />
         {isLoading && (
           <Loader2
@@ -420,6 +421,7 @@ export function SearchBar({
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
+          id="search-suggestions-listbox"
           role="listbox"
         >
           {validationError ? (
