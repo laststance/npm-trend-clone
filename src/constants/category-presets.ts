@@ -22,13 +22,3 @@ export const CATEGORY_PRESETS: Record<string, string[]> = {
  */
 export type CategoryName = keyof typeof CATEGORY_PRESETS;
 
-/**
- * Get package list for a category.
- * @param category - The category name
- * @returns Array of package names for the category
- * @example
- * getCategoryPackages('Front-end') // => ['react', 'vue', 'angular', 'svelte']
- */
-export function getCategoryPackages(category: CategoryName): string[] {
-  return [...CATEGORY_PRESETS[category]];
-}

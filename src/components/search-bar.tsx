@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useId } from "react";
 import { Search, Loader2, Download } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -92,6 +92,8 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
+const EMPTY_PACKAGES: string[] = [];
+
 /**
  * Search bar with autocomplete for npm packages.
  * Implements debounced search with dropdown suggestions.
@@ -101,10 +103,11 @@ interface SearchBarProps {
  */
 export function SearchBar({
   onSelectPackage,
-  selectedPackages = [],
+  selectedPackages = EMPTY_PACKAGES,
   disabled = false,
   placeholder = "Search npm packages...",
 }: SearchBarProps) {
+  const listboxId = useId();
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<NpmPackage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -399,6 +402,7 @@ export function SearchBar({
           aria-invalid={!!validationError || !!error}
           aria-describedby={validationError ? "search-validation-error" : error ? "search-error" : undefined}
           role="combobox"
+          aria-controls={`${listboxId}-listbox`}
         />
         {isLoading && (
           <Loader2
@@ -420,6 +424,7 @@ export function SearchBar({
         <div
           ref={dropdownRef}
           className="absolute z-50 mt-1 w-full rounded-md border bg-popover shadow-lg"
+          id={`${listboxId}-listbox`}
           role="listbox"
         >
           {validationError ? (
@@ -471,6 +476,7 @@ export function SearchBar({
                         index === selectedIndex && "bg-accent"
                       )}
                       onClick={() => handleSelect(pkg.name)}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelect(pkg.name) } }}
                       onMouseEnter={() => setSelectedIndex(index)}
                     >
                       <div className="flex items-center justify-between gap-2">
@@ -499,6 +505,7 @@ export function SearchBar({
                     index === selectedIndex && "bg-accent"
                   )}
                   onClick={() => handleSelect(pkg.name)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelect(pkg.name) } }}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
                   <div className="flex items-center justify-between gap-2">

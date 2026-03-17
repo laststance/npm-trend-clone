@@ -23,7 +23,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!isLoading && !isAuthenticated) {
       // Preserve the current URL for redirect after login
       const returnUrl = encodeURIComponent(pathname);
-      router.push(`/login?returnUrl=${returnUrl}`);
+      router.replace(`/login?returnUrl=${returnUrl}`);
     }
   }, [isAuthenticated, isLoading, pathname, router]);
 
