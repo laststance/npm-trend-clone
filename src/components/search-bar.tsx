@@ -92,6 +92,8 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
+const EMPTY_PACKAGES: string[] = [];
+
 /**
  * Search bar with autocomplete for npm packages.
  * Implements debounced search with dropdown suggestions.
@@ -101,7 +103,7 @@ interface SearchBarProps {
  */
 export function SearchBar({
   onSelectPackage,
-  selectedPackages = [],
+  selectedPackages = EMPTY_PACKAGES,
   disabled = false,
   placeholder = "Search npm packages...",
 }: SearchBarProps) {
