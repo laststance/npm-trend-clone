@@ -98,7 +98,21 @@ pnpm prisma generate
 pnpm prisma db push
 ```
 
-6. **Start the development server**
+6. **Seed the database** (required for auth testing)
+
+```bash
+pnpm db:seed
+```
+
+This creates a test account for local development:
+
+| Field | Value |
+|-------|-------|
+| Email | `test@example.com` |
+| Password | `testpassword123` |
+| Name | `Test User` |
+
+7. **Start the development server**
 
 ```bash
 pnpm dev
@@ -127,6 +141,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 | `pnpm typecheck` | Run TypeScript type checking |
 | `pnpm test` | Run unit tests with Vitest |
 | `pnpm test:e2e` | Run E2E tests with Playwright |
+| `pnpm db:seed` | Seed database with test account |
 
 ## Project Structure
 
@@ -172,19 +187,73 @@ pnpm exec playwright test --ui
 
 E2E tests use MSW (Mock Service Worker) for API mocking, ensuring consistent and reliable test results.
 
+## GitHub OAuth Setup
+
+To enable "Sign in with GitHub":
+
+1. Go to **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
+2. Fill in:
+   - **Application name**: `npm-trend-clone` (or your preferred name)
+   - **Homepage URL**: `http://localhost:3000` (local) or your production URL
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
+3. After creating, copy the **Client ID** and generate a **Client Secret**
+4. Add to `.env.local`:
+   ```env
+   GITHUB_CLIENT_ID=your-client-id
+   GITHUB_CLIENT_SECRET=your-client-secret
+   ```
+
+For production deployment, create a **separate** OAuth App with:
+- **Homepage URL**: `https://your-production-domain.com`
+- **Authorization callback URL**: `https://your-production-domain.com/api/auth/callback/github`
+
+> **Note**: Better Auth handles the OAuth callback at `/api/auth/callback/github`. Ensure the callback URL matches exactly.
+
+## Email Delivery (Resend)
+
+Password reset and email verification use [Resend](https://resend.com/) for email delivery.
+
+**Local development**: When `RESEND_API_KEY` is not set, emails are logged to the console instead of being sent.
+
+**Production setup**:
+
+1. Create a [Resend](https://resend.com/) account
+2. Verify a sender domain (or use the free `onboarding@resend.dev` for testing)
+3. Generate an API key
+4. Add to your environment:
+   ```env
+   RESEND_API_KEY=re_your_api_key_here
+   EMAIL_FROM=npm-trends <noreply@yourdomain.com>
+   ```
+
+> **Note**: Without `RESEND_API_KEY` set in production, auth email features (password reset, email verification) will silently fail to deliver.
+
 ## Deployment
 
 ### Vercel (Recommended)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/laststance/npm-trend-clone)
 
-Required environment variables:
-- `DATABASE_URL` - Neon PostgreSQL connection string
-- `DATABASE_URL_UNPOOLED` - Direct connection string for migrations
-- `UPSTASH_REDIS_REST_URL` - Upstash Redis REST URL
-- `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis REST token
-- `BETTER_AUTH_SECRET` - Auth secret key
-- `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` - GitHub OAuth credentials
+### Environment Variables & Secrets
+
+| Variable | Local | CI (Build) | Production | Required | Description |
+|----------|:-----:|:----------:|:----------:|:--------:|-------------|
+| `DATABASE_URL` | `.env.local` | Secret | Vercel env | Yes | Neon PostgreSQL pooled connection string |
+| `DATABASE_URL_UNPOOLED` | — | Secret | Vercel env | Yes | Direct connection for migrations (non-pooled) |
+| `UPSTASH_REDIS_REST_URL` | `.env.local` | Secret | Vercel env | Yes | Upstash Redis REST endpoint |
+| `UPSTASH_REDIS_REST_TOKEN` | `.env.local` | Secret | Vercel env | Yes | Upstash Redis REST token |
+| `BETTER_AUTH_SECRET` | `.env.local` | Secret | Vercel env | Yes | Auth encryption secret (min 32 chars) |
+| `GITHUB_CLIENT_ID` | `.env.local` | Secret | Vercel env | Yes | GitHub OAuth App client ID |
+| `GITHUB_CLIENT_SECRET` | `.env.local` | Secret | Vercel env | Yes | GitHub OAuth App client secret |
+| `RESEND_API_KEY` | Optional | — | Vercel env | Yes | Resend API key for email delivery |
+| `EMAIL_FROM` | Optional | — | Vercel env | Yes | Sender address (e.g., `noreply@yourdomain.com`) |
+| `NEON_API_KEY` | — | Secret | — | No | Neon API key for migration backup branches |
+| `NEON_PROJECT_ID` | — | Secret | — | No | Neon project ID for backup branch creation |
+| `NEXT_PUBLIC_ENABLE_MSW_MOCK` | `.env.local` | — | — | No | Enable MSW mocking (`true`/`false`) |
+
+**GitHub Actions secrets** (set in repo Settings → Secrets → Actions):
+- Required: `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `BETTER_AUTH_SECRET`, `OAUTH_GITHUB_CLIENT_ID`, `OAUTH_GITHUB_CLIENT_SECRET`
+- Optional (migration workflow): `NEON_API_KEY`, `NEON_PROJECT_ID` — when set, the db-migrate workflow creates a Neon backup branch before running `prisma migrate deploy`
 
 ## Contributing
 
