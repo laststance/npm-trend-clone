@@ -473,6 +473,7 @@ export function SearchBar({
                         index === selectedIndex && "bg-accent"
                       )}
                       onClick={() => handleSelect(pkg.name)}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleSelect(pkg.name) }}
                       onMouseEnter={() => setSelectedIndex(index)}
                     >
                       <div className="flex items-center justify-between gap-2">
@@ -501,6 +502,7 @@ export function SearchBar({
                     index === selectedIndex && "bg-accent"
                   )}
                   onClick={() => handleSelect(pkg.name)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleSelect(pkg.name) }}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >
                   <div className="flex items-center justify-between gap-2">
