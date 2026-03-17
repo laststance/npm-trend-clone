@@ -236,6 +236,8 @@ Password reset and email verification use [Resend](https://resend.com/) for emai
 
 ### Environment Variables & Secrets
 
+> **Note**: Most variables are accessed directly via `process.env` at runtime. Only `NODE_ENV`, `APP_ENV`, and `NEXT_PUBLIC_ENABLE_MSW_MOCK` are validated via Zod in `src/env.ts`. Ensure all required variables are set correctly to avoid runtime errors. `DATABASE_URL_UNPOOLED` is not needed for local development (Docker uses a single direct connection).
+
 | Variable | Local | CI (Build) | Production | Required | Description |
 |----------|:-----:|:----------:|:----------:|:--------:|-------------|
 | `DATABASE_URL` | `.env.local` | Secret | Vercel env | Yes | Neon PostgreSQL pooled connection string |

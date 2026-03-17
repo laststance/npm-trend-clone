@@ -208,7 +208,7 @@ export function PresetManager({
                 role="presentation"
                 className="opacity-0 group-hover:opacity-100 flex items-center gap-1 ml-2"
                 onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => e.stopPropagation()}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") e.stopPropagation() }}
               >
                 <button
                   onClick={() => handleOpenRenameDialog(preset)}
